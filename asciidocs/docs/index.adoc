@@ -1,4 +1,4 @@
-= <Thema>
+= Authentifizierungs- und Authorisierungsstandards
 Moritz V. Gruber
 1.0, {docdate}
 ifndef::sourcedir[:sourcedir: ../src/main/java]
@@ -10,4 +10,15 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
+== OAuth
+Bezeichnung: Open Authorization
+
+== OIDC
+Bezeichnung: OpenID Connect
+
+== SAML
+Bezeichnung: Security Assertion Markup Language
+
 == Quellen
+* https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/
+* https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth
