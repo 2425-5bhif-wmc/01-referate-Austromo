@@ -1,5 +1,5 @@
-= Authentifizierungs- und Authorisierungsstandards
-Moritz V. Gruber
+= Security
+Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner
 1.0, {docdate}
 ifndef::sourcedir[:sourcedir: ../src/main/java]
 ifndef::imagesdir[:imagesdir: images]
@@ -10,13 +10,14 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
-== OAuth
+== Authentifizierungs- und Authorisierungsstandards
+=== OAuth
 Bezeichnung: Open Authorization
 
-== OIDC
+=== OIDC
 Bezeichnung: OpenID Connect
 
-== SAML
+=== SAML
 Bezeichnung: Security Assertion Markup Language
 
 == Quellen
