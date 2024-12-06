@@ -10,7 +10,7 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
-== Authentifizierungs- und Authorisierungsstandards
+== Authentifizierungs- und Autorisierungsstandards
 === OAuth
 Bezeichnung: Open Authorization
 
