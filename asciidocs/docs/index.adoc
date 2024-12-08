@@ -10,16 +10,34 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
+== Authentifizierung und Autorisierung
+Authentifizierung durch Eingabe von Username und Passwort → **Wer bin ich?**
+
+Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → **Was darf ich?**
+
 == Authentifizierungs- und Autorisierungsstandards
-=== OAuth
+=== OAuth 2.0
 Bezeichnung: Open Authorization
+
+OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.
+
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-oauth-2[hier].
 
 === OIDC
 Bezeichnung: OpenID Connect
 
+OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.
+
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc[hier].
+
 === SAML
 Bezeichnung: Security Assertion Markup Language
+
+SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen Identitätsanbietern (IdPs) und Dienstanbietern (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.
+
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-saml[hier].
 
 == Quellen
 * https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/
 * https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth
+* https://auth0.com/de/intro-to-iam/what-is-oauth-2
