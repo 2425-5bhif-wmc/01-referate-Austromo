@@ -451,48 +451,78 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-06</span>
+<span id="revdate">2024-12-08</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_authentifizierungs_und_autorisierungsstandards">1. Authentifizierungs- und Autorisierungsstandards</a>
+<li><a href="#_authentifizierung_und_autorisierung">1. Authentifizierung und Autorisierung</a></li>
+<li><a href="#_authentifizierungs_und_autorisierungsstandards">2. Authentifizierungs- und Autorisierungsstandards</a>
 <ul class="sectlevel2">
-<li><a href="#_oauth">1.1. OAuth</a></li>
-<li><a href="#_oidc">1.2. OIDC</a></li>
-<li><a href="#_saml">1.3. SAML</a></li>
+<li><a href="#_oauth_2_0">2.1. OAuth 2.0</a></li>
+<li><a href="#_oidc">2.2. OIDC</a></li>
+<li><a href="#_saml">2.3. SAML</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">2. Quellen</a></li>
+<li><a href="#_quellen">3. Quellen</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_authentifizierungs_und_autorisierungsstandards"><a class="anchor" href="#_authentifizierungs_und_autorisierungsstandards"></a>1. Authentifizierungs- und Autorisierungsstandards</h2>
+<h2 id="_authentifizierung_und_autorisierung"><a class="anchor" href="#_authentifizierung_und_autorisierung"></a>1. Authentifizierung und Autorisierung</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Authentifizierung durch Eingabe von Username und Passwort → <strong>Wer bin ich?</strong></p>
+</div>
+<div class="paragraph">
+<p>Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → <strong>Was darf ich?</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authentifizierungs_und_autorisierungsstandards"><a class="anchor" href="#_authentifizierungs_und_autorisierungsstandards"></a>2. Authentifizierungs- und Autorisierungsstandards</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_oauth"><a class="anchor" href="#_oauth"></a>1.1. OAuth</h3>
+<h3 id="_oauth_2_0"><a class="anchor" href="#_oauth_2_0"></a>2.1. OAuth 2.0</h3>
 <div class="paragraph">
 <p>Bezeichnung: Open Authorization</p>
 </div>
+<div class="paragraph">
+<p>OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.</p>
+</div>
+<div class="paragraph">
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2">hier</a>.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_oidc"><a class="anchor" href="#_oidc"></a>1.2. OIDC</h3>
+<h3 id="_oidc"><a class="anchor" href="#_oidc"></a>2.2. OIDC</h3>
 <div class="paragraph">
 <p>Bezeichnung: OpenID Connect</p>
 </div>
+<div class="paragraph">
+<p>OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.</p>
+</div>
+<div class="paragraph">
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc">hier</a>.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_saml"><a class="anchor" href="#_saml"></a>1.3. SAML</h3>
+<h3 id="_saml"><a class="anchor" href="#_saml"></a>2.3. SAML</h3>
 <div class="paragraph">
 <p>Bezeichnung: Security Assertion Markup Language</p>
+</div>
+<div class="paragraph">
+<p>SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen Identitätsanbietern (IdPs) und Dienstanbietern (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.</p>
+</div>
+<div class="paragraph">
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-saml">hier</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>2. Quellen</h2>
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>3. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -502,6 +532,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p><a href="https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth" class="bare">https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth</a></p>
 </li>
+<li>
+<p><a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2" class="bare">https://auth0.com/de/intro-to-iam/what-is-oauth-2</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -510,7 +543,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-06 21:13:14 UTC
+Last updated 2024-12-08 19:32:50 UTC
 </div>
 </div>
 </body>
