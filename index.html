@@ -436,6 +436,120 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge, pre.rouge .w {
+  color: #24292f;
+  background-color: #f6f8fa;
+}
+pre.rouge .k, pre.rouge .kd, pre.rouge .kn, pre.rouge .kp, pre.rouge .kr, pre.rouge .kt, pre.rouge .kv {
+  color: #cf222e;
+}
+pre.rouge .gr {
+  color: #f6f8fa;
+}
+pre.rouge .gd {
+  color: #82071e;
+  background-color: #ffebe9;
+}
+pre.rouge .nb {
+  color: #953800;
+}
+pre.rouge .nc {
+  color: #953800;
+}
+pre.rouge .no {
+  color: #953800;
+}
+pre.rouge .nn {
+  color: #953800;
+}
+pre.rouge .sr {
+  color: #116329;
+}
+pre.rouge .na {
+  color: #116329;
+}
+pre.rouge .nt {
+  color: #116329;
+}
+pre.rouge .gi {
+  color: #116329;
+  background-color: #dafbe1;
+}
+pre.rouge .kc {
+  color: #0550ae;
+}
+pre.rouge .l, pre.rouge .ld, pre.rouge .m, pre.rouge .mb, pre.rouge .mf, pre.rouge .mh, pre.rouge .mi, pre.rouge .il, pre.rouge .mo, pre.rouge .mx {
+  color: #0550ae;
+}
+pre.rouge .sb {
+  color: #0550ae;
+}
+pre.rouge .bp {
+  color: #0550ae;
+}
+pre.rouge .ne {
+  color: #0550ae;
+}
+pre.rouge .nl {
+  color: #0550ae;
+}
+pre.rouge .py {
+  color: #0550ae;
+}
+pre.rouge .nv, pre.rouge .vc, pre.rouge .vg, pre.rouge .vi, pre.rouge .vm {
+  color: #0550ae;
+}
+pre.rouge .o, pre.rouge .ow {
+  color: #0550ae;
+}
+pre.rouge .gh {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .sc, pre.rouge .dl, pre.rouge .sd, pre.rouge .s2, pre.rouge .se, pre.rouge .sh, pre.rouge .sx, pre.rouge .s1, pre.rouge .ss {
+  color: #0a3069;
+}
+pre.rouge .nd {
+  color: #8250df;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #8250df;
+}
+pre.rouge .err {
+  color: #f6f8fa;
+  background-color: #82071e;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cm, pre.rouge .cp, pre.rouge .cpf, pre.rouge .c1, pre.rouge .cs {
+  color: #6e7781;
+}
+pre.rouge .gl {
+  color: #6e7781;
+}
+pre.rouge .gt {
+  color: #6e7781;
+}
+pre.rouge .ni {
+  color: #24292f;
+}
+pre.rouge .si {
+  color: #24292f;
+}
+pre.rouge .ge {
+  color: #24292f;
+  font-style: italic;
+}
+pre.rouge .gs {
+  color: #24292f;
+  font-weight: bold;
+}
+</style>
+<style>
     pre.rouge .hll {
         background-color: #ffc;
         display: block;
@@ -451,7 +565,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-08</span>
+<span id="revdate">2024-12-09</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -464,7 +578,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_saml">2.3. SAML</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">3. Quellen</a></li>
+<li><a href="#_keycloak">3. Keycloak</a>
+<ul class="sectlevel2">
+<li><a href="#_was_ist_keycloak">3.1. Was ist Keycloak?</a></li>
+<li><a href="#_keycloak_mit_quarkus">3.2. Keycloak mit Quarkus</a></li>
+</ul>
+</li>
+<li><a href="#_quellen">4. Quellen</a></li>
 </ul>
 </div>
 </div>
@@ -522,7 +642,378 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>3. Quellen</h2>
+<h2 id="_keycloak"><a class="anchor" href="#_keycloak"></a>3. Keycloak</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_was_ist_keycloak"><a class="anchor" href="#_was_ist_keycloak"></a>3.1. Was ist Keycloak?</h3>
+<div class="paragraph">
+<p>Keycloak ist eine <strong>Open-Source</strong>-Identity- und Access-Management-Lösung, die Funktionen wie Single-Sign On (SSO), Benutzerverwaltung und Social Login bietet.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<strong>Single-Sign On</strong> ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_keycloak_mit_quarkus"><a class="anchor" href="#_keycloak_mit_quarkus"></a>3.2. Keycloak mit Quarkus</h3>
+<div class="sect3">
+<h4 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>3.2.1. Projekterstellung</h4>
+<div class="paragraph">
+<p>TODO: restlichen dependencies hinzufügen</p>
+</div>
+<div class="listingblock">
+<div class="title">Projekterstellung mit Quarkus CLI</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">quarkus create app at.htl:security-keycloak-admin-client <span class="se">\</span>
+    <span class="nt">--extension</span><span class="o">=</span><span class="s1">'keycloak-admin-rest-client,rest-jackson'</span> <span class="se">\</span>
+    <span class="nt">--no-code</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>TODO: Version checken</p>
+</div>
+<div class="listingblock">
+<div class="title">Projekterstellung mit Maven CLI</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">mvn io.quarkus.platform:quarkus-maven-plugin:3.17.3:create <span class="se">\</span>
+    <span class="nt">-DprojectGroupId</span><span class="o">=</span>at.htl <span class="se">\</span>
+    <span class="nt">-DprojectArtifactId</span><span class="o">=</span>security-keycloak-admin-client <span class="se">\</span>
+    <span class="nt">-Dextensions</span><span class="o">=</span><span class="s1">'keycloak-admin-rest-client,rest-jackson'</span> <span class="se">\</span>
+    <span class="nt">-DnoCode</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Dependencies aus pom.xml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="c">&lt;!-- ... --&gt;</span>
+<span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.quarkus<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>quarkus-keycloak-admin-rest-client<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.quarkus<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>quarkus-rest-jackson<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.quarkus<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>quarkus-arc<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+<span class="c">&lt;!-- ... --&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>3.2.2. Keycloak Container starten</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>keycloak</code> Ordner auf der Ebene des Quarkus-Projekts erstellen</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir </span>keycloak</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Im <code>keycloak</code> Ordner eine Datei namens <code>docker-compose.yml</code> erstellen</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>keycloak
+<span class="nb">touch </span>docker-compose.yml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Das <code>docker-compose.yml</code> mit folgendem Code befüllen</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">keycloak</span><span class="pi">:</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">keycloak-demo</span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">quay.io/keycloak/keycloak:26.0.7</span> <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN=admin</span> <i class="conum" data-value="4"></i><b>(4)</b>
+      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN_PASSWORD=admin</span> <i class="conum" data-value="5"></i><b>(5)</b>
+
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT=false</span> <i class="conum" data-value="6"></i><b>(6)</b>
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT_HTTPS=false</span> <i class="conum" data-value="7"></i><b>(7)</b>
+      <span class="pi">-</span> <span class="s">KC_HTTP_ENABLED=true</span> <i class="conum" data-value="8"></i><b>(8)</b>
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME=localhost</span> <i class="conum" data-value="9"></i><b>(9)</b>
+      <span class="pi">-</span> <span class="s">PROXY_ADDRESS_FORWARDING=true</span> <i class="conum" data-value="10"></i><b>(10)</b>
+      <span class="pi">-</span> <span class="s">KC_HEALTH_ENABLED=true</span> <i class="conum" data-value="11"></i><b>(11)</b>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">start-dev"</span><span class="pi">]</span> <i class="conum" data-value="12"></i><b>(12)</b>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span> <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Der Name des Services</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Der Name des Containers</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Es wird die aktuellste Version <code>26.0.7</code> von Keycloak verwendet</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Umgebungsvariable für den Usernamen des Admins</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Umgebungsvariable für das Passwort des Admins</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="11"></i><b>11</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="12"></i><b>12</b></td>
+<td>TODO</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="13"></i><b>13</b></td>
+<td>Der <strong>interne</strong> Port auf der <strong>rechten</strong> Seite wird auf den <strong>äußeren</strong> Port auf der <strong>linken</strong> Seite gemappt TODO</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Den Container mit folgendem Befehl starten</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">docker compose up</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Nun kann auf <code><a href="http://localhost:8000" class="bare">http://localhost:8000</a></code>, auf den laufenden Keycloak Container zugegriffen werden. In der Anmeldemaske kann man sich mithilfe der im <code>docker-compose.yml</code> angegebenen Username und Passwort als Admin angemeldet werden.</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Anmeldemaske</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-admin-login.png" alt="keycloak admin login">
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Admin-Konsole</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-admin-console.png" alt="keycloak admin console">
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="sect3">
+<h4 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>3.2.3. Realm erstellen</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+TODO: Realm Beschreibung
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Um einen <strong>Realm</strong> zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button <code>Create Realm</code> klicken.</p>
+</div>
+<details>
+<summary class="title">Realm erstellen</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-create-realm-button.png" alt="keycloak create realm button">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>Namen vergeben (z. B. my-realm)</p>
+</li>
+<li>
+<p><code>Enabled</code> Option auf <code>On</code> lassen</p>
+</li>
+<li>
+<p>Auf den <code>Create</code> Button klicken</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Realm erstellen Popup</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-create-realm-window.png" alt="keycloak create realm window">
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="sect3">
+<h4 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>3.2.4. Quarkus-Client erstellen</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+TODO: Client Beschreibung
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Um einen <strong>Client</strong> zu erstellen, muss man im Clients Tab auf den <code>Create Client</code> Button klicken.</p>
+</div>
+<details>
+<summary class="title">Client erstellen</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-create-client-button.png" alt="keycloak create client button">
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p><strong>General Settings</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Als <code>Client ID</code> wird in diesem Beispiel der Name <code>quarkus-client</code> gewählt</p>
+</li>
+<li>
+<p>Name und Description sind optional</p>
+</li>
+<li>
+<p><code>Always display in UI</code> auf <code>On</code>, um Client dauerhaft im UI anzuzeigen</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Client erstellen - General Settings</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-create-client-general-settings.png" alt="keycloak create client general settings">
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p><strong>Capability config</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Client Authentication</code> auf <code>On</code> (TODO)</p>
+</li>
+<li>
+<p><code>Authorization</code> auf <code>On</code> (TODO)</p>
+</li>
+<li>
+<p><code>Authentication flow</code> (TODO)</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Client erstellen - Capability config</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/keycloak-create-client-capability-config.png" alt="keycloak create client capability config">
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p><strong>Login settings</strong></p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="paragraph">
+<p><strong>Service account roles</strong></p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>4. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -535,6 +1026,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p><a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2" class="bare">https://auth0.com/de/intro-to-iam/what-is-oauth-2</a></p>
 </li>
+<li>
+<p><a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc" class="bare">https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc</a></p>
+</li>
+<li>
+<p><a href="https://auth0.com/de/intro-to-iam/what-is-saml" class="bare">https://auth0.com/de/intro-to-iam/what-is-saml</a></p>
+</li>
+<li>
+<p><a href="https://www.keycloak.org/" class="bare">https://www.keycloak.org/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -543,7 +1043,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-08 19:32:50 UTC
+Last updated 2024-12-09 23:38:56 UTC
 </div>
 </div>
 </body>
