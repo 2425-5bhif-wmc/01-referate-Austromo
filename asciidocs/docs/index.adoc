@@ -257,7 +257,7 @@ image::keycloak-create-client-capability-config.png[]
 TODO
 
 ==== Beispiel
-Nachdem nun ein *Ream* und ein *Client* in Keycloak existieren, könne wir den *keycloak-admin-client* ausprobieren.
+Nachdem nun ein *Realm* und ein *Client* in Keycloak existieren, können wir den *keycloak-admin-client* ausprobieren.
 
 .application.properties
 [source, properties]
@@ -310,10 +310,10 @@ TODO: Erklärung
 }
 ----
 
-Der Keycloak-Server gibt eine *401 - Unauthorized* Response zurück. Um dies zu beheben, müssen wir unsere *Quarkus-Applikation* mit dem Keycloak *quarkus-client* authentifizieren.
+Der Keycloak-Server gibt eine *401 - Unauthorized* Response zurück. Um dies zu beheben, müssen wir unsere *Quarkus-Applikation* mit dem Keycloak authentifizieren.
 
 ===== Authentifizierung
-Es gibt 2 Möglichkeiten zur Authentifizierung mit Keycloak.
+Es gibt 2 Möglichkeiten zur Authentifizierung mit dem *keycloak-admin-client*.
 
 * password
 * client-credentials
@@ -378,11 +378,11 @@ Jetzt probieren wir denselben Endpunkt nochmals aus.
 }
 ----
 
-Diesmal bekommen wir vom Keycloak-Server eine *403 - Forbidden* Response. Wir sind nun authentifiziert, allerdings ist der *quarkus-client* nicht autorisiert alle Rollen anzuzeigen.
+Diesmal bekommen wir vom Keycloak-Server eine *403 - Forbidden* Response. Wir sind nun authentifiziert, allerdings ist der *quarkus-client* bzw. der User *alice* nicht autorisiert alle Rollen anzuzeigen.
 
 ===== Autorisierung
 ====== Grant type: password
-Unter `Users` -> `<username>` -> `Role mapping` -> `Assign role` können dem User Rollen zugewiesen werden. Wir weisen die Rolle `view-realm` hinzu um *lesenden* Zugriff auf den *Realm* zu bekommen.
+Unter `Users` -> `<username>` -> `Role mapping` -> `Assign role` können dem User Rollen zugewiesen werden. Wir weisen dem User die Rolle `view-realm` zu, um *lesenden* Zugriff auf den *Realm* zu bekommen.
 
 .User roles
 [%collapsible]
@@ -391,7 +391,7 @@ image:keycloak-user-roles.png[]]
 ====
 
 ====== Grant type: client-credentials
-Unter `Clients` -> `<client-name>` -> `Service accounts roles` -> `Assign role` können dem Client Rollen zugewiesen werden. Wieder weisen wir die Rolle `view-realm` hinzu um *lesenden* Zugriff auf den *Realm* zu bekommen.
+Unter `Clients` -> `<client-name>` -> `Service accounts roles` -> `Assign role` können dem Client Rollen zugewiesen werden. Wir weisen dem Client die Rolle `view-realm` zu, um *lesenden* Zugriff auf den *Realm* zu bekommen.
 
 .Client roles
 [%collapsible]
