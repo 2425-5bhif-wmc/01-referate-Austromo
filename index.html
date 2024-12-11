@@ -565,7 +565,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-09</span>
+<span id="revdate">2024-12-11</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -581,7 +581,8 @@ pre.rouge .gs {
 <li><a href="#_keycloak">3. Keycloak</a>
 <ul class="sectlevel2">
 <li><a href="#_was_ist_keycloak">3.1. Was ist Keycloak?</a></li>
-<li><a href="#_keycloak_mit_quarkus">3.2. Keycloak mit Quarkus</a></li>
+<li><a href="#_alternativen">3.2. Alternativen</a></li>
+<li><a href="#_keycloak_mit_quarkus">3.3. Keycloak mit Quarkus</a></li>
 </ul>
 </li>
 <li><a href="#_quellen">4. Quellen</a></li>
@@ -606,37 +607,37 @@ pre.rouge .gs {
 <div class="sect2">
 <h3 id="_oauth_2_0"><a class="anchor" href="#_oauth_2_0"></a>2.1. OAuth 2.0</h3>
 <div class="paragraph">
-<p>Bezeichnung: Open Authorization</p>
+<p>Bezeichnung: O<sub>pen</sub> Auth<sub>orization</sub></p>
 </div>
 <div class="paragraph">
 <p>OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.</p>
 </div>
 <div class="paragraph">
-<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2">hier</a>.</p>
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_oidc"><a class="anchor" href="#_oidc"></a>2.2. OIDC</h3>
 <div class="paragraph">
-<p>Bezeichnung: OpenID Connect</p>
+<p>Bezeichnung: O<sub>pen</sub>ID C<sub>onnect</sub></p>
 </div>
 <div class="paragraph">
 <p>OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.</p>
 </div>
 <div class="paragraph">
-<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc">hier</a>.</p>
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_saml"><a class="anchor" href="#_saml"></a>2.3. SAML</h3>
 <div class="paragraph">
-<p>Bezeichnung: Security Assertion Markup Language</p>
+<p>Bezeichnung: S<sub>ecurity</sub> A<sub>ssertion</sub> M<sub>arkup</sub> L<sub>anguage</sub></p>
 </div>
 <div class="paragraph">
-<p>SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen Identitätsanbietern (IdPs) und Dienstanbietern (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.</p>
+<p>SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen <strong>Identitätsanbietern</strong> (IdPs) und <strong>Dienstanbietern</strong> (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.</p>
 </div>
 <div class="paragraph">
-<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-saml">hier</a>.</p>
+<p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-saml" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 </div>
 </div>
@@ -663,9 +664,54 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_keycloak_mit_quarkus"><a class="anchor" href="#_keycloak_mit_quarkus"></a>3.2. Keycloak mit Quarkus</h3>
+<h3 id="_alternativen"><a class="anchor" href="#_alternativen"></a>3.2. Alternativen</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.keycloak.org/" target="_blank" rel="noopener">Keycloak</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.authelia.com/" target="_blank" rel="noopener">Authelia</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://goauthentik.io/" target="_blank" rel="noopener">authentik</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open Source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Protocol Support:</strong> OAuth 2.0 und OIDC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Protocol Support:</strong> SAML 2.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_keycloak_mit_quarkus"><a class="anchor" href="#_keycloak_mit_quarkus"></a>3.3. Keycloak mit Quarkus</h3>
+<div class="paragraph">
+<p>Für die Kommunikation zwischen der <strong>Quarkus-Applikation</strong> und <strong>Keycloak</strong> wird die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency verwendet.</p>
+</div>
 <div class="sect3">
-<h4 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>3.2.1. Projekterstellung</h4>
+<h4 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>3.3.1. Projekterstellung</h4>
 <div class="paragraph">
 <p>TODO: restlichen dependencies hinzufügen</p>
 </div>
@@ -713,7 +759,7 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>3.2.2. Keycloak Container starten</h4>
+<h4 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>3.3.2. Keycloak Container starten</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -767,6 +813,9 @@ pre.rouge .gs {
       <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span> <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
 </div>
 </div>
+<details>
+<summary class="title">Erklärung</summary>
+<div class="content">
 <div class="colist arabic">
 <table>
 <tr>
@@ -823,9 +872,8 @@ pre.rouge .gs {
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>.</p>
 </div>
+</details>
 <div class="ulist">
 <ul>
 <li>
@@ -841,7 +889,7 @@ pre.rouge .gs {
 <div class="ulist">
 <ul>
 <li>
-<p>Nun kann auf <code><a href="http://localhost:8000" class="bare">http://localhost:8000</a></code>, auf den laufenden Keycloak Container zugegriffen werden. In der Anmeldemaske kann man sich mithilfe der im <code>docker-compose.yml</code> angegebenen Username und Passwort als Admin angemeldet werden.</p>
+<p>Nun kann auf <code><a href="http://localhost:8000" class="bare">http://localhost:8000</a></code>, auf den laufenden Keycloak Container zugegriffen werden. In der Anmeldemaske kann man sich mithilfe der im <code>docker-compose.yml</code> angegebenen Username und Passwort als Admin anmelden.</p>
 </li>
 </ul>
 </div>
@@ -867,7 +915,7 @@ pre.rouge .gs {
 </details>
 </div>
 <div class="sect3">
-<h4 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>3.2.3. Realm erstellen</h4>
+<h4 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>3.3.3. Realm erstellen</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -881,10 +929,10 @@ TODO: Realm Beschreibung
 </table>
 </div>
 <div class="paragraph">
-<p>Um einen <strong>Realm</strong> zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button <code>Create Realm</code> klicken.</p>
+<p>Um einen <strong>Realm</strong> zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button <code>Create realm</code> klicken.</p>
 </div>
 <details>
-<summary class="title">Realm erstellen</summary>
+<summary class="title">Realm erstellen Button</summary>
 <div class="content">
 <div class="imageblock">
 <div class="content">
@@ -907,7 +955,7 @@ TODO: Realm Beschreibung
 </ul>
 </div>
 <details>
-<summary class="title">Realm erstellen Popup</summary>
+<summary class="title">Realm erstellen</summary>
 <div class="content">
 <div class="imageblock">
 <div class="content">
@@ -918,7 +966,7 @@ TODO: Realm Beschreibung
 </details>
 </div>
 <div class="sect3">
-<h4 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>3.2.4. Quarkus-Client erstellen</h4>
+<h4 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>3.3.4. Quarkus-Client erstellen</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -932,7 +980,7 @@ TODO: Client Beschreibung
 </table>
 </div>
 <div class="paragraph">
-<p>Um einen <strong>Client</strong> zu erstellen, muss man im Clients Tab auf den <code>Create Client</code> Button klicken.</p>
+<p>Um einen <strong>Client</strong> zu erstellen, muss man im Clients Tab auf den <code>Create client</code> Button klicken.</p>
 </div>
 <details>
 <summary class="title">Client erstellen</summary>
@@ -944,9 +992,8 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
-<div class="paragraph">
-<p><strong>General Settings</strong></p>
-</div>
+<div class="sect4">
+<h5 id="_general_settings"><a class="anchor" href="#_general_settings"></a>General Settings</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -970,9 +1017,9 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
-<div class="paragraph">
-<p><strong>Capability config</strong></p>
 </div>
+<div class="sect4">
+<h5 id="_capability_config"><a class="anchor" href="#_capability_config"></a>Capability config</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -996,17 +1043,299 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
-<div class="paragraph">
-<p><strong>Login settings</strong></p>
 </div>
+<div class="sect4">
+<h5 id="_login_settings"><a class="anchor" href="#_login_settings"></a>Login settings</h5>
 <div class="paragraph">
 <p>TODO</p>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_beispiel"><a class="anchor" href="#_beispiel"></a>3.3.5. Beispiel</h4>
 <div class="paragraph">
-<p><strong>Service account roles</strong></p>
+<p>Nachdem nun ein <strong>Ream</strong> und ein <strong>Client</strong> in Keycloak existieren, könne wir den <strong>keycloak-admin-client</strong> ausprobieren.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="c"># Quarkus keycloak-admin-client
+</span><span class="py">quarkus.keycloak.admin-client.enabled</span><span class="p">=</span><span class="s">true </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="py">quarkus.keycloak.admin-client.server-url</span><span class="p">=</span><span class="s">http://localhost:8000 </span><i class="conum" data-value="2"></i><b>(2)</b>
+<span class="py">quarkus.keycloak.admin-client.realm</span><span class="p">=</span><span class="s">my-realm </span><i class="conum" data-value="3"></i><b>(3)</b>
+<span class="py">quarkus.keycloak.admin-client.client-id</span><span class="p">=</span><span class="s">quarkus-client </span><i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>true, wenn injection von Keycloak-Admin-Client unterstützt werden soll</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Die URL des Keycloak-Servers</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Der Name des Realms, worin sich der Client befindet</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Der Name des erstellten Clients</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Beispiels-Endpunkt</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="java"><span class="kn">package</span> <span class="nn">at.htl.keycloakDemo.resources</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">jakarta.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.ws.rs.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarta.ws.rs.core.Response</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.keycloak.admin.client.Keycloak</span><span class="o">;</span>
+
+<span class="nd">@Path</span><span class="o">(</span><span class="s">"/admin"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RolesResource</span> <span class="o">{</span>
+    <span class="nd">@Inject</span>
+    <span class="nc">Keycloak</span> <span class="n">keycloak</span><span class="o">;</span>
+
+    <span class="nd">@GET</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"/roles"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">getRoles</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Response</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span>
+            <span class="n">keycloak</span>
+                <span class="o">.</span><span class="na">realm</span><span class="o">(</span><span class="s">"my-realm"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">roles</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">list</span><span class="o">()</span>
+        <span class="o">).</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
+</div>
 </div>
 <div class="paragraph">
+<p>TODO: Erklärung</p>
+</div>
+<div class="sect4">
+<h5 id="_response"><a class="anchor" href="#_response"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Error id bc6db0c5-e662-4e91-80e2-48e50026eb69-6, org.jboss.resteasy.reactive.ClientWebApplicationException: Received: 'Server response is: 401' when invoking REST Client method: 'org.keycloak.admin.client.token.TokenService#grantToken'"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Der Keycloak-Server gibt eine <strong>401 - Unauthorized</strong> Response zurück. Um dies zu beheben, müssen wir unsere <strong>Quarkus-Applikation</strong> mit dem Keycloak <strong>quarkus-client</strong> authentifizieren.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>Authentifizierung</h5>
+<div class="paragraph">
+<p>Es gibt 2 Möglichkeiten zur Authentifizierung mit Keycloak.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>password</p>
+</li>
+<li>
+<p>client-credentials</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>TODO: grant type erklären</p>
+</div>
+<div class="sect5">
+<h6 id="_grant_type_password"><a class="anchor" href="#_grant_type_password"></a>Grant type: password</h6>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="c"># Quarkus keycloak-admin-client
+</span><span class="py">quarkus.keycloak.admin-client.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">quarkus.keycloak.admin-client.server-url</span><span class="p">=</span><span class="s">http://localhost:8000</span>
+<span class="py">quarkus.keycloak.admin-client.realm</span><span class="p">=</span><span class="s">my-realm</span>
+<span class="py">quarkus.keycloak.admin-client.client-id</span><span class="p">=</span><span class="s">admin-cli </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="py">quarkus.keycloak.admin-client.grant-type</span><span class="p">=</span><span class="s">password </span><i class="conum" data-value="2"></i><b>(2)</b>
+<span class="py">quarkus.keycloak.admin-client.username</span><span class="p">=</span><span class="s">alice </span><i class="conum" data-value="3"></i><b>(3)</b>
+<span class="py">quarkus.keycloak.admin-client.password</span><span class="p">=</span><span class="s">alice </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Für die <code>password</code> Variante muss die <strong>client-id</strong> auf <code>admin-cli</code> geändert werden. Dieser Admin-Client ist ein default client, auf welchem die <strong>Client authentication</strong> und <strong>Authorization</strong> ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht. TODO: überprüfen</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Setzt den <strong>grant-type</strong> auf <code>password</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Username und Passwort des erstellten Users.</td>
+</tr>
+</table>
+</div>
+<details>
+<summary class="title">User erstellen</summary>
+<div class="content">
+<div class="paragraph">
+<p>Im erstellten Realm auf <code>Users</code> &#8594; <code>Add user</code> klicken.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>Email</strong>, <strong>First name</strong> und <strong>Last name</strong> ausgefüllt werden. Anderenfalls gibt Keycloak bei sämtlichen Requests einen <strong>400 - Bad Request</strong> zurück.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-add-user.png" alt="keycloak add user"></span></p>
+</div>
+</div>
+</details>
+</div>
+<div class="sect5">
+<h6 id="_grant_type_client_credentials"><a class="anchor" href="#_grant_type_client_credentials"></a>Grant type: client-credentials</h6>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="c"># Quarkus keycloak-admin-client
+</span><span class="py">quarkus.keycloak.admin-client.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">quarkus.keycloak.admin-client.server-url</span><span class="p">=</span><span class="s">http://localhost:8000</span>
+<span class="py">quarkus.keycloak.admin-client.realm</span><span class="p">=</span><span class="s">my-realm</span>
+<span class="py">quarkus.keycloak.admin-client.client-id</span><span class="p">=</span><span class="s">quarkus-client</span>
+<span class="py">quarkus.keycloak.admin-client.grant-type</span><span class="p">=</span><span class="s">client-credentials </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="py">quarkus.keycloak.admin-client.client-secret</span><span class="p">=</span><span class="s">&lt;secret&gt; </span><i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Legt fest, wie die Quarkus-Anwendung Zugangstokens von Keycloak erhält, um administrative Aufgaben auszuführen. Hier wird der <code>client-credentials</code> type gemeinsam mit den <strong>client-secret</strong> benutzt.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Der <code>client-secret</code> des erstellten Clients. Dieser ist unter folgendem Pfad zu finden: <code>Clients</code> &#8594; <code>&lt;client-name&gt;</code> &#8594; <code>Credentials</code> &#8594; <code>Client Secret</code></td>
+</tr>
+</table>
+</div>
+<details>
+<summary class="title">Client secret</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-client-secret.png" alt="keycloak client secret"></span></p>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>Jetzt probieren wir denselben Endpunkt nochmals aus.</p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_2"><a class="anchor" href="#_response_2"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Error id bc6db0c5-e662-4e91-80e2-48e50026eb69-5, org.jboss.resteasy.reactive.ClientWebApplicationException: Received: 'Server response is: 403' when invoking REST Client method: 'org.keycloak.admin.client.resource.RolesResource#list'"</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Diesmal bekommen wir vom Keycloak-Server eine <strong>403 - Forbidden</strong> Response. Wir sind nun authentifiziert, allerdings ist der <strong>quarkus-client</strong> nicht autorisiert alle Rollen anzuzeigen.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_autorisierung"><a class="anchor" href="#_autorisierung"></a>Autorisierung</h5>
+<div class="sect5">
+<h6 id="_grant_type_password_2"><a class="anchor" href="#_grant_type_password_2"></a>Grant type: password</h6>
+<div class="paragraph">
+<p>Unter <code>Users</code> &#8594; <code>&lt;username&gt;</code> &#8594; <code>Role mapping</code> &#8594; <code>Assign role</code> können dem User Rollen zugewiesen werden. Wir weisen die Rolle <code>view-realm</code> hinzu um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
+</div>
+<details>
+<summary class="title">User roles</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-user-roles.png" alt="keycloak user roles"></span>]</p>
+</div>
+</div>
+</details>
+</div>
+<div class="sect5">
+<h6 id="_grant_type_client_credentials_2"><a class="anchor" href="#_grant_type_client_credentials_2"></a>Grant type: client-credentials</h6>
+<div class="paragraph">
+<p>Unter <code>Clients</code> &#8594; <code>&lt;client-name&gt;</code> &#8594; <code>Service accounts roles</code> &#8594; <code>Assign role</code> können dem Client Rollen zugewiesen werden. Wieder weisen wir die Rolle <code>view-realm</code> hinzu um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
+</div>
+<details>
+<summary class="title">Client roles</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-client-roles.png" alt="keycloak client roles"></span>]</p>
+</div>
+</div>
+</details>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_3"><a class="anchor" href="#_response_3"></a>Response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1a6cc8e5-87ee-4871-a946-23f406bacea1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uma_authorization"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${role_uma_authorization}"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scopeParamRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composite"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composites"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"clientRole"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"containerId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a22e79d4-1c88-4ce2-87a2-4757186910c1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6f822b0e-6db4-454d-a205-84f0bcd08aeb"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"offline_access"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${role_offline-access}"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scopeParamRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composite"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composites"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"clientRole"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"containerId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a22e79d4-1c88-4ce2-87a2-4757186910c1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27fd8fbd-7bdf-4b5e-ad05-340a49c2c2f4"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default-roles-my-realm"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${role_default-roles}"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scopeParamRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composite"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"composites"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"clientRole"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"containerId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a22e79d4-1c88-4ce2-87a2-4757186910c1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Jetzt werden die 3 default <strong>Realm roles</strong> als Response geliefert.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>Zusammenfassung</h5>
+<div class="paragraph">
 <p>TODO</p>
+</div>
 </div>
 </div>
 </div>
@@ -1017,6 +1346,9 @@ TODO: Client Beschreibung
 <div class="sectionbody">
 <div class="ulist">
 <ul>
+<li>
+<p><a href="https://quarkus.io/guides/security-keycloak-admin-client" class="bare">https://quarkus.io/guides/security-keycloak-admin-client</a></p>
+</li>
 <li>
 <p><a href="https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/" class="bare">https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/</a></p>
 </li>
@@ -1035,6 +1367,9 @@ TODO: Client Beschreibung
 <li>
 <p><a href="https://www.keycloak.org/" class="bare">https://www.keycloak.org/</a></p>
 </li>
+<li>
+<p><a href="https://goauthentik.io/" class="bare">https://goauthentik.io/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1043,7 +1378,7 @@ TODO: Client Beschreibung
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-09 23:38:56 UTC
+Last updated 2024-12-11 00:36:56 UTC
 </div>
 </div>
 </body>
