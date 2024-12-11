@@ -17,25 +17,25 @@ Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → *Was darf ich?*
 
 == Authentifizierungs- und Autorisierungsstandards
 === OAuth 2.0
-Bezeichnung: Open Authorization
+Bezeichnung: O~pen~ Auth~orization~
 
 OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.
 
-Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-oauth-2[hier].
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-oauth-2[hier^].
 
 === OIDC
-Bezeichnung: OpenID Connect
+Bezeichnung: O~pen~ID C~onnect~
 
 OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.
 
-Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc[hier].
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc[hier^].
 
 === SAML
-Bezeichnung: Security Assertion Markup Language
+Bezeichnung: S~ecurity~ A~ssertion~ M~arkup~ L~anguage~
 
-SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen Identitätsanbietern (IdPs) und Dienstanbietern (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.
+SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen *Identitätsanbietern* (IdPs) und *Dienstanbietern* (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.
 
-Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-saml[hier].
+Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-saml[hier^].
 
 == Keycloak
 === Was ist Keycloak?
@@ -43,7 +43,38 @@ Keycloak ist eine *Open-Source*-Identity- und Access-Management-Lösung, die Fun
 
 IMPORTANT: *Single-Sign On* ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
 
+=== Alternativen
+
+[cols="1,1,1,1,1"]
+|===
+|
+|link:https://www.keycloak.org/[Keycloak^]
+|link:https://auth0.com/[Auth0^]
+|link:https://www.authelia.com/[Authelia^]
+|link:https://goauthentik.io/[authentik^]
+
+| Open Source
+| 🟢
+| 🔴
+| 🟢
+| 🟢
+
+| *Protocol Support:* OAuth 2.0 und OIDC
+| 🟢
+| 🟢
+| 🟢
+| 🟢
+
+| *Protocol Support:* SAML 2.0
+| 🟢
+| 🟢
+| 🔴
+| 🟢
+|===
+
 === Keycloak mit Quarkus
+Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet.
+
 ==== Projekterstellung
 TODO: restlichen dependencies hinzufügen
 
@@ -127,6 +158,9 @@ services:
     ports:
       - "8000:8080" #<.>
 ----
+.Erklärung
+[%collapsible]
+====
 <.> Der Name des Services
 <.> Der Name des Containers
 <.> Es wird die aktuellste Version `26.0.7` von Keycloak verwendet
@@ -140,8 +174,7 @@ services:
 <.> TODO
 <.> TODO
 <.> Der *interne* Port auf der *rechten* Seite wird auf den *äußeren* Port auf der *linken* Seite gemappt TODO
-
-.
+====
 
 * Den Container mit folgendem Befehl starten
 
@@ -150,7 +183,7 @@ services:
 docker compose up
 ----
 
-* Nun kann auf `http://localhost:8000`, auf den laufenden Keycloak Container zugegriffen werden. In der Anmeldemaske kann man sich mithilfe der im `docker-compose.yml` angegebenen Username und Passwort als Admin angemeldet werden.
+* Nun kann auf `http://localhost:8000`, auf den laufenden Keycloak Container zugegriffen werden. In der Anmeldemaske kann man sich mithilfe der im `docker-compose.yml` angegebenen Username und Passwort als Admin anmelden.
 
 .Anmeldemaske
 [%collapsible]
@@ -168,9 +201,9 @@ image::keycloak-admin-console.png[]
 
 IMPORTANT: TODO: Realm Beschreibung
 
-Um einen *Realm* zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button `Create Realm` klicken.
+Um einen *Realm* zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button `Create realm` klicken.
 
-.Realm erstellen
+.Realm erstellen Button
 [%collapsible]
 ====
 image::keycloak-create-realm-button.png[]
@@ -180,7 +213,7 @@ image::keycloak-create-realm-button.png[]
 * `Enabled` Option auf `On` lassen
 * Auf den `Create` Button klicken
 
-.Realm erstellen Popup
+.Realm erstellen
 [%collapsible]
 ====
 image::keycloak-create-realm-window.png[]
@@ -190,7 +223,7 @@ image::keycloak-create-realm-window.png[]
 
 IMPORTANT: TODO: Client Beschreibung
 
-Um einen *Client* zu erstellen, muss man im Clients Tab auf den `Create Client` Button klicken.
+Um einen *Client* zu erstellen, muss man im Clients Tab auf den `Create client` Button klicken.
 
 .Client erstellen
 [%collapsible]
@@ -198,8 +231,7 @@ Um einen *Client* zu erstellen, muss man im Clients Tab auf den `Create Client` 
 image::keycloak-create-client-button.png[]
 ====
 
-*General Settings*
-
+===== General Settings
 * Als `Client ID` wird in diesem Beispiel der Name `quarkus-client` gewählt
 * Name und Description sind optional
 * `Always display in UI` auf `On`, um Client dauerhaft im UI anzuzeigen
@@ -210,8 +242,7 @@ image::keycloak-create-client-button.png[]
 image::keycloak-create-client-general-settings.png[]
 ====
 
-*Capability config*
-
+===== Capability config
 * `Client Authentication` auf `On` (TODO)
 * `Authorization` auf `On` (TODO)
 * `Authentication flow` (TODO)
@@ -222,18 +253,203 @@ image::keycloak-create-client-general-settings.png[]
 image::keycloak-create-client-capability-config.png[]
 ====
 
-*Login settings*
-
+===== Login settings
 TODO
 
-*Service account roles*
+==== Beispiel
+Nachdem nun ein *Ream* und ein *Client* in Keycloak existieren, könne wir den *keycloak-admin-client* ausprobieren.
 
+.application.properties
+[source, properties]
+----
+# Quarkus keycloak-admin-client
+quarkus.keycloak.admin-client.enabled=true <.>
+quarkus.keycloak.admin-client.server-url=http://localhost:8000 <.>
+quarkus.keycloak.admin-client.realm=my-realm <.>
+quarkus.keycloak.admin-client.client-id=quarkus-client <.>
+----
+<.> true, wenn injection von Keycloak-Admin-Client unterstützt werden soll
+<.> Die URL des Keycloak-Servers
+<.> Der Name des Realms, worin sich der Client befindet
+<.> Der Name des erstellten Clients
+
+.Beispiels-Endpunkt
+[source, java]
+----
+package at.htl.keycloakDemo.resources;
+
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import org.keycloak.admin.client.Keycloak;
+
+@Path("/admin")
+public class RolesResource {
+    @Inject
+    Keycloak keycloak;
+
+    @GET
+    @Path("/roles")
+    public Response getRoles() {
+        return Response.ok(
+            keycloak
+                .realm("my-realm")
+                .roles()
+                .list()
+        ).build();
+    }
+}
+----
+TODO: Erklärung
+
+===== Response
+[source, json]
+----
+{
+  "details": "Error id bc6db0c5-e662-4e91-80e2-48e50026eb69-6, org.jboss.resteasy.reactive.ClientWebApplicationException: Received: 'Server response is: 401' when invoking REST Client method: 'org.keycloak.admin.client.token.TokenService#grantToken'"
+}
+----
+
+Der Keycloak-Server gibt eine *401 - Unauthorized* Response zurück. Um dies zu beheben, müssen wir unsere *Quarkus-Applikation* mit dem Keycloak *quarkus-client* authentifizieren.
+
+===== Authentifizierung
+Es gibt 2 Möglichkeiten zur Authentifizierung mit Keycloak.
+
+* password
+* client-credentials
+
+TODO: grant type erklären
+
+====== Grant type: password
+.application.properties
+[source, properties]
+----
+# Quarkus keycloak-admin-client
+quarkus.keycloak.admin-client.enabled=true
+quarkus.keycloak.admin-client.server-url=http://localhost:8000
+quarkus.keycloak.admin-client.realm=my-realm
+quarkus.keycloak.admin-client.client-id=admin-cli <1>
+quarkus.keycloak.admin-client.grant-type=password <2>
+quarkus.keycloak.admin-client.username=alice <3>
+quarkus.keycloak.admin-client.password=alice <3>
+----
+<.> Für die `password` Variante muss die *client-id* auf `admin-cli` geändert werden. Dieser Admin-Client ist ein default client, auf welchem die *Client authentication* und *Authorization* ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht. TODO: überprüfen
+<.> Setzt den *grant-type* auf `password`.
+<.> Username und Passwort des erstellten Users.
+
+.User erstellen
+[%collapsible]
+====
+Im erstellten Realm auf `Users` -> `Add user` klicken.
+
+WARNING: Obwohl nur *Username* ein Pflichtfeld ist, müssen auch *Email*, *First name* und *Last name* ausgefüllt werden. Anderenfalls gibt Keycloak bei sämtlichen Requests einen *400 - Bad Request* zurück.
+
+image:keycloak-add-user.png[]
+====
+
+====== Grant type: client-credentials
+.application.properties
+[source, properties]
+----
+# Quarkus keycloak-admin-client
+quarkus.keycloak.admin-client.enabled=true
+quarkus.keycloak.admin-client.server-url=http://localhost:8000
+quarkus.keycloak.admin-client.realm=my-realm
+quarkus.keycloak.admin-client.client-id=quarkus-client
+quarkus.keycloak.admin-client.grant-type=client-credentials <.>
+quarkus.keycloak.admin-client.client-secret=<secret> <.>
+----
+<.> Legt fest, wie die Quarkus-Anwendung Zugangstokens von Keycloak erhält, um administrative Aufgaben auszuführen. Hier wird der `client-credentials` type gemeinsam mit den *client-secret* benutzt.
+<.> Der `client-secret` des erstellten Clients. Dieser ist unter folgendem Pfad zu finden: `Clients` -> `<client-name>` -> `Credentials` -> `Client Secret`
+
+.Client secret
+[%collapsible]
+====
+image:keycloak-client-secret.png[]
+====
+
+Jetzt probieren wir denselben Endpunkt nochmals aus.
+
+===== Response
+[source, json]
+----
+{
+  "details": "Error id bc6db0c5-e662-4e91-80e2-48e50026eb69-5, org.jboss.resteasy.reactive.ClientWebApplicationException: Received: 'Server response is: 403' when invoking REST Client method: 'org.keycloak.admin.client.resource.RolesResource#list'"
+}
+----
+
+Diesmal bekommen wir vom Keycloak-Server eine *403 - Forbidden* Response. Wir sind nun authentifiziert, allerdings ist der *quarkus-client* nicht autorisiert alle Rollen anzuzeigen.
+
+===== Autorisierung
+====== Grant type: password
+Unter `Users` -> `<username>` -> `Role mapping` -> `Assign role` können dem User Rollen zugewiesen werden. Wir weisen die Rolle `view-realm` hinzu um *lesenden* Zugriff auf den *Realm* zu bekommen.
+
+.User roles
+[%collapsible]
+====
+image:keycloak-user-roles.png[]]
+====
+
+====== Grant type: client-credentials
+Unter `Clients` -> `<client-name>` -> `Service accounts roles` -> `Assign role` können dem Client Rollen zugewiesen werden. Wieder weisen wir die Rolle `view-realm` hinzu um *lesenden* Zugriff auf den *Realm* zu bekommen.
+
+.Client roles
+[%collapsible]
+====
+image:keycloak-client-roles.png[]]
+====
+
+===== Response
+[source, json]
+----
+[
+  {
+    "id": "1a6cc8e5-87ee-4871-a946-23f406bacea1",
+    "name": "uma_authorization",
+    "description": "${role_uma_authorization}",
+    "scopeParamRequired": null,
+    "composite": false,
+    "composites": null,
+    "clientRole": false,
+    "containerId": "a22e79d4-1c88-4ce2-87a2-4757186910c1",
+    "attributes": null
+  },
+  {
+    "id": "6f822b0e-6db4-454d-a205-84f0bcd08aeb",
+    "name": "offline_access",
+    "description": "${role_offline-access}",
+    "scopeParamRequired": null,
+    "composite": false,
+    "composites": null,
+    "clientRole": false,
+    "containerId": "a22e79d4-1c88-4ce2-87a2-4757186910c1",
+    "attributes": null
+  },
+  {
+    "id": "27fd8fbd-7bdf-4b5e-ad05-340a49c2c2f4",
+    "name": "default-roles-my-realm",
+    "description": "${role_default-roles}",
+    "scopeParamRequired": null,
+    "composite": true,
+    "composites": null,
+    "clientRole": false,
+    "containerId": "a22e79d4-1c88-4ce2-87a2-4757186910c1",
+    "attributes": null
+  }
+]
+----
+
+Jetzt werden die 3 default *Realm roles* als Response geliefert.
+
+===== Zusammenfassung
 TODO
 
 == Quellen
+* https://quarkus.io/guides/security-keycloak-admin-client
 * https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/
 * https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth
 * https://auth0.com/de/intro-to-iam/what-is-oauth-2
 * https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc
 * https://auth0.com/de/intro-to-iam/what-is-saml
 * https://www.keycloak.org/
+* https://goauthentik.io/
