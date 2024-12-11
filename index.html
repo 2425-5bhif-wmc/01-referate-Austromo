@@ -1054,7 +1054,7 @@ TODO: Client Beschreibung
 <div class="sect3">
 <h4 id="_beispiel"><a class="anchor" href="#_beispiel"></a>3.3.5. Beispiel</h4>
 <div class="paragraph">
-<p>Nachdem nun ein <strong>Ream</strong> und ein <strong>Client</strong> in Keycloak existieren, könne wir den <strong>keycloak-admin-client</strong> ausprobieren.</p>
+<p>Nachdem nun ein <strong>Realm</strong> und ein <strong>Client</strong> in Keycloak existieren, können wir den <strong>keycloak-admin-client</strong> ausprobieren.</p>
 </div>
 <div class="listingblock">
 <div class="title">application.properties</div>
@@ -1127,13 +1127,13 @@ TODO: Client Beschreibung
 </div>
 </div>
 <div class="paragraph">
-<p>Der Keycloak-Server gibt eine <strong>401 - Unauthorized</strong> Response zurück. Um dies zu beheben, müssen wir unsere <strong>Quarkus-Applikation</strong> mit dem Keycloak <strong>quarkus-client</strong> authentifizieren.</p>
+<p>Der Keycloak-Server gibt eine <strong>401 - Unauthorized</strong> Response zurück. Um dies zu beheben, müssen wir unsere <strong>Quarkus-Applikation</strong> mit dem Keycloak authentifizieren.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>Authentifizierung</h5>
 <div class="paragraph">
-<p>Es gibt 2 Möglichkeiten zur Authentifizierung mit Keycloak.</p>
+<p>Es gibt 2 Möglichkeiten zur Authentifizierung mit dem <strong>keycloak-admin-client</strong>.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1252,7 +1252,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="paragraph">
-<p>Diesmal bekommen wir vom Keycloak-Server eine <strong>403 - Forbidden</strong> Response. Wir sind nun authentifiziert, allerdings ist der <strong>quarkus-client</strong> nicht autorisiert alle Rollen anzuzeigen.</p>
+<p>Diesmal bekommen wir vom Keycloak-Server eine <strong>403 - Forbidden</strong> Response. Wir sind nun authentifiziert, allerdings ist der <strong>quarkus-client</strong> bzw. der User <strong>alice</strong> nicht autorisiert alle Rollen anzuzeigen.</p>
 </div>
 </div>
 <div class="sect4">
@@ -1260,7 +1260,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div class="sect5">
 <h6 id="_grant_type_password_2"><a class="anchor" href="#_grant_type_password_2"></a>Grant type: password</h6>
 <div class="paragraph">
-<p>Unter <code>Users</code> &#8594; <code>&lt;username&gt;</code> &#8594; <code>Role mapping</code> &#8594; <code>Assign role</code> können dem User Rollen zugewiesen werden. Wir weisen die Rolle <code>view-realm</code> hinzu um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
+<p>Unter <code>Users</code> &#8594; <code>&lt;username&gt;</code> &#8594; <code>Role mapping</code> &#8594; <code>Assign role</code> können dem User Rollen zugewiesen werden. Wir weisen dem User die Rolle <code>view-realm</code> zu, um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
 </div>
 <details>
 <summary class="title">User roles</summary>
@@ -1274,7 +1274,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div class="sect5">
 <h6 id="_grant_type_client_credentials_2"><a class="anchor" href="#_grant_type_client_credentials_2"></a>Grant type: client-credentials</h6>
 <div class="paragraph">
-<p>Unter <code>Clients</code> &#8594; <code>&lt;client-name&gt;</code> &#8594; <code>Service accounts roles</code> &#8594; <code>Assign role</code> können dem Client Rollen zugewiesen werden. Wieder weisen wir die Rolle <code>view-realm</code> hinzu um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
+<p>Unter <code>Clients</code> &#8594; <code>&lt;client-name&gt;</code> &#8594; <code>Service accounts roles</code> &#8594; <code>Assign role</code> können dem Client Rollen zugewiesen werden. Wir weisen dem Client die Rolle <code>view-realm</code> zu, um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
 </div>
 <details>
 <summary class="title">Client roles</summary>
@@ -1378,7 +1378,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-11 00:36:56 UTC
+Last updated 2024-12-11 00:48:04 UTC
 </div>
 </div>
 </body>
