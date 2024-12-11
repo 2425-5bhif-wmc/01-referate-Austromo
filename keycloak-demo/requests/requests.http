@@ -1,0 +1,19 @@
+### Get realm roles
+GET http://localhost:8080/admin/roles
+Content-Type: */*
+
+### Create realm
+POST http://localhost:8080/admin/realm/quarkus
+Content-Type: */*
+
+### Delete realm
+DELETE http://localhost:8080/admin/realm/quarkus
+Content-Type: */*
+
+### Create client in realm
+POST http://localhost:8080/admin/realm/quarkus/quarkus-client
+Content-Type: */*
+
+### Delete client in realm
+DELETE http://localhost:8080/admin/realm/quarkus/quarkus-client
+Content-Type: */*
