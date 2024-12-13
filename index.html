@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Security</title>
+<title>Security: Userverwaltung</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -561,35 +561,74 @@ pre.rouge .gs {
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Security</h1>
+<h1>Security: Userverwaltung</h1>
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-11</span>
+<span id="revdate">2024-12-13</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_authentifizierung_und_autorisierung">1. Authentifizierung und Autorisierung</a></li>
-<li><a href="#_authentifizierungs_und_autorisierungsstandards">2. Authentifizierungs- und Autorisierungsstandards</a>
+<li><a href="#_rollen">2. Rollen</a></li>
+<li><a href="#_authentifizierungs_und_autorisierungsstandards">3. Authentifizierungs- und Autorisierungsstandards</a>
 <ul class="sectlevel2">
-<li><a href="#_oauth_2_0">2.1. OAuth 2.0</a></li>
-<li><a href="#_oidc">2.2. OIDC</a></li>
-<li><a href="#_saml">2.3. SAML</a></li>
+<li><a href="#_oauth_2_0">3.1. OAuth 2.0</a></li>
+<li><a href="#_oidc">3.2. OIDC</a></li>
+<li><a href="#_saml">3.3. SAML</a></li>
 </ul>
 </li>
-<li><a href="#_keycloak">3. Keycloak</a>
+<li><a href="#_keycloak">4. Keycloak</a>
 <ul class="sectlevel2">
-<li><a href="#_was_ist_keycloak">3.1. Was ist Keycloak?</a></li>
-<li><a href="#_alternativen">3.2. Alternativen</a></li>
-<li><a href="#_keycloak_mit_quarkus">3.3. Keycloak mit Quarkus</a></li>
+<li><a href="#_was_ist_keycloak">4.1. Was ist Keycloak?</a></li>
+<li><a href="#_alternativen">4.2. Alternativen</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">4. Quellen</a></li>
+<li><a href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client">5. Keycloak mit dem quarkus-keycloak-admin-rest-client</a>
+<ul class="sectlevel2">
+<li><a href="#_projekterstellung">5.1. Projekterstellung</a></li>
+<li><a href="#_keycloak_container_starten">5.2. Keycloak Container starten</a></li>
+<li><a href="#_realm_erstellen">5.3. Realm erstellen</a></li>
+<li><a href="#_quarkus_client_erstellen">5.4. Quarkus-Client erstellen</a></li>
+<li><a href="#_probe">5.5. Probe</a></li>
+</ul>
+</li>
+<li><a href="#_quellen">6. Quellen</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Standard Flow:</p>
+</div>
+<div class="paragraph">
+<p>JWT:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Wie es verschlüsselt worden</p>
+</li>
+<li>
+<p>Payload mit Daten drinnen</p>
+</li>
+<li>
+<p>Signature</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Claim ist zB eine E-Mail
+Scope ist eine collection von Claims</p>
+</div>
+<div class="paragraph">
+<p><strong>Security</strong> ist ein Begriff, welcher</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_authentifizierung_und_autorisierung"><a class="anchor" href="#_authentifizierung_und_autorisierung"></a>1. Authentifizierung und Autorisierung</h2>
 <div class="sectionbody">
@@ -602,10 +641,18 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_authentifizierungs_und_autorisierungsstandards"><a class="anchor" href="#_authentifizierungs_und_autorisierungsstandards"></a>2. Authentifizierungs- und Autorisierungsstandards</h2>
+<h2 id="_rollen"><a class="anchor" href="#_rollen"></a>2. Rollen</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><img src="images/roles.png" alt="roles"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authentifizierungs_und_autorisierungsstandards"><a class="anchor" href="#_authentifizierungs_und_autorisierungsstandards"></a>3. Authentifizierungs- und Autorisierungsstandards</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_oauth_2_0"><a class="anchor" href="#_oauth_2_0"></a>2.1. OAuth 2.0</h3>
+<h3 id="_oauth_2_0"><a class="anchor" href="#_oauth_2_0"></a>3.1. OAuth 2.0</h3>
 <div class="paragraph">
 <p>Bezeichnung: O<sub>pen</sub> Auth<sub>orization</sub></p>
 </div>
@@ -617,7 +664,7 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_oidc"><a class="anchor" href="#_oidc"></a>2.2. OIDC</h3>
+<h3 id="_oidc"><a class="anchor" href="#_oidc"></a>3.2. OIDC</h3>
 <div class="paragraph">
 <p>Bezeichnung: O<sub>pen</sub>ID C<sub>onnect</sub></p>
 </div>
@@ -629,7 +676,7 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_saml"><a class="anchor" href="#_saml"></a>2.3. SAML</h3>
+<h3 id="_saml"><a class="anchor" href="#_saml"></a>3.3. SAML</h3>
 <div class="paragraph">
 <p>Bezeichnung: S<sub>ecurity</sub> A<sub>ssertion</sub> M<sub>arkup</sub> L<sub>anguage</sub></p>
 </div>
@@ -643,10 +690,10 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_keycloak"><a class="anchor" href="#_keycloak"></a>3. Keycloak</h2>
+<h2 id="_keycloak"><a class="anchor" href="#_keycloak"></a>4. Keycloak</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_was_ist_keycloak"><a class="anchor" href="#_was_ist_keycloak"></a>3.1. Was ist Keycloak?</h3>
+<h3 id="_was_ist_keycloak"><a class="anchor" href="#_was_ist_keycloak"></a>4.1. Was ist Keycloak?</h3>
 <div class="paragraph">
 <p>Keycloak ist eine <strong>Open-Source</strong>-Identity- und Access-Management-Lösung, die Funktionen wie Single-Sign On (SSO), Benutzerverwaltung und Social Login bietet.</p>
 </div>
@@ -664,7 +711,7 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alternativen"><a class="anchor" href="#_alternativen"></a>3.2. Alternativen</h3>
+<h3 id="_alternativen"><a class="anchor" href="#_alternativen"></a>4.2. Alternativen</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -673,45 +720,57 @@ pre.rouge .gs {
 <col style="width: 20%;">
 <col style="width: 20%;">
 </colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-center valign-middle"><a href="https://www.keycloak.org/" target="_blank" rel="noopener">Keycloak</a></th>
+<th class="tableblock halign-center valign-middle"><a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a></th>
+<th class="tableblock halign-center valign-middle"><a href="https://www.authelia.com/" target="_blank" rel="noopener">Authelia</a></th>
+<th class="tableblock halign-center valign-middle"><a href="https://goauthentik.io/" target="_blank" rel="noopener">authentik</a></th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.keycloak.org/" target="_blank" rel="noopener">Keycloak</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.authelia.com/" target="_blank" rel="noopener">Authelia</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://goauthentik.io/" target="_blank" rel="noopener">authentik</a></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Open Source</strong></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Open Source</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🔴</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Protocol Support:</strong> OAuth 2.0 und OIDC</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Protocol Support:</strong> OAuth 2.0 und OIDC</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Protocol Support:</strong> SAML 2.0</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Protocol Support:</strong> SAML 2.0</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🔴</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Language</strong></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/java-logo.png" alt="java logo" width="40" height="40"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">404</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/go-logo.png" alt="go logo" width="40" height="40"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/python-logo.png" alt="python logo" width="40" height="40"></span></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_keycloak_mit_quarkus"><a class="anchor" href="#_keycloak_mit_quarkus"></a>3.3. Keycloak mit Quarkus</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"><a class="anchor" href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"></a>5. Keycloak mit dem quarkus-keycloak-admin-rest-client</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Für die Kommunikation zwischen der <strong>Quarkus-Applikation</strong> und <strong>Keycloak</strong> wird die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency verwendet.</p>
 </div>
-<div class="sect3">
-<h4 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>3.3.1. Projekterstellung</h4>
+<div class="sect2">
+<h3 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>5.1. Projekterstellung</h3>
 <div class="paragraph">
 <p>TODO: restlichen dependencies hinzufügen</p>
 </div>
@@ -758,8 +817,8 @@ pre.rouge .gs {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>3.3.2. Keycloak Container starten</h4>
+<div class="sect2">
+<h3 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>5.2. Keycloak Container starten</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -803,14 +862,13 @@ pre.rouge .gs {
       <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN_PASSWORD=admin</span> <i class="conum" data-value="5"></i><b>(5)</b>
 
       <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT=false</span> <i class="conum" data-value="6"></i><b>(6)</b>
-      <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT_HTTPS=false</span> <i class="conum" data-value="7"></i><b>(7)</b>
-      <span class="pi">-</span> <span class="s">KC_HTTP_ENABLED=true</span> <i class="conum" data-value="8"></i><b>(8)</b>
-      <span class="pi">-</span> <span class="s">KC_HOSTNAME=localhost</span> <i class="conum" data-value="9"></i><b>(9)</b>
-      <span class="pi">-</span> <span class="s">PROXY_ADDRESS_FORWARDING=true</span> <i class="conum" data-value="10"></i><b>(10)</b>
-      <span class="pi">-</span> <span class="s">KC_HEALTH_ENABLED=true</span> <i class="conum" data-value="11"></i><b>(11)</b>
-    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">start-dev"</span><span class="pi">]</span> <i class="conum" data-value="12"></i><b>(12)</b>
+      <span class="pi">-</span> <span class="s">KC_HTTP_ENABLED=true</span> <i class="conum" data-value="7"></i><b>(7)</b>
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME=localhost</span> <i class="conum" data-value="8"></i><b>(8)</b>
+      <span class="pi">-</span> <span class="s">PROXY_ADDRESS_FORWARDING=true</span> <i class="conum" data-value="9"></i><b>(9)</b>
+      <span class="pi">-</span> <span class="s">KC_HEALTH_ENABLED=true</span> <i class="conum" data-value="10"></i><b>(10)</b>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">start-dev"</span><span class="pi">]</span> <i class="conum" data-value="11"></i><b>(11)</b>
     <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span> <i class="conum" data-value="13"></i><b>(13)</b></code></pre>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span> <i class="conum" data-value="12"></i><b>(12)</b></code></pre>
 </div>
 </div>
 <details>
@@ -864,10 +922,6 @@ pre.rouge .gs {
 </tr>
 <tr>
 <td><i class="conum" data-value="12"></i><b>12</b></td>
-<td>TODO</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="13"></i><b>13</b></td>
 <td>Der <strong>interne</strong> Port auf der <strong>rechten</strong> Seite wird auf den <strong>äußeren</strong> Port auf der <strong>linken</strong> Seite gemappt TODO</td>
 </tr>
 </table>
@@ -914,8 +968,8 @@ pre.rouge .gs {
 </div>
 </details>
 </div>
-<div class="sect3">
-<h4 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>3.3.3. Realm erstellen</h4>
+<div class="sect2">
+<h3 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>5.3. Realm erstellen</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -965,8 +1019,8 @@ TODO: Realm Beschreibung
 </div>
 </details>
 </div>
-<div class="sect3">
-<h4 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>3.3.4. Quarkus-Client erstellen</h4>
+<div class="sect2">
+<h3 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>5.4. Quarkus-Client erstellen</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -992,8 +1046,9 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
-<div class="sect4">
-<h5 id="_general_settings"><a class="anchor" href="#_general_settings"></a>General Settings</h5>
+<div class="paragraph">
+<p><strong>General Settings</strong></p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1017,9 +1072,9 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
+<div class="paragraph">
+<p><strong>Capability config</strong></p>
 </div>
-<div class="sect4">
-<h5 id="_capability_config"><a class="anchor" href="#_capability_config"></a>Capability config</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1043,16 +1098,13 @@ TODO: Client Beschreibung
 </div>
 </div>
 </details>
-</div>
-<div class="sect4">
-<h5 id="_login_settings"><a class="anchor" href="#_login_settings"></a>Login settings</h5>
 <div class="paragraph">
-<p>TODO</p>
+<p><strong>Login settings</strong>
+TODO</p>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_beispiel"><a class="anchor" href="#_beispiel"></a>3.3.5. Beispiel</h4>
+<div class="sect2">
+<h3 id="_probe"><a class="anchor" href="#_probe"></a>5.5. Probe</h3>
 <div class="paragraph">
 <p>Nachdem nun ein <strong>Realm</strong> und ein <strong>Client</strong> in Keycloak existieren, können wir den <strong>keycloak-admin-client</strong> ausprobieren.</p>
 </div>
@@ -1117,8 +1169,8 @@ TODO: Client Beschreibung
 <div class="paragraph">
 <p>TODO: Erklärung</p>
 </div>
-<div class="sect4">
-<h5 id="_response"><a class="anchor" href="#_response"></a>Response</h5>
+<div class="sect3">
+<h4 id="_response"><a class="anchor" href="#_response"></a>5.5.1. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
@@ -1130,8 +1182,8 @@ TODO: Client Beschreibung
 <p>Der Keycloak-Server gibt eine <strong>401 - Unauthorized</strong> Response zurück. Um dies zu beheben, müssen wir unsere <strong>Quarkus-Applikation</strong> mit dem Keycloak authentifizieren.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>Authentifizierung</h5>
+<div class="sect3">
+<h4 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>5.5.2. Authentifizierung</h4>
 <div class="paragraph">
 <p>Es gibt 2 Möglichkeiten zur Authentifizierung mit dem <strong>keycloak-admin-client</strong>.</p>
 </div>
@@ -1148,8 +1200,8 @@ TODO: Client Beschreibung
 <div class="paragraph">
 <p>TODO: grant type erklären</p>
 </div>
-<div class="sect5">
-<h6 id="_grant_type_password"><a class="anchor" href="#_grant_type_password"></a>Grant type: password</h6>
+<div class="sect4">
+<h5 id="_grant_type_password"><a class="anchor" href="#_grant_type_password"></a>Grant type: password</h5>
 <div class="listingblock">
 <div class="title">application.properties</div>
 <div class="content">
@@ -1203,8 +1255,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </details>
 </div>
-<div class="sect5">
-<h6 id="_grant_type_client_credentials"><a class="anchor" href="#_grant_type_client_credentials"></a>Grant type: client-credentials</h6>
+<div class="sect4">
+<h5 id="_grant_type_client_credentials"><a class="anchor" href="#_grant_type_client_credentials"></a>Grant type: client-credentials</h5>
 <div class="listingblock">
 <div class="title">application.properties</div>
 <div class="content">
@@ -1242,8 +1294,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_response_2"><a class="anchor" href="#_response_2"></a>Response</h5>
+<div class="sect3">
+<h4 id="_response_2"><a class="anchor" href="#_response_2"></a>5.5.3. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
@@ -1255,10 +1307,10 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <p>Diesmal bekommen wir vom Keycloak-Server eine <strong>403 - Forbidden</strong> Response. Wir sind nun authentifiziert, allerdings ist der <strong>quarkus-client</strong> bzw. der User <strong>alice</strong> nicht autorisiert alle Rollen anzuzeigen.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_autorisierung"><a class="anchor" href="#_autorisierung"></a>5.5.4. Autorisierung</h4>
 <div class="sect4">
-<h5 id="_autorisierung"><a class="anchor" href="#_autorisierung"></a>Autorisierung</h5>
-<div class="sect5">
-<h6 id="_grant_type_password_2"><a class="anchor" href="#_grant_type_password_2"></a>Grant type: password</h6>
+<h5 id="_grant_type_password_2"><a class="anchor" href="#_grant_type_password_2"></a>Grant type: password</h5>
 <div class="paragraph">
 <p>Unter <code>Users</code> &#8594; <code>&lt;username&gt;</code> &#8594; <code>Role mapping</code> &#8594; <code>Assign role</code> können dem User Rollen zugewiesen werden. Wir weisen dem User die Rolle <code>view-realm</code> zu, um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
 </div>
@@ -1271,8 +1323,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </details>
 </div>
-<div class="sect5">
-<h6 id="_grant_type_client_credentials_2"><a class="anchor" href="#_grant_type_client_credentials_2"></a>Grant type: client-credentials</h6>
+<div class="sect4">
+<h5 id="_grant_type_client_credentials_2"><a class="anchor" href="#_grant_type_client_credentials_2"></a>Grant type: client-credentials</h5>
 <div class="paragraph">
 <p>Unter <code>Clients</code> &#8594; <code>&lt;client-name&gt;</code> &#8594; <code>Service accounts roles</code> &#8594; <code>Assign role</code> können dem Client Rollen zugewiesen werden. Wir weisen dem Client die Rolle <code>view-realm</code> zu, um <strong>lesenden</strong> Zugriff auf den <strong>Realm</strong> zu bekommen.</p>
 </div>
@@ -1286,8 +1338,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </details>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_response_3"><a class="anchor" href="#_response_3"></a>Response</h5>
+<div class="sect3">
+<h4 id="_response_3"><a class="anchor" href="#_response_3"></a>5.5.5. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
@@ -1331,8 +1383,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <p>Jetzt werden die 3 default <strong>Realm roles</strong> als Response geliefert.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>Zusammenfassung</h5>
+<div class="sect3">
+<h4 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>5.5.6. Zusammenfassung</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
@@ -1340,9 +1392,8 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>4. Quellen</h2>
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>6. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -1378,7 +1429,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-11 00:48:04 UTC
+Last updated 2024-12-13 16:36:57 UTC
 </div>
 </div>
 </body>
