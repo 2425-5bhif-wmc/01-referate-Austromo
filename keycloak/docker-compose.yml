@@ -1,19 +1,41 @@
 services:
   keycloak:
     container_name: keycloak-demo
-    image: quay.io/keycloak/keycloak:26.0.7
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
 
       - KC_HOSTNAME_STRICT=false
-      - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
       - KC_HOSTNAME=localhost
       - PROXY_ADDRESS_FORWARDING=true
+
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak-db/db
+      - KC_DB_USERNAME=app
+      - KC_DB_PASSWORD=app
+
       - KC_HEALTH_ENABLED=true
-    command: ["start-dev"]
-#    volumes:  , "--import-realm"
-#      - ./import:/opt/keycloak/data/import
+      - KC_METRICS_ENABLED=true
+    command: ["start-dev", "--import-realm"]
+    volumes:
+      - ./import:/opt/keycloak/data/import
+      - ./themes:/opt/keycloak/themes/
     ports:
       - "8000:8080"
+    depends_on:
+      - keycloak-db
+
+  keycloak-db:
+    container_name: keycloak-db
+    image: postgres:17.2
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=app
+      - POSTGRES_DB=db
+    volumes:
+      - ./keycloak-db/data:/var/lib/postgresql/data

@@ -38,3 +38,4 @@ docs/slides/revealjs
 .idea/
 
 db-postgres/
+keycloak-db/
