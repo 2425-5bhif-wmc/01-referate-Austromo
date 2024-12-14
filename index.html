@@ -565,24 +565,27 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-13</span>
+<span id="revdate">2024-12-14</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_authentifizierung_und_autorisierung">1. Authentifizierung und Autorisierung</a></li>
 <li><a href="#_rollen">2. Rollen</a></li>
-<li><a href="#_authentifizierungs_und_autorisierungsstandards">3. Authentifizierungs- und Autorisierungsstandards</a>
+<li><a href="#_standards">3. Standards</a>
 <ul class="sectlevel2">
 <li><a href="#_oauth_2_0">3.1. OAuth 2.0</a></li>
 <li><a href="#_oidc">3.2. OIDC</a></li>
-<li><a href="#_saml">3.3. SAML</a></li>
+<li><a href="#_saml_2_0">3.3. SAML 2.0</a></li>
+<li><a href="#_jwt">3.4. JWT</a></li>
 </ul>
 </li>
 <li><a href="#_keycloak">4. Keycloak</a>
 <ul class="sectlevel2">
 <li><a href="#_was_ist_keycloak">4.1. Was ist Keycloak?</a></li>
 <li><a href="#_alternativen">4.2. Alternativen</a></li>
+<li><a href="#_wichtigste_bestandteile_in_keycloak">4.3. Wichtigste Bestandteile in Keycloak</a></li>
+<li><a href="#_custom_theme">4.4. Custom Theme</a></li>
 </ul>
 </li>
 <li><a href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client">5. Keycloak mit dem quarkus-keycloak-admin-rest-client</a>
@@ -649,42 +652,191 @@ Scope ist eine collection von Claims</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_authentifizierungs_und_autorisierungsstandards"><a class="anchor" href="#_authentifizierungs_und_autorisierungsstandards"></a>3. Authentifizierungs- und Autorisierungsstandards</h2>
+<h2 id="_standards"><a class="anchor" href="#_standards"></a>3. Standards</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_oauth_2_0"><a class="anchor" href="#_oauth_2_0"></a>3.1. OAuth 2.0</h3>
 <div class="paragraph">
-<p>Bezeichnung: O<sub>pen</sub> Auth<sub>orization</sub></p>
+<p><span class="image"><img src="images/oauth2-logo.png" alt="oauth2 logo" width="200"></span></p>
 </div>
 <div class="paragraph">
-<p>OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.</p>
+<p><span class="underline">Bezeichnung</span>: O<sub>pen</sub> Auth<sub>orization</sub> 2.0</p>
+</div>
+<div class="sect3">
+<h4 id="_definition"><a class="anchor" href="#_definition"></a>3.1.1. Definition</h4>
+<div class="paragraph">
+<p><strong>OAuth 2.0</strong> ist ein <strong>Protokoll</strong>, welches für die <strong>Autorisierung</strong> verantwortlich ist. Der Vorgänger <strong>0Auth 1.0</strong> wurde ausschließlich für Webseiten entwickelt und wird nicht mehr häufig verwendet.</p>
 </div>
 <div class="paragraph">
 <p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-oauth-2" target="_blank" rel="noopener">hier</a>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> abgedeckt.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/oauth2-authorization-code-flow.png" alt="oauth2 authorization code flow"></span>
+TODO: Erklärung</p>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_oidc"><a class="anchor" href="#_oidc"></a>3.2. OIDC</h3>
 <div class="paragraph">
-<p>Bezeichnung: O<sub>pen</sub>ID C<sub>onnect</sub></p>
+<p><span class="image"><img src="images/oidc-logo.png" alt="oidc logo" width="200"></span></p>
 </div>
 <div class="paragraph">
-<p>OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.</p>
+<p><span class="underline">Bezeichnung</span>: O<sub>pen</sub>ID C<sub>onnect</sub></p>
+</div>
+<div class="sect3">
+<h4 id="_definition_2"><a class="anchor" href="#_definition_2"></a>3.2.1. Definition</h4>
+<div class="paragraph">
+<p><strong>OIDC</strong> ist ein <strong>Protokoll</strong>, welches auf 0Auth 2.0 aufbaut und eine zusätzliche Schicht für die <strong>Authentifizierung</strong> hinzufügt.</p>
 </div>
 <div class="paragraph">
 <p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc" target="_blank" rel="noopener">hier</a>.</p>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="images/oidc-authorization-code-flow.png" alt="oidc authorization code flow"></span>
+TODO: Erklärung</p>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_saml"><a class="anchor" href="#_saml"></a>3.3. SAML</h3>
+<h3 id="_saml_2_0"><a class="anchor" href="#_saml_2_0"></a>3.3. SAML 2.0</h3>
 <div class="paragraph">
-<p>Bezeichnung: S<sub>ecurity</sub> A<sub>ssertion</sub> M<sub>arkup</sub> L<sub>anguage</sub></p>
+<p><span class="image"><img src="images/saml-logo.png" alt="saml logo" width="200"></span></p>
 </div>
 <div class="paragraph">
-<p>SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen <strong>Identitätsanbietern</strong> (IdPs) und <strong>Dienstanbietern</strong> (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.</p>
+<p><span class="underline">Bezeichnung</span>: S<sub>ecurity</sub> A<sub>ssertion</sub> M<sub>arkup</sub> L<sub>anguage</sub> 2.0</p>
+</div>
+<div class="sect3">
+<h4 id="_definition_3"><a class="anchor" href="#_definition_3"></a>3.3.1. Definition</h4>
+<div class="paragraph">
+<p><strong>SAML 2.0</strong> ist ein XML-basiertes Standardprotokoll für Authentifizierung und Autorisierung. Es wird häufig verwendet, um Single Sign-On in Unternehmens- und Regierungsanwendungen zu ermöglichen. Das Protokoll ermöglicht es bestehenden Benutzern sich schnell und einfach in neuen Anwendungen zu authentifizieren.</p>
 </div>
 <div class="paragraph">
 <p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-saml" target="_blank" rel="noopener">hier</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jwt"><a class="anchor" href="#_jwt"></a>3.4. JWT</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/jwt-logo.svg" alt="jwt logo" width="200"></span></p>
+</div>
+<div class="paragraph">
+<p><span class="underline">Bezeichnung</span>: J<sub>son</sub> W<sub>eb</sub> T<sub>oken</sub></p>
+</div>
+<div class="sect3">
+<h4 id="_definition_4"><a class="anchor" href="#_definition_4"></a>3.4.1. Definition</h4>
+<div class="paragraph">
+<p><strong>JSON Web Token</strong> ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital <strong>signiert</strong> und sind somit vertrauenswürdig.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_struktur"><a class="anchor" href="#_struktur"></a>3.4.2. Struktur</h4>
+<div class="paragraph">
+<p>Ein JWT setzt sich aus 3 Teilen zusammen, welche jeweils durch einen <code>.</code> getrennt werden: <code>xxxxx.yyyyy.zzzzz</code></p>
+</div>
+<div class="sect4">
+<h5 id="_header_xxxxx_yyyyy_zzzzz"><a class="anchor" href="#_header_xxxxx_yyyyy_zzzzz"></a>Header: (<code>XXXXX</code>.yyyyy.zzzzz)</h5>
+<div class="paragraph">
+<p>Besteht aus 2 Teilen:</p>
+</div>
+<div class="listingblock">
+<div class="title">Beispiel</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"alg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HS256"</span><span class="p">,</span><span class="w"> <i class="conum" data-value="1"></i><b>(1)</b>
+  </span><span class="nl">"typ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JWT"</span><span class="w"> <i class="conum" data-value="2"></i><b>(2)</b>
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Verwendeter Signieralgorithmus: <a href="https://stackoverflow.com/questions/39239051/rs256-vs-hs256-whats-the-difference" target="_blank" rel="noopener">Unterschied zwischen <strong>HS256</strong> und <strong>RS256</strong></a></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Typ des Tokens</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Dieses JSON wird <strong>Base64</strong> verschlüsselt und macht somit den <strong>ersten</strong> Teil des JWTs aus.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_payload_xxxxx_yyyyy_zzzzz"><a class="anchor" href="#_payload_xxxxx_yyyyy_zzzzz"></a>Payload: (xxxxx.<code>YYYYY</code>.zzzzz)</h5>
+<div class="paragraph">
+<p>Die Payload enthält die Claims. <strong>Claims</strong> sind meistens Daten über den User und zusätzliche Daten. Es gibt 3 Arten von Claims:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Registered</strong> Claims: Vordefinierte Claims wie z. B. <code>exp</code> (expiration time) und noch <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank" rel="noopener">mehr</a></p>
+</li>
+<li>
+<p><strong>Public</strong> Claims: TODO</p>
+</li>
+<li>
+<p><strong>Private</strong> Claims: Sind eigens <strong>benutzerdefinierte</strong> Claims, welche für den Informationsaustausch zweier Parteien fungieren.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Beispiel</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"exp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1734137921"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"admin"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dieses JSON wird <strong>Base64</strong> verschlüsselt und macht somit den <strong>zweiten</strong> Teil des JWTs aus.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_signature_xxxxx_yyyyy_zzzzz"><a class="anchor" href="#_signature_xxxxx_yyyyy_zzzzz"></a>Signature: (xxxxx.yyyyy.<code>ZZZZZ</code>)</h5>
+<div class="paragraph">
+<p>Im dritten Part wird der <code>Header</code>, die <code>Payload</code> und ein <code>Secret</code> mit den im Header angegebenen Signieralgorithmus signiert.</p>
+</div>
+<div class="listingblock">
+<div class="title">Beispiel für HS256</div>
+<div class="content">
+<pre class="rouge highlight"><code>HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Die Signatur kann sicherstellen, dass die Nachricht nicht von Dritten geändert wurde. Dies macht den <strong>dritten</strong> Teil des JWTs aus.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>Zusammenfassung:</h5>
+<div class="paragraph">
+<p>Das Ergebnis sind 3 Base64 Strings, welche durch einen <code>.</code> separiert werden.</p>
+</div>
+<div class="paragraph">
+<p>Mehr Informationen <a href="https://jwt.io/introduction" target="_blank" rel="noopener">hier</a>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -695,7 +847,7 @@ Scope ist eine collection von Claims</p>
 <div class="sect2">
 <h3 id="_was_ist_keycloak"><a class="anchor" href="#_was_ist_keycloak"></a>4.1. Was ist Keycloak?</h3>
 <div class="paragraph">
-<p>Keycloak ist eine <strong>Open-Source</strong>-Identity- und Access-Management-Lösung, die Funktionen wie Single-Sign On (SSO), Benutzerverwaltung und Social Login bietet.</p>
+<p>Keycloak ist eine <strong>Open-Source</strong>-Identity- und Access-Management-Lösung, die Funktionen wie Single Sign-On (SSO), Benutzerverwaltung und Social Login bietet.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -704,7 +856,7 @@ Scope ist eine collection von Claims</p>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<strong>Single-Sign On</strong> ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
+<strong>Single Sign-On</strong> ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
 </td>
 </tr>
 </table>
@@ -761,13 +913,21 @@ Scope ist eine collection von Claims</p>
 </tbody>
 </table>
 </div>
+<div class="sect2">
+<h3 id="_wichtigste_bestandteile_in_keycloak"><a class="anchor" href="#_wichtigste_bestandteile_in_keycloak"></a>4.3. Wichtigste Bestandteile in Keycloak</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_custom_theme"><a class="anchor" href="#_custom_theme"></a>4.4. Custom Theme</h3>
+
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"><a class="anchor" href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"></a>5. Keycloak mit dem quarkus-keycloak-admin-rest-client</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Für die Kommunikation zwischen der <strong>Quarkus-Applikation</strong> und <strong>Keycloak</strong> wird die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency verwendet.</p>
+<p>Für die Kommunikation zwischen der <strong>Quarkus-Applikation</strong> und <strong>Keycloak</strong> wird die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency verwendet. Der Rest-Client sendet Requests an die <a href="https://www.keycloak.org/docs-api/latest/rest-api/index.html" target="_blank" rel="noopener"><code>Keycloak Admin REST API</code></a>.</p>
 </div>
 <div class="sect2">
 <h3 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>5.1. Projekterstellung</h3>
@@ -1099,8 +1259,20 @@ TODO: Client Beschreibung
 </div>
 </details>
 <div class="paragraph">
-<p><strong>Login settings</strong>
-TODO</p>
+<p><strong>Login settings</strong></p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Standard flow</p>
+</li>
+<li>
+<p><span class="line-through">Implicit flow</span>: deprecated</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -1384,7 +1556,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="sect3">
-<h4 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>5.5.6. Zusammenfassung</h4>
+<h4 id="_zusammenfassung_2"><a class="anchor" href="#_zusammenfassung_2"></a>5.5.6. Zusammenfassung</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
@@ -1397,6 +1569,9 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div class="sectionbody">
 <div class="ulist">
 <ul>
+<li>
+<p>Keycloak - Identity and Access Management for Modern Applications (Second Edition)</p>
+</li>
 <li>
 <p><a href="https://quarkus.io/guides/security-keycloak-admin-client" class="bare">https://quarkus.io/guides/security-keycloak-admin-client</a></p>
 </li>
@@ -1421,6 +1596,12 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <li>
 <p><a href="https://goauthentik.io/" class="bare">https://goauthentik.io/</a></p>
 </li>
+<li>
+<p><a href="https://jwt.io/" class="bare">https://jwt.io/</a></p>
+</li>
+<li>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" class="bare">https://datatracker.ietf.org/doc/html/rfc7519#section-4.1</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1429,7 +1610,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-13 16:36:57 UTC
+Last updated 2024-12-14 01:22:19 UTC
 </div>
 </div>
 </body>
