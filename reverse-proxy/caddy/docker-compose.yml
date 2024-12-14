@@ -1,0 +1,18 @@
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./config:/etc/caddy
+      - ./data:/data
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp # https://hub.docker.com/_/caddy Linux capabilities
+    restart: unless-stopped
+
+  caddy-echo:
+    image: nodstuff/gecho:latest
+    restart: unless-stopped

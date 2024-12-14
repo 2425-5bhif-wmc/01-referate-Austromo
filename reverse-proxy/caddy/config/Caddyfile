@@ -1,0 +1,10 @@
+echo.localhost {
+	reverse_proxy caddy-echo:8080
+}
+
+localhost {
+	handle /some-path*  {
+		uri strip_prefix /some-path
+		reverse_proxy caddy-echo:8080
+	}
+}
