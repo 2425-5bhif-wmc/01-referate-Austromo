@@ -31,33 +31,123 @@ Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → *Was darf ich?*
 == Rollen
 image:roles.png[]
 
-== Authentifizierungs- und Autorisierungsstandards
+== Standards
 === OAuth 2.0
-Bezeichnung: O~pen~ Auth~orization~
+image:oauth2-logo.png[width=200]
 
-OAuth 2.0 ist ein Autorisierungsprotokoll und ein technologischer Standard, der es Anwendungen ermöglicht, begrenzten Zugriff auf Benutzerressourcen auf einem Server zu gewähren, ohne die Anmeldedaten des Nutzers zu teilen. Der Fokus liegt auf Autorisierung.
+[underline]#Bezeichnung#: O~pen~ Auth~orization~ 2.0
+
+==== Definition
+*OAuth 2.0* ist ein *Protokoll*, welches für die *Autorisierung* verantwortlich ist. Der Vorgänger *0Auth 1.0* wurde ausschließlich für Webseiten entwickelt und wird nicht mehr häufig verwendet.
 
 Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-oauth-2[hier^].
 
-=== OIDC
-Bezeichnung: O~pen~ID C~onnect~
+IMPORTANT: Die Authentifizierung von Benutzern wird bei OAuth 2.0 *nicht* abgedeckt.
 
-OIDC ist ein Identitätsauthentifizierungsprotokoll, welches auf OAuth 2.0 basiert und somit die Autorisierungs- und Authentifizierungsmechanismen von OAuth 2.0 nutzt. Der Fokus liegt auf Authentifizierung.
+image:oauth2-authorization-code-flow.png[]
+TODO: Erklärung
+
+=== OIDC
+image:oidc-logo.png[width=200]
+
+[underline]#Bezeichnung#: O~pen~ID C~onnect~
+
+==== Definition
+*OIDC* ist ein *Protokoll*, welches auf 0Auth 2.0 aufbaut und eine zusätzliche Schicht für die *Authentifizierung* hinzufügt.
 
 Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc[hier^].
 
-=== SAML
-Bezeichnung: S~ecurity~ A~ssertion~ M~arkup~ L~anguage~
+image:oidc-authorization-code-flow.png[]
+TODO: Erklärung
 
-SAML ist ein XML-basiertes Standardprotokoll, das den sicheren Austausch von Authentifizierungs- und Autorisierungsinformationen zwischen *Identitätsanbietern* (IdPs) und *Dienstanbietern* (SPs) ermöglicht. Es wird hauptsächlich für Unternehmens- und Regierungsanwendungen genutzt.
+=== SAML 2.0
+image:saml-logo.png[width=200]
+
+[underline]#Bezeichnung#: S~ecurity~ A~ssertion~ M~arkup~ L~anguage~ 2.0
+
+==== Definition
+*SAML 2.0* ist ein XML-basiertes Standardprotokoll für Authentifizierung und Autorisierung. Es wird häufig verwendet, um Single Sign-On in Unternehmens- und Regierungsanwendungen zu ermöglichen. Das Protokoll ermöglicht es bestehenden Benutzern sich schnell und einfach in neuen Anwendungen zu authentifizieren.
 
 Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-saml[hier^].
 
+=== JWT
+image:jwt-logo.svg[width=200]
+
+[underline]#Bezeichnung#: J~son~ W~eb~ T~oken~
+
+==== Definition
+*JSON Web Token* ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital *signiert* und sind somit vertrauenswürdig.
+
+
+
+==== Struktur
+Ein JWT setzt sich aus 3 Teilen zusammen, welche jeweils durch einen `.` getrennt werden: `xxxxx.yyyyy.zzzzz`
+
+
+===== Header: (`XXXXX`.yyyyy.zzzzz)
+
+Besteht aus 2 Teilen:
+
+.Beispiel
+[source, json]
+----
+{
+  "alg": "HS256", <.>
+  "typ": "JWT" <.>
+}
+----
+<.> Verwendeter Signieralgorithmus: link:https://stackoverflow.com/questions/39239051/rs256-vs-hs256-whats-the-difference[Unterschied zwischen *HS256* und *RS256*^]
+<.> Typ des Tokens
+
+Dieses JSON wird *Base64* verschlüsselt und macht somit den *ersten* Teil des JWTs aus.
+
+===== Payload: (xxxxx.`YYYYY`.zzzzz)
+
+Die Payload enthält die Claims. *Claims* sind meistens Daten über den User und zusätzliche Daten. Es gibt 3 Arten von Claims:
+
+* *Registered* Claims: Vordefinierte Claims wie z. B. `exp` (expiration time) und noch link:https://datatracker.ietf.org/doc/html/rfc7519#section-4.1[mehr^]
+* *Public* Claims: TODO
+* *Private* Claims: Sind eigens *benutzerdefinierte* Claims, welche für den Informationsaustausch zweier Parteien fungieren.
+
+.Beispiel
+[source, json]
+----
+{
+  "exp": "1734137921",
+  "name": "John Doe",
+  "admin": true
+}
+----
+
+Dieses JSON wird *Base64* verschlüsselt und macht somit den *zweiten* Teil des JWTs aus.
+
+===== Signature: (xxxxx.yyyyy.`ZZZZZ`)
+
+Im dritten Part wird der `Header`, die `Payload` und ein `Secret` mit den im Header angegebenen Signieralgorithmus signiert.
+
+.Beispiel für HS256
+[source]
+----
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret
+)
+----
+
+Die Signatur kann sicherstellen, dass die Nachricht nicht von Dritten geändert wurde. Dies macht den *dritten* Teil des JWTs aus.
+
+===== Zusammenfassung:
+
+Das Ergebnis sind 3 Base64 Strings, welche durch einen `.` separiert werden.
+
+Mehr Informationen link:https://jwt.io/introduction[hier^].
+
 == Keycloak
 === Was ist Keycloak?
-Keycloak ist eine *Open-Source*-Identity- und Access-Management-Lösung, die Funktionen wie Single-Sign On (SSO), Benutzerverwaltung und Social Login bietet.
+Keycloak ist eine *Open-Source*-Identity- und Access-Management-Lösung, die Funktionen wie Single Sign-On (SSO), Benutzerverwaltung und Social Login bietet.
 
-IMPORTANT: *Single-Sign On* ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
+IMPORTANT: *Single Sign-On* ist ein Authentifizierungsverfahren, bei dem Benutzer sich nur einmal anmelden und anschließend auf mehrere Anwendungen oder Systeme zugreifen können, ohne sich erneut authentifizieren zu müssen.
 
 === Alternativen
 
@@ -94,8 +184,12 @@ IMPORTANT: *Single-Sign On* ist ein Authentifizierungsverfahren, bei dem Benutze
 ^.^|image:python-logo.png[width=40, height=40]
 |===
 
+=== Wichtigste Bestandteile in Keycloak
+
+=== Custom Theme
+
 == Keycloak mit dem quarkus-keycloak-admin-rest-client
-Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet.
+Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet. Der Rest-Client sendet Requests an die link:https://www.keycloak.org/docs-api/latest/rest-api/index.html[`Keycloak Admin REST API`^].
 
 === Projekterstellung
 TODO: restlichen dependencies hinzufügen
@@ -276,7 +370,11 @@ image::keycloak-create-client-capability-config.png[]
 ====
 
 *Login settings*
+
 TODO
+
+* Standard flow
+* [line-through]#Implicit flow#: deprecated
 
 === Probe
 Nachdem nun ein *Realm* und ein *Client* in Keycloak existieren, können wir den *keycloak-admin-client* ausprobieren.
@@ -467,6 +565,7 @@ Jetzt werden die 3 default *Realm roles* als Response geliefert.
 TODO
 
 == Quellen
+* Keycloak - Identity and Access Management for Modern Applications (Second Edition)
 * https://quarkus.io/guides/security-keycloak-admin-client
 * https://www.okta.com/de/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/
 * https://www.microsoft.com/de-de/security/business/security-101/what-is-oauth
@@ -475,3 +574,5 @@ TODO
 * https://auth0.com/de/intro-to-iam/what-is-saml
 * https://www.keycloak.org/
 * https://goauthentik.io/
+* https://jwt.io/
+* https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
