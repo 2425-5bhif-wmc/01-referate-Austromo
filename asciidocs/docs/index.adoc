@@ -568,7 +568,6 @@ TODO
 
 == Reverse Proxies
 
-
 === Was ist ein Reverse Proxy?
 
 Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet. +
@@ -589,6 +588,7 @@ image:proxy.svg[]
 * Request Validierung
 * Loadbalancing
 * Caching
+* Compression
 
 === Reverse Proxies im Überblick
 
@@ -661,37 +661,48 @@ services:
 [source, conf]
 ----
 server {
-    listen 80;
+    listen 80; <1>
 
-    server_name localhost;
+    server_name localhost; <2>
 
-    location /some-path {
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+    location /some-path/ { <3>
+        proxy_set_header Host $http_host; <4>
+        proxy_set_header X-Real-IP $remote_addr; <4>
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <4>
+        proxy_set_header X-Forwarded-Proto $scheme; <4>
 
-        proxy_pass http://nginx-echo:8080/;  # the trailing / is important...
+        proxy_pass http://nginx-echo:8080/;  <5>
+        # Der "/" am Ende ist wichtig. Ohne diesen würden Anfragen auf /some-path/ genau so weitergeleitet werden.
+        # z.B. /some-path/i-love-turtles => /some-path/i-love-turtles
+        # Mit dem "/" am Ende würde die Anfrage am Upstream Server so aussehen.
+        # z.B. /some-path/i-love-turtles => /i-love-turtles
     }
 }
 
 server {
-    listen 80;
+    listen 80; <1>
 
-    server_name echo.localhost;
+    server_name echo.localhost; <2>
 
-    location / {
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+    location / { <3>
+        proxy_set_header Host $http_host; <4>
+        proxy_set_header X-Real-IP $remote_addr; <4>
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <4>
+        proxy_set_header X-Forwarded-Proto $scheme; <4>
 
-        proxy_pass http://nginx-echo:8080;
+        proxy_pass http://nginx-echo:8080; <5>
     }
 }
 ----
+<1> Port auf den der Server hört
+<2> Der `server_name` definiert, für welche Hostnamen dieser Serverblock gilt.
+<3> Matched den Pfad und der Anfrage
+<4> Überträgt die Header der ursprünglichen Request an den Upstream-Server
+<5> Leitet Anfragen an den Upstream-Server weiter.
 
 .nginx.conf
+[%collapsible]
+====
 [source, conf]
 ----
 user www-data;
@@ -742,8 +753,6 @@ http {
     # Cache Settings
     ##
 
-    proxy_cache_path /var/cache/nginx keys_zone=api-cache:10m;
-
     ##
     # Virtual Host Configs
     ##
@@ -751,6 +760,7 @@ http {
     include /etc/nginx/conf.d/*.conf;
 }
 ----
+====
 
 ==== Traefik Beispiel
 
@@ -773,28 +783,46 @@ services:
       - 8080:8080
     restart: unless-stopped
     labels:
-      - traefik.http.routers.traefik.rule=Host(`localhost`)
-      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.rule=Host(`localhost`) <1>
+      - traefik.http.services.traefik.loadbalancer.server.port=8080 <2>
 
   traefik-echo-1:
     image: nodstuff/gecho:latest
     restart: unless-stopped
     labels:
-      - traefik.http.routers.echo-1.rule=Host(`localhost`) && PathPrefix(`/some-path`)
-      - traefik.http.routers.echo-1.middlewares=replace-path@docker
-      - traefik.http.middlewares.replace-path.replacepath.path=/
-      - traefik.http.services.echo-1.loadbalancer.server.port=8080
+      - traefik.http.routers.echo-1.rule=Host(`localhost`) && PathPrefix(`/some-path`) <1>
+      - traefik.http.routers.echo-1.middlewares=strip-prefix@docker <4>
+      - traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/some-path <3>
+      - traefik.http.services.echo-1.loadbalancer.server.port=8080 <2>
 
   traefik-echo-2:
     image: nodstuff/gecho:latest
     restart: unless-stopped
     ports:
-      - 8000:8080
+      - 8000:8080 <3>
     labels:
-      - traefik.http.routers.echo-2.rule=Host(`echo.localhost`)
+      - traefik.http.routers.echo-2.rule=Host(`echo.localhost`) <1>
       # - traefik.http.services.echo.loadbalancer.server.port=8080
       # not needed because of traefik automatic service discovery magic
 ----
+<1> Definiert einen Router welcher aufgrund den definierten Regeln die Request an den Container weiterleitet
+<2> Port auf den der Container hört
+<3> Definiert eine Middleware, die den Prefix /some-path von den Anfragen wegschneidet
+<4> Definert, dass der Router die middleware benutzen soll mit <name>@<provider> +
+link:https://doc.traefik.io/traefik/middlewares/overview/[Mehr dazu] +
+link:https://doc.traefik.io/traefik/providers/overview/[Providers]
+
+===== Traefik Alternativ configuration
+
+.traefik.toml
+[source, yaml]
+----
+[http.middlewares]
+[http.middlewares.strip-prefix.stripPrefix]
+prefixes = ["/some-path"]
+----
+
+Mit dieser statischen Konfiguration würde der provider statt *docker* -> *file* sein.
 
 ==== Caddy Beispiel
 
@@ -806,7 +834,7 @@ services:
     container_name: caddy
     image: caddy:latest
     cap_add:
-      - NET_ADMIN
+      - NET_ADMIN <1>
     volumes:
       - ./config:/etc/caddy
       - ./data:/data
@@ -824,17 +852,100 @@ services:
 .config/Caddyfile
 [source, Caddyfile]
 ----
-echo.localhost {
-	reverse_proxy caddy-echo:8080
+echo.localhost { <1>
+	reverse_proxy caddy-echo:8080 <3>
 }
 
-localhost {
-	handle /some-path*  {
-		uri strip_prefix /some-path
-		reverse_proxy caddy-echo:8080
+localhost { <1>
+	handle /some-path*  { <2>
+		uri strip_prefix /some-path <4>
+		reverse_proxy caddy-echo:8080 <3>
 	}
 }
 ----
+<1> Definieren die Domains oder Hostnamen, die von diesem Block verarbeitet werden.
+<2> Matched den Pfad der Anfrage
+<3> Leitet die Anfrage an den Upstream-Server weiter
+<4> Schneidet den Prefix /some-path von dem Pfad der Anfrage weg
+
+Caddy ist der einzige der 3 welcher automatisch TLS Zertifikate erstellt.
+In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Authority ausgestellt.
+
+=== TLS? Warum brauch i sowas.
+
+TLS oder auch *T*ransport *L*ayer *S*ecurity ist ein Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet. +
+link:https://tls13.xargs.org/#open-all[Wie funktioniert der genau?]
+
+==== Wie bekomme ich so ein Zertifikat?
+
+Ganz einfach. Selber machen.
+
+[source, bash]
+----
+openssl genrsa -out private.key 4096 <1>
+openssl req -new -key private.key -out request.csr -subj "/CN=DOMAIN_NAME" <2>
+openssl x509 -req -days 365 -in request.csr -signkey private.key -out certificate.crt <3>
+openssl dhparam -out dhparam.pem 4096 <4>
+
+----
+<1> Generiert einen 4096 byte langen private key
+<2> Generiert eine Certifacet Signing Request (Zertifikt Unterschreibungs Anfrage) +
+DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.
+<3> Generiert das tatsächliche Zertifikat welches für *365* Tage gültig ist.
+<4> Generiert eine 4096 byte lange Diffi-Hellman Parameter für den sicheren Schlüsselaustausch
+
+==== Suppa. Wie benutzt ich das jetzt?
+
+.conf.d/reverse-proxy.conf
+[source, conf]
+----
+ssl_certificate /etc/ssl/certificate.crt;
+ssl_certificate_key /etc/ssl/private.key;
+ssl_dhparam /etc/nginx/dhparam.pem;
+ssl_protocols TLSv1.3;
+
+server {
+    listen 443 ssl;
+
+    server_name localhost;
+
+    location /some-path/ {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://nginx-echo:8080/;
+    }
+}
+
+server {
+    listen 443 ssl;
+
+    server_name echo.localhost;
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://nginx-echo:8080;
+    }
+}
+----
+
+So schwer war des jetzt ned. Wenn man im Browser jetzt *https*://echo.localhost aufruft wird man von dieser wunderschönen Warnung begrüßt.
+
+image:self-signed-warning.png[]
+
+Was kann man dagegen tun? Nichts. Außer man benutzt Zertifikate die von sogenanten "Certifcate Authorities" ausgestellt werden. +
+Dafür braucht man eine Öffentliche Domain, welche auf den Server zeigt, auf den der Reverse Proxy läuft.
+
+Ein selbstsigniertes Zertifikat bedeutet, dass der Server selbst behauptet, seine Identität und Inhalte seien vertrauenswürdig. +
+Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine CA die validität versichern kann.
+
+image:trust-me-bro.jpg[]
 
 == Quellen
 * Keycloak - Identity and Access Management for Modern Applications (Second Edition)
@@ -848,3 +959,5 @@ localhost {
 * https://goauthentik.io/
 * https://jwt.io/
 * https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
+* https://traefik.io/glossary/reverse-proxy/ (a bissl marketing halluzinationen oba is ned so schlecht)
+* https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/

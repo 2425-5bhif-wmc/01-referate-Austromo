@@ -22,8 +22,8 @@ services:
     restart: unless-stopped
     labels:
       - traefik.http.routers.echo-1.rule=Host(`localhost`) && PathPrefix(`/some-path`)
-      - traefik.http.routers.echo-1.middlewares=replace-path@docker
-      - traefik.http.middlewares.replace-path.replacepath.path=/
+      - traefik.http.routers.echo-1.middlewares=strip-prefix@docker
+      - traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/some-path
       - traefik.http.services.echo-1.loadbalancer.server.port=8080
 
   traefik-echo-2:
