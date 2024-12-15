@@ -603,6 +603,7 @@ pre.rouge .gs {
 <li><a href="#_was_ist_ein_reverse_proxy">7.1. Was ist ein Reverse Proxy?</a></li>
 <li><a href="#_warum_braucht_man_einen_reverse_proxy">7.2. Warum braucht man einen Reverse Proxy?</a></li>
 <li><a href="#_reverse_proxies_im_überblick">7.3. Reverse Proxies im Überblick</a></li>
+<li><a href="#_tls_warum_brauch_i_sowas">7.4. TLS? Warum brauch i sowas.</a></li>
 </ul>
 </li>
 <li><a href="#_quellen">8. Quellen</a></li>
@@ -1619,6 +1620,9 @@ Ein Proxy ist stellvertretend für die Clients.</p>
 <li>
 <p>Caching</p>
 </li>
+<li>
+<p>Compression</p>
+</li>
 </ul>
 </div>
 </div>
@@ -1709,38 +1713,68 @@ API</p></td>
 <div class="title">conf.d/reverse-proxy.conf</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="conf"><span class="n">server</span> {
-    <span class="n">listen</span> <span class="m">80</span>;
+    <span class="n">listen</span> <span class="m">80</span>; <i class="conum" data-value="1"></i><b>(1)</b>
 
-    <span class="n">server_name</span> <span class="n">localhost</span>;
+    <span class="n">server_name</span> <span class="n">localhost</span>; <i class="conum" data-value="2"></i><b>(2)</b>
 
-    <span class="n">location</span> /<span class="n">some</span>-<span class="n">path</span> {
-        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+    <span class="n">location</span> /<span class="n">some</span>-<span class="n">path</span>/ { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>; <i class="conum" data-value="4"></i><b>(4)</b>
 
-        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>/;  <span class="c"># the trailing / is important...
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>/;  <i class="conum" data-value="5"></i><b>(5)</b>
+        <span class="c"># Der "/" am Ende ist wichtig. Ohne diesen würden Anfragen auf /some-path/ genau so weitergeleitet werden.
+</span>        <span class="c"># z.B. /some-path/i-love-turtles =&gt; /some-path/i-love-turtles
+</span>        <span class="c"># Mit dem "/" am Ende würde die Anfrage am Upstream Server so aussehen.
+</span>        <span class="c"># z.B. /some-path/i-love-turtles =&gt; /i-love-turtles
 </span>    }
 }
 
 <span class="n">server</span> {
-    <span class="n">listen</span> <span class="m">80</span>;
+    <span class="n">listen</span> <span class="m">80</span>; <i class="conum" data-value="1"></i><b>(1)</b>
 
-    <span class="n">server_name</span> <span class="n">echo</span>.<span class="n">localhost</span>;
+    <span class="n">server_name</span> <span class="n">echo</span>.<span class="n">localhost</span>; <i class="conum" data-value="2"></i><b>(2)</b>
 
-    <span class="n">location</span> / {
-        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
-        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+    <span class="n">location</span> / { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>; <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>; <i class="conum" data-value="4"></i><b>(4)</b>
 
-        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>;
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>; <i class="conum" data-value="5"></i><b>(5)</b>
     }
 }</code></pre>
 </div>
 </div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Port auf den der Server hört</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Der <code>server_name</code> definiert, für welche Hostnamen dieser Serverblock gilt.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Matched den Pfad und der Anfrage</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Überträgt die Header der ursprünglichen Request an den Upstream-Server</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Leitet Anfragen an den Upstream-Server weiter.</td>
+</tr>
+</table>
+</div>
+<details>
+<summary class="title">nginx.conf</summary>
+<div class="content">
 <div class="listingblock">
-<div class="title">nginx.conf</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="conf"><span class="n">user</span> <span class="n">www</span>-<span class="n">data</span>;
 <span class="n">worker_processes</span> <span class="n">auto</span>;
@@ -1790,8 +1824,6 @@ API</p></td>
 </span>    <span class="c"># Cache Settings
 </span>    <span class="c">##
 </span>
-    <span class="n">proxy_cache_path</span> /<span class="n">var</span>/<span class="n">cache</span>/<span class="n">nginx</span> <span class="n">keys_zone</span>=<span class="n">api</span>-<span class="n">cache</span>:<span class="m">10</span><span class="n">m</span>;
-
     <span class="c">##
 </span>    <span class="c"># Virtual Host Configs
 </span>    <span class="c">##
@@ -1800,6 +1832,8 @@ API</p></td>
 }</code></pre>
 </div>
 </div>
+</div>
+</details>
 </div>
 <div class="sect3">
 <h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>7.3.2. Traefik Beispiel</h4>
@@ -1822,27 +1856,63 @@ API</p></td>
       <span class="pi">-</span> <span class="s">8080:8080</span>
     <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
     <span class="na">labels</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">traefik.http.routers.traefik.rule=Host(`localhost`)</span>
-      <span class="pi">-</span> <span class="s">traefik.http.services.traefik.loadbalancer.server.port=8080</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.traefik.rule=Host(`localhost`)</span> <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="pi">-</span> <span class="s">traefik.http.services.traefik.loadbalancer.server.port=8080</span> <i class="conum" data-value="2"></i><b>(2)</b>
 
   <span class="na">traefik-echo-1</span><span class="pi">:</span>
     <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
     <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
     <span class="na">labels</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.rule=Host(`localhost`) &amp;&amp; PathPrefix(`/some-path`)</span>
-      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.middlewares=replace-path@docker</span>
-      <span class="pi">-</span> <span class="s">traefik.http.middlewares.replace-path.replacepath.path=/</span>
-      <span class="pi">-</span> <span class="s">traefik.http.services.echo-1.loadbalancer.server.port=8080</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.rule=Host(`localhost`) &amp;&amp; PathPrefix(`/some-path`)</span> <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.middlewares=strip-prefix@docker</span> <i class="conum" data-value="4"></i><b>(4)</b>
+      <span class="pi">-</span> <span class="s">traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/some-path</span> <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="pi">-</span> <span class="s">traefik.http.services.echo-1.loadbalancer.server.port=8080</span> <i class="conum" data-value="2"></i><b>(2)</b>
 
   <span class="na">traefik-echo-2</span><span class="pi">:</span>
     <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
     <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
     <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">8000:8080</span>
+      <span class="pi">-</span> <span class="s">8000:8080</span> <i class="conum" data-value="3"></i><b>(3)</b>
     <span class="na">labels</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-2.rule=Host(`echo.localhost`)</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-2.rule=Host(`echo.localhost`)</span> <i class="conum" data-value="1"></i><b>(1)</b>
       <span class="c1"># - traefik.http.services.echo.loadbalancer.server.port=8080</span>
       <span class="c1"># not needed because of traefik automatic service discovery magic</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Definiert einen Router welcher aufgrund den definierten Regeln die Request an den Container weiterleitet</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Port auf den der Container hört</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Definiert eine Middleware, die den Prefix /some-path von den Anfragen wegschneidet</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Definert, dass der Router die middleware benutzen soll mit &lt;name&gt;@&lt;provider&gt;<br>
+<a href="https://doc.traefik.io/traefik/middlewares/overview/">Mehr dazu</a><br>
+<a href="https://doc.traefik.io/traefik/providers/overview/">Providers</a></td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_traefik_alternativ_configuration"><a class="anchor" href="#_traefik_alternativ_configuration"></a>Traefik Alternativ configuration</h5>
+<div class="listingblock">
+<div class="title">traefik.toml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="pi">[</span><span class="nv">http.middlewares</span><span class="pi">]</span>
+<span class="pi">[</span><span class="nv">http.middlewares.strip-prefix.stripPrefix</span><span class="pi">]</span>
+<span class="s">prefixes = ["/some-path"]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mit dieser statischen Konfiguration würde der provider statt <strong>docker</strong> &#8594; <strong>file</strong> sein.</p>
 </div>
 </div>
 </div>
@@ -1856,7 +1926,7 @@ API</p></td>
     <span class="na">container_name</span><span class="pi">:</span> <span class="s">caddy</span>
     <span class="na">image</span><span class="pi">:</span> <span class="s">caddy:latest</span>
     <span class="na">cap_add</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">NET_ADMIN</span>
+      <span class="pi">-</span> <span class="s">NET_ADMIN</span> <i class="conum" data-value="1"></i><b>(1)</b>
     <span class="na">volumes</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">./config:/etc/caddy</span>
       <span class="pi">-</span> <span class="s">./data:/data</span>
@@ -1874,17 +1944,142 @@ API</p></td>
 <div class="listingblock">
 <div class="title">config/Caddyfile</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="Caddyfile">echo.localhost {
-	reverse_proxy caddy-echo:8080
+<pre class="rouge highlight"><code data-lang="Caddyfile">echo.localhost { <i class="conum" data-value="1"></i><b>(1)</b>
+	reverse_proxy caddy-echo:8080 <i class="conum" data-value="3"></i><b>(3)</b>
 }
 
-localhost {
-	handle /some-path*  {
-		uri strip_prefix /some-path
-		reverse_proxy caddy-echo:8080
+localhost { <i class="conum" data-value="1"></i><b>(1)</b>
+	handle /some-path*  { <i class="conum" data-value="2"></i><b>(2)</b>
+		uri strip_prefix /some-path <i class="conum" data-value="4"></i><b>(4)</b>
+		reverse_proxy caddy-echo:8080 <i class="conum" data-value="3"></i><b>(3)</b>
 	}
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Definieren die Domains oder Hostnamen, die von diesem Block verarbeitet werden.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Matched den Pfad der Anfrage</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Leitet die Anfrage an den Upstream-Server weiter</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Schneidet den Prefix /some-path von dem Pfad der Anfrage weg</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Caddy ist der einzige der 3 welcher automatisch TLS Zertifikate erstellt.
+In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Authority ausgestellt.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tls_warum_brauch_i_sowas"><a class="anchor" href="#_tls_warum_brauch_i_sowas"></a>7.4. TLS? Warum brauch i sowas.</h3>
+<div class="paragraph">
+<p>TLS oder auch *T*ransport *L*ayer *S*ecurity ist ein Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet.<br>
+<a href="https://tls13.xargs.org/#open-all">Wie funktioniert der genau?</a></p>
+</div>
+<div class="sect3">
+<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>7.4.1. Wie bekomme ich so ein Zertifikat?</h4>
+<div class="paragraph">
+<p>Ganz einfach. Selber machen.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">openssl genrsa <span class="nt">-out</span> private.key 4096 <i class="conum" data-value="1"></i><b>(1)</b>
+openssl req <span class="nt">-new</span> <span class="nt">-key</span> private.key <span class="nt">-out</span> request.csr <span class="nt">-subj</span> <span class="s2">"/CN=DOMAIN_NAME"</span> <i class="conum" data-value="2"></i><b>(2)</b>
+openssl x509 <span class="nt">-req</span> <span class="nt">-days</span> 365 <span class="nt">-in</span> request.csr <span class="nt">-signkey</span> private.key <span class="nt">-out</span> certificate.crt <i class="conum" data-value="3"></i><b>(3)</b>
+openssl dhparam <span class="nt">-out</span> dhparam.pem 4096 <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Generiert einen 4096 byte langen private key</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Generiert eine Certifacet Signing Request (Zertifikt Unterschreibungs Anfrage)<br>
+DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Generiert das tatsächliche Zertifikat welches für <strong>365</strong> Tage gültig ist.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Generiert eine 4096 byte lange Diffi-Hellman Parameter für den sicheren Schlüsselaustausch</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>7.4.2. Suppa. Wie benutzt ich das jetzt?</h4>
+<div class="listingblock">
+<div class="title">conf.d/reverse-proxy.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="conf"><span class="n">ssl_certificate</span> /<span class="n">etc</span>/<span class="n">ssl</span>/<span class="n">certificate</span>.<span class="n">crt</span>;
+<span class="n">ssl_certificate_key</span> /<span class="n">etc</span>/<span class="n">ssl</span>/<span class="n">private</span>.<span class="n">key</span>;
+<span class="n">ssl_dhparam</span> /<span class="n">etc</span>/<span class="n">nginx</span>/<span class="n">dhparam</span>.<span class="n">pem</span>;
+<span class="n">ssl_protocols</span> <span class="n">TLSv1</span>.<span class="m">3</span>;
+
+<span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span>;
+
+    <span class="n">server_name</span> <span class="n">localhost</span>;
+
+    <span class="n">location</span> /<span class="n">some</span>-<span class="n">path</span>/ {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>/;
+    }
+}
+
+<span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span>;
+
+    <span class="n">server_name</span> <span class="n">echo</span>.<span class="n">localhost</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So schwer war des jetzt ned. Wenn man im Browser jetzt <strong>https</strong>://echo.localhost aufruft wird man von dieser wunderschönen Warnung begrüßt.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/self-signed-warning.png" alt="self signed warning"></span></p>
+</div>
+<div class="paragraph">
+<p>Was kann man dagegen tun? Nichts. Außer man benutzt Zertifikate die von sogenanten "Certifcate Authorities" ausgestellt werden.<br>
+Dafür braucht man eine Öffentliche Domain, welche auf den Server zeigt, auf den der Reverse Proxy läuft.</p>
+</div>
+<div class="paragraph">
+<p>Ein selbstsigniertes Zertifikat bedeutet, dass der Server selbst behauptet, seine Identität und Inhalte seien vertrauenswürdig.<br>
+Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine CA die validität versichern kann.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/trust-me-bro.jpg" alt="trust me bro"></span></p>
 </div>
 </div>
 </div>
@@ -1928,6 +2123,12 @@ localhost {
 <li>
 <p><a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" class="bare">https://datatracker.ietf.org/doc/html/rfc7519#section-4.1</a></p>
 </li>
+<li>
+<p><a href="https://traefik.io/glossary/reverse-proxy/" class="bare">https://traefik.io/glossary/reverse-proxy/</a> (a bissl marketing halluzinationen oba is ned so schlecht)</p>
+</li>
+<li>
+<p><a href="https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/" class="bare">https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1936,7 +2137,7 @@ localhost {
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-15 11:11:59 UTC
+Last updated 2024-12-15 18:48:21 UTC
 </div>
 </div>
 </body>
