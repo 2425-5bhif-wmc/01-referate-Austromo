@@ -2,10 +2,7 @@ package at.htl.keycloakDemo.resources;
 
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.ClientRepresentation;
@@ -15,6 +12,11 @@ import org.keycloak.representations.idm.RealmRepresentation;
 public class RealmResource {
     @Inject
     Keycloak keycloak;
+
+    @GET
+    public Response getAllRealms() {
+        return Response.ok(keycloak.realms().findAll().stream().map(RealmDto::representationToDto)).build();
+    }
 
     @POST
     @Path("/{realmName}")
@@ -28,12 +30,8 @@ public class RealmResource {
         realmRepresentation.setRealm(realmName);
         realmRepresentation.setEnabled(true);
 
-        try {
-            keycloak.realms().create(realmRepresentation);
-        } catch (Exception e) {
-            return Response.status(Response.Status.CONFLICT).entity("Realm already exists").build();
-        }
 
+        keycloak.realms().create(realmRepresentation);
         return Response.ok().build();
     }
 
