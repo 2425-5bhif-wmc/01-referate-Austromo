@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.0.2
+          #args: ["start", "--optimized", "--import-realm"]
+          command: [
+            "/bin/bash",
+            "-c",
+            "/opt/keycloak/bin/kc.sh build && /opt/keycloak/bin/kc.sh start --optimized --import-realm"
+          ]
+          envFrom:
+            - configMapRef:
+                name: keycloak-config
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /opt/keycloak/data/import
+              name: import-data
+            - mountPath: /opt/keycloak/themes
+              name: themes
+      volumes:
+        - name: import-data
+          persistentVolumeClaim:
+            claimName: keycloak-data
+        - name: themes
+          emptyDir: {} # Replace with PVC if themes need persistence
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: keycloak-prod
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8080
+  selector:
+    app: keycloak
