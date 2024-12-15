@@ -565,7 +565,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-14</span>
+<span id="revdate">2024-12-15</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -597,7 +597,14 @@ pre.rouge .gs {
 <li><a href="#_probe">5.5. Probe</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">6. Quellen</a></li>
+<li><a href="#_reverse_proxies">6. Reverse Proxies</a>
+<ul class="sectlevel2">
+<li><a href="#_was_ist_ein_reverse_proxy">6.1. Was ist ein Reverse Proxy?</a></li>
+<li><a href="#_warum_braucht_man_einen_reverse_proxy">6.2. Warum braucht man einen Reverse Proxy?</a></li>
+<li><a href="#_reverse_proxies_im_überblick">6.3. Reverse Proxies im Überblick</a></li>
+</ul>
+</li>
+<li><a href="#_quellen">7. Quellen</a></li>
 </ul>
 </div>
 </div>
@@ -1565,7 +1572,319 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>6. Quellen</h2>
+<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>6. Reverse Proxies</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>6.1. Was ist ein Reverse Proxy?</h3>
+<div class="paragraph">
+<p>Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet.<br>
+Ein Reverse Proxy ist stellvertetend für die Server.<br>
+Ein Proxy ist stellvertretend für die Clients.</p>
+</div>
+<div class="paragraph">
+<div class="title">Reverse Proxy</div>
+<p><span class="image"><img src="images/reverse-proxy.svg" alt="reverse proxy"></span></p>
+</div>
+<div class="paragraph">
+<div class="title">Proxy</div>
+<p><span class="image"><img src="images/proxy.svg" alt="proxy"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>6.2. Warum braucht man einen Reverse Proxy?</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Rate Limiting</p>
+</li>
+<li>
+<p>Routing</p>
+</li>
+<li>
+<p>Authentication</p>
+</li>
+<li>
+<p>Request Validierung</p>
+</li>
+<li>
+<p>Loadbalancing</p>
+</li>
+<li>
+<p>Caching</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>6.3. Reverse Proxies im Überblick</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top"><a href="https://nginx.org/en/" target="_blank" rel="noopener">Nginx</a></th>
+<th class="tableblock halign-left valign-top"><a href="https://traefik.io/" target="_blank" rel="noopener">Traefik</a></th>
+<th class="tableblock halign-left valign-top"><a href="https://caddyserver.com/" target="_blank" rel="noopener">Caddy</a></th>
+<th class="tableblock halign-left valign-top"><a href="https://github.com/cloudflare/pingora" target="_blank" rel="noopener">Pingora</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Benutzerfreundlichkeit</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🔴</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.conf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.yaml<br>
+.toml<br>
+docker labels &#8230;&#8203;<br>
+<a href="https://doc.traefik.io/traefik/providers/overview/#supported-providers">Alle Configurations Optionen</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Caddyfile<br>
+.json<br>
+API</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rust</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS/Https</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Manuell / Automatisiert mit Certbot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Manuell / Automatisiert mit Certbot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automatisiert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Manuell</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kubernetes 😈</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟡 <a href="https://github.com/caddyserver/ingress">WIP</a></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">🟡 <a href="https://github.com/cloudflare/pingora/issues/41">Issue</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Language</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/c-logo.png" alt="c logo" width="40" height="40"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/go-logo.png" alt="go logo" width="40" height="40"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/go-logo.png" alt="go logo" width="40" height="40"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/rust-logo.png" alt="rust logo" width="40" height="40"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>6.3.1. Nginx Beispiel</h4>
+<div class="listingblock">
+<div class="title">docker-compose.yml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">nginx</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:latest</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./conf.d:/etc/nginx/conf.d:ro</span>
+      <span class="pi">-</span> <span class="s">./nginx.conf:/etc/nginx/nginx.conf:ro</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+
+  <span class="na">nginx-echo</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">conf.d/reverse-proxy.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="conf"><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+
+    <span class="n">server_name</span> <span class="n">localhost</span>;
+
+    <span class="n">location</span> /<span class="n">some</span>-<span class="n">path</span> {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>/;  <span class="c"># the trailing / is important...
+</span>    }
+}
+
+<span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+
+    <span class="n">server_name</span> <span class="n">echo</span>.<span class="n">localhost</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">nginx.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="conf"><span class="n">user</span> <span class="n">www</span>-<span class="n">data</span>;
+<span class="n">worker_processes</span> <span class="n">auto</span>;
+<span class="n">pid</span> /<span class="n">run</span>/<span class="n">nginx</span>.<span class="n">pid</span>;
+
+<span class="n">include</span> /<span class="n">etc</span>/<span class="n">nginx</span>/<span class="n">modules</span>-<span class="n">enabled</span>/*.<span class="n">conf</span>;
+
+<span class="n">events</span> {
+    <span class="n">worker_connections</span> <span class="m">768</span>;
+    <span class="c"># multi_accept on;
+</span>}
+
+<span class="n">http</span> {
+
+    <span class="c">##
+</span>    <span class="c"># Basic Settings
+</span>    <span class="c">##
+</span>
+    <span class="n">sendfile</span> <span class="n">on</span>;
+    <span class="n">tcp_nopush</span> <span class="n">on</span>;
+    <span class="n">types_hash_max_size</span> <span class="m">2048</span>;
+
+    <span class="n">include</span> /<span class="n">etc</span>/<span class="n">nginx</span>/<span class="n">mime</span>.<span class="n">types</span>;
+    <span class="n">default_type</span> <span class="n">application</span>/<span class="n">octet</span>-<span class="n">stream</span>;
+
+    <span class="c">##
+</span>    <span class="c"># SSL Settings
+</span>    <span class="c">##
+</span>
+    <span class="n">ssl_protocols</span> <span class="n">TLSv1</span> <span class="n">TLSv1</span>.<span class="m">1</span> <span class="n">TLSv1</span>.<span class="m">2</span>; <span class="c"># Dropping SSLv3, ref: POODLE
+</span>    <span class="n">ssl_prefer_server_ciphers</span> <span class="n">on</span>;
+
+    <span class="c">##
+</span>    <span class="c"># Logging Settings
+</span>    <span class="c">##
+</span>
+    <span class="n">access_log</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">nginx</span>/<span class="n">access</span>.<span class="n">log</span>;
+    <span class="n">error_log</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">nginx</span>/<span class="n">error</span>.<span class="n">log</span>;
+
+    <span class="c">##
+</span>    <span class="c"># Gzip Settings
+</span>    <span class="c">##
+</span>
+    <span class="n">gzip</span> <span class="n">on</span>;
+
+    <span class="c">##
+</span>    <span class="c"># Cache Settings
+</span>    <span class="c">##
+</span>
+    <span class="n">proxy_cache_path</span> /<span class="n">var</span>/<span class="n">cache</span>/<span class="n">nginx</span> <span class="n">keys_zone</span>=<span class="n">api</span>-<span class="n">cache</span>:<span class="m">10</span><span class="n">m</span>;
+
+    <span class="c">##
+</span>    <span class="c"># Virtual Host Configs
+</span>    <span class="c">##
+</span>
+    <span class="n">include</span> /<span class="n">etc</span>/<span class="n">nginx</span>/<span class="n">conf</span>.<span class="n">d</span>/*.<span class="n">conf</span>;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>6.3.2. Traefik Beispiel</h4>
+<div class="listingblock">
+<div class="title">docker-compose.yml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">traefik</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">traefik</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">traefik:latest</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">TRAEFIK_API=true</span>
+      <span class="pi">-</span> <span class="s">TRAEFIK_API_INSECURE=true</span>
+      <span class="pi">-</span> <span class="s">TRAEFIK_PROVIDERS_DOCKER=true</span>
+      <span class="pi">-</span> <span class="s">LOG_LEVEL=DEBUG</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="pi">-</span> <span class="s">8080:8080</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.traefik.rule=Host(`localhost`)</span>
+      <span class="pi">-</span> <span class="s">traefik.http.services.traefik.loadbalancer.server.port=8080</span>
+
+  <span class="na">traefik-echo-1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.rule=Host(`localhost`) &amp;&amp; PathPrefix(`/some-path`)</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-1.middlewares=replace-path@docker</span>
+      <span class="pi">-</span> <span class="s">traefik.http.middlewares.replace-path.replacepath.path=/</span>
+      <span class="pi">-</span> <span class="s">traefik.http.services.echo-1.loadbalancer.server.port=8080</span>
+
+  <span class="na">traefik-echo-2</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">8000:8080</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">traefik.http.routers.echo-2.rule=Host(`echo.localhost`)</span>
+      <span class="c1"># - traefik.http.services.echo.loadbalancer.server.port=8080</span>
+      <span class="c1"># not needed because of traefik automatic service discovery magic</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_caddy_beispiel"><a class="anchor" href="#_caddy_beispiel"></a>6.3.3. Caddy Beispiel</h4>
+<div class="listingblock">
+<div class="title">docker-compose.yml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">caddy</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">caddy</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">caddy:latest</span>
+    <span class="na">cap_add</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">NET_ADMIN</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./config:/etc/caddy</span>
+      <span class="pi">-</span> <span class="s">./data:/data</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="pi">-</span> <span class="s">443:443</span>
+      <span class="pi">-</span> <span class="s">443:443/udp</span> <span class="c1"># https://hub.docker.com/_/caddy Linux capabilities</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+
+  <span class="na">caddy-echo</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">config/Caddyfile</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="Caddyfile">echo.localhost {
+	reverse_proxy caddy-echo:8080
+}
+
+localhost {
+	handle /some-path*  {
+		uri strip_prefix /some-path
+		reverse_proxy caddy-echo:8080
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>7. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -1602,6 +1921,9 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <li>
 <p><a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" class="bare">https://datatracker.ietf.org/doc/html/rfc7519#section-4.1</a></p>
 </li>
+<li>
+<p><a href="https://traefik.io/glossary/reverse-proxy/" class="bare">https://traefik.io/glossary/reverse-proxy/</a> (a bissl marketing halluzinationen oba is ned so schlecht)</p>
+</li>
 </ul>
 </div>
 </div>
@@ -1610,7 +1932,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-14 01:22:19 UTC
+Last updated 2024-12-15 00:04:43 UTC
 </div>
 </div>
 </body>
