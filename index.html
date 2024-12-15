@@ -584,7 +584,7 @@ pre.rouge .gs {
 <ul class="sectlevel2">
 <li><a href="#_was_ist_keycloak">4.1. Was ist Keycloak?</a></li>
 <li><a href="#_alternativen">4.2. Alternativen</a></li>
-<li><a href="#_wichtigste_bestandteile_in_keycloak">4.3. Wichtigste Bestandteile in Keycloak</a></li>
+<li><a href="#_wichtige_bestandteile_in_keycloak">4.3. Wichtige Bestandteile in Keycloak</a></li>
 <li><a href="#_custom_theme">4.4. Custom Theme</a></li>
 </ul>
 </li>
@@ -614,36 +614,16 @@ pre.rouge .gs {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Standard Flow:</p>
-</div>
-<div class="paragraph">
-<p>JWT:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Wie es verschlüsselt worden</p>
-</li>
-<li>
-<p>Payload mit Daten drinnen</p>
-</li>
-<li>
-<p>Signature</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Claim ist zB eine E-Mail
-Scope ist eine collection von Claims</p>
-</div>
-<div class="paragraph">
-<p><strong>Security</strong> ist ein Begriff, welcher</p>
+<p><strong>Security</strong> ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von <strong>Benutzeridentitäten</strong> und <strong>Zugriffsrechten</strong> und andererseits der <strong>Netzwerksicherheit</strong> mit Schwerpunkt auf <strong>Reverse Proxies</strong>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_authentifizierung_und_autorisierung"><a class="anchor" href="#_authentifizierung_und_autorisierung"></a>1. Authentifizierung und Autorisierung</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Autor: <strong>Moritz V. Gruber</strong></p>
+</div>
 <div class="paragraph">
 <p>Authentifizierung durch Eingabe von Username und Passwort → <strong>Wer bin ich?</strong></p>
 </div>
@@ -692,9 +672,35 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </table>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/oauth2-authorization-code-flow.png" alt="oauth2 authorization code flow"></span>
-TODO: Erklärung</p>
+<p><span class="image"><img src="images/oauth2-authorization-code-flow.png" alt="oauth2 authorization code flow"></span></p>
 </div>
+<details>
+<summary class="title">Erklärung</summary>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Die <span class="green">Applikation</span> fordert vom <span class="red">Browser</span>, dass er den User zu <span class="gray">Keycloak</span> umleitet.</p>
+</li>
+<li>
+<p>Der <span class="red">Browser</span> leitet den User zu <span class="gray">Keycloak</span> um.</p>
+</li>
+<li>
+<p><span class="gray">Keycloak</span> authentifiziert den User, falls er noch nicht mit <span class="gray">Keycloak</span> authentifiziert ist.</p>
+</li>
+<li>
+<p>Die <span class="green">Applikation</span> erhält einen Autorisierungscode von <span class="gray">Keycloak</span>.</p>
+</li>
+<li>
+<p>Die <span class="green">Applikation</span> tauscht diesen Autorisierungscode gegen einen <strong>Access-Token</strong> von <span class="gray">Keycloak</span> ein.</p>
+</li>
+<li>
+<p>Dieser Access-Token kann nun genutzt werden um auf <strong>Ressourcen</strong> auf dem <span class="blue">Service</span> zuzugreifen.</p>
+</li>
+</ol>
+</div>
+</div>
+</details>
 </div>
 </div>
 <div class="sect2">
@@ -714,9 +720,35 @@ TODO: Erklärung</p>
 <p>Mehr Informationen <a href="https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/oidc-authorization-code-flow.png" alt="oidc authorization code flow"></span>
-TODO: Erklärung</p>
+<p><span class="image"><img src="images/oidc-authorization-code-flow.png" alt="oidc authorization code flow"></span></p>
 </div>
+<details>
+<summary class="title">Erklärung</summary>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Die <span class="green">Applikation</span> fordert vom <span class="red">Browser</span>, dass er den User zu <span class="gray">Keycloak</span> umleitet.</p>
+</li>
+<li>
+<p>Der <span class="red">Browser</span> leitet den User zu <span class="gray">Keycloak</span> um.</p>
+</li>
+<li>
+<p><span class="gray">Keycloak</span> authentifiziert den User, falls er noch nicht mit <span class="gray">Keycloak</span> authentifiziert ist.</p>
+</li>
+<li>
+<p>Die <span class="green">Applikation</span> erhält einen Autorisierungscode von <span class="gray">Keycloak</span>.</p>
+</li>
+<li>
+<p>Die <span class="green">Applikation</span> tauscht diesen Autorisierungscode gegen einen <strong>ID-Token</strong> und einen <strong>Access-Token</strong> von <span class="gray">Keycloak</span> ein.</p>
+</li>
+<li>
+<p>Die <span class="green">Applikation</span> verfügt nun über den ID-Token, mit dem sie die Identität des Benutzers ermitteln und eine authentifizierte Sitzung für den User aufbauen kann.</p>
+</li>
+</ol>
+</div>
+</div>
+</details>
 </div>
 </div>
 <div class="sect2">
@@ -748,7 +780,7 @@ TODO: Erklärung</p>
 <div class="sect3">
 <h4 id="_definition_4"><a class="anchor" href="#_definition_4"></a>3.4.1. Definition</h4>
 <div class="paragraph">
-<p><strong>JSON Web Token</strong> ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital <strong>signiert</strong> und sind somit vertrauenswürdig.</p>
+<p><strong>JSON Web Token</strong> ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital <strong>signiert</strong> und ist somit vertrauenswürdig.</p>
 </div>
 </div>
 <div class="sect3">
@@ -797,10 +829,10 @@ TODO: Erklärung</p>
 <p><strong>Registered</strong> Claims: Vordefinierte Claims wie z. B. <code>exp</code> (expiration time) und noch <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" target="_blank" rel="noopener">mehr</a></p>
 </li>
 <li>
-<p><strong>Public</strong> Claims: TODO</p>
+<p><strong>Public</strong> Claims: Sind eigens <strong>benutzerdefinierte</strong> Claims, welche öffentlich registriert werden. Dabei ist es wichtig darauf zu achten, dass keine Namenskonflikte entstehen.</p>
 </li>
 <li>
-<p><strong>Private</strong> Claims: Sind eigens <strong>benutzerdefinierte</strong> Claims, welche für den Informationsaustausch zweier Parteien fungieren.</p>
+<p><strong>Private</strong> Claims: Sind eigens <strong>benutzerdefinierte</strong> Claims, welche nicht veröffentlicht werden.</p>
 </li>
 </ul>
 </div>
@@ -840,7 +872,7 @@ TODO: Erklärung</p>
 <div class="sect4">
 <h5 id="_zusammenfassung"><a class="anchor" href="#_zusammenfassung"></a>Zusammenfassung:</h5>
 <div class="paragraph">
-<p>Das Ergebnis sind 3 Base64 Strings, welche durch einen <code>.</code> separiert werden.</p>
+<p>Das Ergebnis sind <strong>3</strong> <strong>Base64</strong> Strings, welche durch einen <code>.</code> separiert werden.</p>
 </div>
 <div class="paragraph">
 <p>Mehr Informationen <a href="https://jwt.io/introduction" target="_blank" rel="noopener">hier</a>.</p>
@@ -923,12 +955,170 @@ TODO: Erklärung</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_wichtigste_bestandteile_in_keycloak"><a class="anchor" href="#_wichtigste_bestandteile_in_keycloak"></a>4.3. Wichtigste Bestandteile in Keycloak</h3>
-
+<h3 id="_wichtige_bestandteile_in_keycloak"><a class="anchor" href="#_wichtige_bestandteile_in_keycloak"></a>4.3. Wichtige Bestandteile in Keycloak</h3>
+<div class="sect3">
+<h4 id="_realms"><a class="anchor" href="#_realms"></a>4.3.1. Realms</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>A <strong>realm</strong> manages a set of users, credentials, roles, and groups. A user belongs to and logs into a realm. Realms are isolated from one another and can only manage and authenticate the users that they control.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>realm description</cite>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clients"><a class="anchor" href="#_clients"></a>4.3.2. Clients</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Clients</strong> are applications and services that can request authentication of a user.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>client description</cite>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_realm_roles"><a class="anchor" href="#_realm_roles"></a>4.3.3. Realm roles</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Realm roles</strong> are the roles that you define for use in the current realm.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>realm role description</cite>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_users"><a class="anchor" href="#_users"></a>4.3.4. Users</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Users</strong> are the users in the current realm.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>user description</cite>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groups"><a class="anchor" href="#_groups"></a>4.3.5. Groups</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>A <strong>group</strong> is a set of attributes and role mappings that can be applied to a user.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>group description</cite>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sessions"><a class="anchor" href="#_sessions"></a>4.3.6. Sessions</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Sessions</strong> are sessions of users in this realm and the clients that they access within the session.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Keycloak<br>
+<cite>session description</cite>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_custom_theme"><a class="anchor" href="#_custom_theme"></a>4.4. Custom Theme</h3>
-
+<div class="paragraph">
+<p>Keycloak bietet eine Möglichkeit <strong>custom Ttyles</strong> in Form von <strong>css</strong> zu verwenden. Dafür benötigt man eine Datei namens <code>theme.properties</code> und natürlich ein <code>styles.css</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">theme.properties</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="py">parent</span><span class="p">=</span><span class="s">keycloak </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="py">import</span><span class="p">=</span><span class="s">common/keycloak </span><i class="conum" data-value="2"></i><b>(2)</b>
+<span class="py">styles</span><span class="p">=</span><span class="s">css/login.css css/styles.css </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Das parent theme auf dem das custom Theme aufbaut</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Mit dem <code>import</code> können common Ressourcen importiert werden</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Alle hier angegeben Stylesheets werden für das custom Theme angewandt</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">styles.css</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem <code>docker-compose.yml</code> anlegen:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom-theme-folder-structure.png" alt="custom theme folder structure"></span></p>
+</div>
+<div class="paragraph">
+<p>Nun müssen wir noch einen bind mount anlegen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">keycloak</span><span class="pi">:</span>
+    <span class="c1"># ...</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./themes:/opt/keycloak/themes/</span>
+    <span class="c1"># ...</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nachdem man den Keycloak startet, kann man unter <code>&lt;realm-name&gt;</code> &#8594; <code>Realm settings</code> &#8594; <code>Themes</code> sein eigenes Theme auswählen.</p>
+</div>
+<details>
+<summary class="title">Vorher</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-v2-theme.png" alt="keycloak v2 theme"></span></p>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Nachher</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-custom-theme.png" alt="keycloak custom theme"></span></p>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>Mehr zu custom Themes <a href="https://www.keycloak.org/docs/latest/server_development/#_themes" target="_blank" rel="noopener">hier</a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -940,9 +1130,6 @@ TODO: Erklärung</p>
 </div>
 <div class="sect2">
 <h3 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>5.1. Projekterstellung</h3>
-<div class="paragraph">
-<p>TODO: restlichen dependencies hinzufügen</p>
-</div>
 <div class="listingblock">
 <div class="title">Projekterstellung mit Quarkus CLI</div>
 <div class="content">
@@ -950,9 +1137,6 @@ TODO: Erklärung</p>
     <span class="nt">--extension</span><span class="o">=</span><span class="s1">'keycloak-admin-rest-client,rest-jackson'</span> <span class="se">\</span>
     <span class="nt">--no-code</span></code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>TODO: Version checken</p>
 </div>
 <div class="listingblock">
 <div class="title">Projekterstellung mit Maven CLI</div>
@@ -1023,21 +1207,45 @@ TODO: Erklärung</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
-  <span class="na">keycloak</span><span class="pi">:</span> <i class="conum" data-value="1"></i><b>(1)</b>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">keycloak-demo</span> <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">quay.io/keycloak/keycloak:26.0.7</span> <i class="conum" data-value="3"></i><b>(3)</b>
-    <span class="na">environment</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN=admin</span> <i class="conum" data-value="4"></i><b>(4)</b>
-      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN_PASSWORD=admin</span> <i class="conum" data-value="5"></i><b>(5)</b>
+  <span class="na">keycloak</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">keycloak-demo</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="na">build</span><span class="pi">:</span> <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+    <span class="na">environment</span><span class="pi">:</span> <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN=admin</span>
+      <span class="pi">-</span> <span class="s">KEYCLOAK_ADMIN_PASSWORD=admin</span>
 
-      <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT=false</span> <i class="conum" data-value="6"></i><b>(6)</b>
-      <span class="pi">-</span> <span class="s">KC_HTTP_ENABLED=true</span> <i class="conum" data-value="7"></i><b>(7)</b>
-      <span class="pi">-</span> <span class="s">KC_HOSTNAME=localhost</span> <i class="conum" data-value="8"></i><b>(8)</b>
-      <span class="pi">-</span> <span class="s">PROXY_ADDRESS_FORWARDING=true</span> <i class="conum" data-value="9"></i><b>(9)</b>
-      <span class="pi">-</span> <span class="s">KC_HEALTH_ENABLED=true</span> <i class="conum" data-value="10"></i><b>(10)</b>
-    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">start-dev"</span><span class="pi">]</span> <i class="conum" data-value="11"></i><b>(11)</b>
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME_STRICT=false</span>
+      <span class="pi">-</span> <span class="s">KC_HTTP_ENABLED=true</span>
+      <span class="pi">-</span> <span class="s">KC_HOSTNAME=localhost</span>
+
+      <span class="pi">-</span> <span class="s">KC_DB=postgres</span>
+      <span class="pi">-</span> <span class="s">KC_DB_URL=jdbc:postgresql://keycloak-db/db</span>
+      <span class="pi">-</span> <span class="s">KC_DB_USERNAME=app</span>
+      <span class="pi">-</span> <span class="s">KC_DB_PASSWORD=app</span>
+
+      <span class="pi">-</span> <span class="s">KC_HEALTH_ENABLED=true</span>
+      <span class="pi">-</span> <span class="s">KC_METRICS_ENABLED=true</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">start-dev"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">--import-realm"</span><span class="pi">]</span> <i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./import:/opt/keycloak/data/import</span> <i class="conum" data-value="5"></i><b>(5)</b>
+      <span class="pi">-</span> <span class="s">./themes:/opt/keycloak/themes/</span> <i class="conum" data-value="6"></i><b>(6)</b>
     <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span> <i class="conum" data-value="12"></i><b>(12)</b></code></pre>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">keycloak-db</span>
+
+  <span class="na">keycloak-db</span><span class="pi">:</span> <i class="conum" data-value="7"></i><b>(7)</b>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">keycloak-db</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:17.2</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_USER=app</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD=app</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_DB=db</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./keycloak-db/data:/var/lib/postgresql/data</span></code></pre>
 </div>
 </div>
 <details>
@@ -1047,51 +1255,53 @@ TODO: Erklärung</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Der Name des Services</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Der Name des Containers</td>
 </tr>
 <tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Für den Bauvorgang wird ein <code>Dockerfile</code> verwendet</td>
+</tr>
+<tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Es wird die aktuellste Version <code>26.0.7</code> von Keycloak verwendet</td>
+<td><a href="https://www.keycloak.org/server/all-config" target="_blank" rel="noopener">Konfiguration in Keycloak</a></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Umgebungsvariable für den Usernamen des Admins</td>
+<td><code>start-dev</code> um Keycloak Modus starten und <code>--import-realm</code> um einen Realm zu importieren</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Umgebungsvariable für das Passwort des Admins</td>
+<td>Bind mount für eine Realm-JSON Datei</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>TODO</td>
+<td>Bind mount für ein eigenes Theme</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>TODO</td>
+<td>Service für eine Datenbank</td>
 </tr>
+</table>
+</div>
+</div>
+</details>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="dockerfile"><span class="k">FROM</span><span class="w"> </span><span class="s">quay.io/keycloak/keycloak:26.0.2</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="k">RUN </span>/opt/keycloak/bin/kc.sh build
+
+<span class="k">FROM</span><span class="s"> quay.io/keycloak/keycloak:26.0.2 </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="k">COPY</span><span class="s"> --from=builder /opt/keycloak/ /opt/keycloak/</span></code></pre>
+</div>
+</div>
+<details>
+<summary class="title">Erklärung</summary>
+<div class="content">
+<div class="colist arabic">
+<table>
 <tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>TODO</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>TODO</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="10"></i><b>10</b></td>
-<td>TODO</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="11"></i><b>11</b></td>
-<td>TODO</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="12"></i><b>12</b></td>
-<td>Der <strong>interne</strong> Port auf der <strong>rechten</strong> Seite wird auf den <strong>äußeren</strong> Port auf der <strong>linken</strong> Seite gemappt TODO</td>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Es wird die Version <code>26.0.2</code> verwendet, da die neuste Version (<code>26.0.7</code>) Änderungen enthält, welche die <strong>keycloak-admin-rest-client</strong> dependency in Quarkus noch nicht umgesetzt hat. (Stand: 2024-12-15)</td>
 </tr>
 </table>
 </div>
@@ -1139,18 +1349,6 @@ TODO: Erklärung</p>
 </div>
 <div class="sect2">
 <h3 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>5.3. Realm erstellen</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-TODO: Realm Beschreibung
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Um einen <strong>Realm</strong> zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button <code>Create realm</code> klicken.</p>
 </div>
@@ -1190,18 +1388,6 @@ TODO: Realm Beschreibung
 </div>
 <div class="sect2">
 <h3 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>5.4. Quarkus-Client erstellen</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-TODO: Client Beschreibung
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Um einen <strong>Client</strong> zu erstellen, muss man im Clients Tab auf den <code>Create client</code> Button klicken.</p>
 </div>
@@ -1247,13 +1433,23 @@ TODO: Client Beschreibung
 <div class="ulist">
 <ul>
 <li>
-<p><code>Client Authentication</code> auf <code>On</code> (TODO)</p>
+<p><code>Client Authentication</code> auf <code>On</code></p>
 </li>
 <li>
-<p><code>Authorization</code> auf <code>On</code> (TODO)</p>
+<p><code>Authorization</code> auf <code>On</code></p>
 </li>
 <li>
 <p><code>Authentication flow</code> (TODO)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Standard flow</p>
+</li>
+<li>
+<p><span class="line-through">Implicit flow</span>: deprecated</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -1273,21 +1469,11 @@ TODO: Client Beschreibung
 <div class="paragraph">
 <p>TODO</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Standard flow</p>
-</li>
-<li>
-<p><span class="line-through">Implicit flow</span>: deprecated</p>
-</li>
-</ul>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_probe"><a class="anchor" href="#_probe"></a>5.5. Probe</h3>
 <div class="paragraph">
-<p>Nachdem nun ein <strong>Realm</strong> und ein <strong>Client</strong> in Keycloak existieren, können wir den <strong>keycloak-admin-client</strong> ausprobieren.</p>
+<p>Nachdem nun ein <strong>Realm</strong> und ein <strong>Client</strong> in Keycloak existieren, können wir den <strong>keycloak-admin-rest-client</strong> ausprobieren.</p>
 </div>
 <div class="listingblock">
 <div class="title">application.properties</div>
@@ -1332,11 +1518,11 @@ TODO: Client Beschreibung
 <span class="nd">@Path</span><span class="o">(</span><span class="s">"/admin"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RolesResource</span> <span class="o">{</span>
     <span class="nd">@Inject</span>
-    <span class="nc">Keycloak</span> <span class="n">keycloak</span><span class="o">;</span>
+    <span class="nc">Keycloak</span> <span class="n">keycloak</span><span class="o">;</span> <i class="conum" data-value="1"></i><b>(1)</b>
 
     <span class="nd">@GET</span>
     <span class="nd">@Path</span><span class="o">(</span><span class="s">"/roles"</span><span class="o">)</span>
-    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">getRoles</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Response</span> <span class="nf">getRoles</span><span class="o">()</span> <span class="o">{</span> <i class="conum" data-value="2"></i><b>(2)</b>
         <span class="k">return</span> <span class="nc">Response</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span>
             <span class="n">keycloak</span>
                 <span class="o">.</span><span class="na">realm</span><span class="o">(</span><span class="s">"my-realm"</span><span class="o">)</span>
@@ -1347,8 +1533,17 @@ TODO: Client Beschreibung
 <span class="o">}</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>TODO: Erklärung</p>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Ein Keycloak-Objekt wird injiziert.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Endpunkt um alle Rollen des Realms <code>my-realm</code> zu bekommen.</td>
+</tr>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_response"><a class="anchor" href="#_response"></a>5.5.1. Response</h4>
@@ -1371,15 +1566,24 @@ TODO: Client Beschreibung
 <div class="ulist">
 <ul>
 <li>
-<p>password</p>
+<p>Grant type: password</p>
 </li>
 <li>
-<p>client-credentials</p>
+<p>Grant type: client-credentials</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>TODO: grant type erklären</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Ein <strong>grant type</strong> bezeichnet die Art und Weise wie ein Client sich mit Keycloak authentifiziert.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect4">
 <h5 id="_grant_type_password"><a class="anchor" href="#_grant_type_password"></a>Grant type: password</h5>
@@ -1563,11 +1767,17 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div class="paragraph">
 <p>Jetzt werden die 3 default <strong>Realm roles</strong> als Response geliefert.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_zusammenfassung_2"><a class="anchor" href="#_zusammenfassung_2"></a>5.5.6. Zusammenfassung</h4>
-<div class="paragraph">
-<p>TODO</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt muss man in den <code>application.properties</code> den Realm <code>master</code> angeben. In diesem gibt es zusätzliche Rollen, wie <code>Create realm</code> oder auch <code>admin</code> um die Realms zu verwalten.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1582,6 +1792,9 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 <div class="sect1">
 <h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>7. Reverse Proxies</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Autor: <strong>Lukas Sonnleitner</strong></p>
+</div>
 <div class="sect2">
 <h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>7.1. Was ist ein Reverse Proxy?</h3>
 <div class="paragraph">
@@ -2121,6 +2334,9 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 <p><a href="https://jwt.io/" class="bare">https://jwt.io/</a></p>
 </li>
 <li>
+<p><a href="https://medium.com/@nishada/securing-a-javascript-app-using-keycloak-263fdbbc9d02" class="bare">https://medium.com/@nishada/securing-a-javascript-app-using-keycloak-263fdbbc9d02</a></p>
+</li>
+<li>
 <p><a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1" class="bare">https://datatracker.ietf.org/doc/html/rfc7519#section-4.1</a></p>
 </li>
 <li>
@@ -2128,6 +2344,12 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </li>
 <li>
 <p><a href="https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/" class="bare">https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/</a></p>
+</li>
+<li>
+<p><a href="https://stytch.com/blog/jwt-claims/" class="bare">https://stytch.com/blog/jwt-claims/</a></p>
+</li>
+<li>
+<p><a href="https://www.keycloak.org/docs/latest/server_development" class="bare">https://www.keycloak.org/docs/latest/server_development</a></p>
 </li>
 </ul>
 </div>
@@ -2137,7 +2359,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-15 18:48:21 UTC
+Last updated 2024-12-15 20:24:41 UTC
 </div>
 </div>
 </body>
