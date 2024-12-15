@@ -564,6 +564,276 @@ Jetzt werden die 3 default *Realm roles* als Response geliefert.
 ==== Zusammenfassung
 TODO
 
+== Reverse Proxies
+
+
+=== Was ist ein Reverse Proxy?
+
+Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet. +
+Ein Reverse Proxy ist stellvertetend für die Server. +
+Ein Proxy ist stellvertretend für die Clients.
+
+.Reverse Proxy
+image:reverse-proxy.svg[]
+
+.Proxy
+image:proxy.svg[]
+
+=== Warum braucht man einen Reverse Proxy?
+
+* Rate Limiting
+* Routing
+* Authentication
+* Request Validierung
+* Loadbalancing
+* Caching
+
+=== Reverse Proxies im Überblick
+
+[%header, cols="1,1,1,1,1"]
+|===
+|
+|link:https://nginx.org/en/[Nginx^]
+|link:https://traefik.io/[Traefik^]
+|link:https://caddyserver.com/[Caddy^]
+|link:https://github.com/cloudflare/pingora[Pingora^]
+
+|Benutzerfreundlichkeit
+^.^|🟡
+^.^|🟢
+^.^|🟢
+^.^|🔴
+
+|Configuration
+|.conf
+|.yaml +
+.toml +
+docker labels ... +
+link:https://doc.traefik.io/traefik/providers/overview/#supported-providers[Alle Configurations Optionen]
+|Caddyfile +
+.json +
+API
+|Rust
+
+|TLS/Https
+|Manuell / Automatisiert mit Certbot
+|Manuell / Automatisiert mit Certbot
+|Automatisiert
+|Manuell
+
+|Kubernetes 😈
+^.^|🟢
+^.^|🟢
+^.^|🟡 link:https://github.com/caddyserver/ingress[WIP]
+^.^|🟡 link:https://github.com/cloudflare/pingora/issues/41[Issue]
+
+|Language
+^.^|image:c-logo.png[width=40, height=40]
+^.^|image:go-logo.png[width=40, height=40]
+^.^|image:go-logo.png[width=40, height=40]
+^.^|image:rust-logo.png[width=40, height=40]
+|===
+
+==== Nginx Beispiel
+
+.docker-compose.yml
+[source, yaml]
+----
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+  nginx-echo:
+    image: nodstuff/gecho:latest
+    restart: unless-stopped
+----
+
+.conf.d/reverse-proxy.conf
+[source, conf]
+----
+server {
+    listen 80;
+
+    server_name localhost;
+
+    location /some-path {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://nginx-echo:8080/;  # the trailing / is important...
+    }
+}
+
+server {
+    listen 80;
+
+    server_name echo.localhost;
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass http://nginx-echo:8080;
+    }
+}
+----
+
+.nginx.conf
+[source, conf]
+----
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections 768;
+    # multi_accept on;
+}
+
+http {
+
+    ##
+    # Basic Settings
+    ##
+
+    sendfile on;
+    tcp_nopush on;
+    types_hash_max_size 2048;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    ##
+    # SSL Settings
+    ##
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+    ssl_prefer_server_ciphers on;
+
+    ##
+    # Logging Settings
+    ##
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    ##
+    # Gzip Settings
+    ##
+
+    gzip on;
+
+    ##
+    # Cache Settings
+    ##
+
+    proxy_cache_path /var/cache/nginx keys_zone=api-cache:10m;
+
+    ##
+    # Virtual Host Configs
+    ##
+
+    include /etc/nginx/conf.d/*.conf;
+}
+----
+
+==== Traefik Beispiel
+
+.docker-compose.yml
+[source, yaml]
+----
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    environment:
+      - TRAEFIK_API=true
+      - TRAEFIK_API_INSECURE=true
+      - TRAEFIK_PROVIDERS_DOCKER=true
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+      - 8080:8080
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`localhost`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+
+  traefik-echo-1:
+    image: nodstuff/gecho:latest
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.echo-1.rule=Host(`localhost`) && PathPrefix(`/some-path`)
+      - traefik.http.routers.echo-1.middlewares=replace-path@docker
+      - traefik.http.middlewares.replace-path.replacepath.path=/
+      - traefik.http.services.echo-1.loadbalancer.server.port=8080
+
+  traefik-echo-2:
+    image: nodstuff/gecho:latest
+    restart: unless-stopped
+    ports:
+      - 8000:8080
+    labels:
+      - traefik.http.routers.echo-2.rule=Host(`echo.localhost`)
+      # - traefik.http.services.echo.loadbalancer.server.port=8080
+      # not needed because of traefik automatic service discovery magic
+----
+
+==== Caddy Beispiel
+
+.docker-compose.yml
+[source, yaml]
+----
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./config:/etc/caddy
+      - ./data:/data
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp # https://hub.docker.com/_/caddy Linux capabilities
+    restart: unless-stopped
+
+  caddy-echo:
+    image: nodstuff/gecho:latest
+    restart: unless-stopped
+----
+
+.config/Caddyfile
+[source, Caddyfile]
+----
+echo.localhost {
+	reverse_proxy caddy-echo:8080
+}
+
+localhost {
+	handle /some-path*  {
+		uri strip_prefix /some-path
+		reverse_proxy caddy-echo:8080
+	}
+}
+----
+
 == Quellen
 * Keycloak - Identity and Access Management for Modern Applications (Second Edition)
 * https://quarkus.io/guides/security-keycloak-admin-client
@@ -576,3 +846,4 @@ TODO
 * https://goauthentik.io/
 * https://jwt.io/
 * https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
+* https://traefik.io/glossary/reverse-proxy/ (a bissl marketing halluzinationen oba is ned so schlecht)
