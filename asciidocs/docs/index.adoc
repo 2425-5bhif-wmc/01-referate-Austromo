@@ -10,20 +10,11 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
-Standard Flow:
-
-JWT:
-
-* Wie es verschlüsselt worden
-* Payload mit Daten drinnen
-* Signature
-
-Claim ist zB eine E-Mail
-Scope ist eine collection von Claims
-
-*Security* ist ein Begriff, welcher
+*Security* ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von *Benutzeridentitäten* und *Zugriffsrechten* und andererseits der *Netzwerksicherheit* mit Schwerpunkt auf *Reverse Proxies*.
 
 == Authentifizierung und Autorisierung
+Autor: *Moritz V. Gruber*
+
 Authentifizierung durch Eingabe von Username und Passwort → *Wer bin ich?*
 
 Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → *Was darf ich?*
@@ -45,7 +36,17 @@ Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-oauth-2[hier^]
 IMPORTANT: Die Authentifizierung von Benutzern wird bei OAuth 2.0 *nicht* abgedeckt.
 
 image:oauth2-authorization-code-flow.png[]
-TODO: Erklärung
+
+.Erklärung
+[%collapsible]
+====
+. Die [.green]#Applikation# fordert vom [.red]#Browser#, dass er den User zu [.gray]#Keycloak# umleitet.
+. Der [.red]#Browser# leitet den User zu [.gray]#Keycloak# um.
+. [.gray]#Keycloak# authentifiziert den User, falls er noch nicht mit [.gray]#Keycloak# authentifiziert ist.
+. Die [.green]#Applikation# erhält einen Autorisierungscode von [.gray]#Keycloak#.
+. Die [.green]#Applikation# tauscht diesen Autorisierungscode gegen einen *Access-Token* von [.gray]#Keycloak# ein.
+. Dieser Access-Token kann nun genutzt werden um auf *Ressourcen* auf dem [.blue]#Service# zuzugreifen.
+====
 
 === OIDC
 image:oidc-logo.png[width=200]
@@ -58,7 +59,17 @@ image:oidc-logo.png[width=200]
 Mehr Informationen link:https://auth0.com/de/intro-to-iam/what-is-openid-connect-oidc[hier^].
 
 image:oidc-authorization-code-flow.png[]
-TODO: Erklärung
+
+.Erklärung
+[%collapsible]
+====
+. Die [.green]#Applikation# fordert vom [.red]#Browser#, dass er den User zu [.gray]#Keycloak# umleitet.
+. Der [.red]#Browser# leitet den User zu [.gray]#Keycloak# um.
+. [.gray]#Keycloak# authentifiziert den User, falls er noch nicht mit [.gray]#Keycloak# authentifiziert ist.
+. Die [.green]#Applikation# erhält einen Autorisierungscode von [.gray]#Keycloak#.
+. Die [.green]#Applikation# tauscht diesen Autorisierungscode gegen einen *ID-Token* und einen *Access-Token* von [.gray]#Keycloak# ein.
+. Die [.green]#Applikation# verfügt nun über den ID-Token, mit dem sie die Identität des Benutzers ermitteln und eine authentifizierte Sitzung für den User aufbauen kann.
+====
 
 === SAML 2.0
 image:saml-logo.png[width=200]
@@ -76,7 +87,7 @@ image:jwt-logo.svg[width=200]
 [underline]#Bezeichnung#: J~son~ W~eb~ T~oken~
 
 ==== Definition
-*JSON Web Token* ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital *signiert* und sind somit vertrauenswürdig.
+*JSON Web Token* ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital *signiert* und ist somit vertrauenswürdig.
 
 
 
@@ -106,8 +117,8 @@ Dieses JSON wird *Base64* verschlüsselt und macht somit den *ersten* Teil des J
 Die Payload enthält die Claims. *Claims* sind meistens Daten über den User und zusätzliche Daten. Es gibt 3 Arten von Claims:
 
 * *Registered* Claims: Vordefinierte Claims wie z. B. `exp` (expiration time) und noch link:https://datatracker.ietf.org/doc/html/rfc7519#section-4.1[mehr^]
-* *Public* Claims: TODO
-* *Private* Claims: Sind eigens *benutzerdefinierte* Claims, welche für den Informationsaustausch zweier Parteien fungieren.
+* *Public* Claims: Sind eigens *benutzerdefinierte* Claims, welche öffentlich registriert werden. Dabei ist es wichtig darauf zu achten, dass keine Namenskonflikte entstehen.
+* *Private* Claims: Sind eigens *benutzerdefinierte* Claims, welche nicht veröffentlicht werden.
 
 .Beispiel
 [source, json]
@@ -139,7 +150,7 @@ Die Signatur kann sicherstellen, dass die Nachricht nicht von Dritten geändert 
 
 ===== Zusammenfassung:
 
-Das Ergebnis sind 3 Base64 Strings, welche durch einen `.` separiert werden.
+Das Ergebnis sind *3* *Base64* Strings, welche durch einen `.` separiert werden.
 
 Mehr Informationen link:https://jwt.io/introduction[hier^].
 
@@ -184,16 +195,101 @@ IMPORTANT: *Single Sign-On* ist ein Authentifizierungsverfahren, bei dem Benutze
 ^.^|image:python-logo.png[width=40, height=40]
 |===
 
-=== Wichtigste Bestandteile in Keycloak
+=== Wichtige Bestandteile in Keycloak
+==== Realms
+[quote, Keycloak, realm description]
+____
+A *realm* manages a set of users, credentials, roles, and groups. A user belongs to and logs into a realm. Realms are isolated from one another and can only manage and authenticate the users that they control.
+____
+
+==== Clients
+[quote, Keycloak, client description]
+____
+*Clients* are applications and services that can request authentication of a user.
+____
+
+==== Realm roles
+[quote, Keycloak, realm role description]
+____
+*Realm roles* are the roles that you define for use in the current realm.
+____
+
+==== Users
+[quote, Keycloak, user description]
+____
+*Users* are the users in the current realm.
+____
+
+==== Groups
+[quote, Keycloak, group description]
+____
+A *group* is a set of attributes and role mappings that can be applied to a user.
+____
+
+==== Sessions
+[quote, Keycloak, session description]
+____
+*Sessions* are sessions of users in this realm and the clients that they access within the session.
+____
 
 === Custom Theme
+Keycloak bietet eine Möglichkeit *custom Ttyles* in Form von *css* zu verwenden. Dafür benötigt man eine Datei namens `theme.properties` und natürlich ein `styles.css`.
+
+.theme.properties
+[source, properties]
+----
+parent=keycloak <.>
+import=common/keycloak <.>
+styles=css/login.css css/styles.css <.>
+----
+<.> Das parent theme auf dem das custom Theme aufbaut
+<.> Mit dem `import` können common Ressourcen importiert werden
+<.> Alle hier angegeben Stylesheets werden für das custom Theme angewandt
+
+.styles.css
+[source, css]
+----
+h1 {
+    color: red;
+}
+----
+
+Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem `docker-compose.yml` anlegen:
+
+image:custom-theme-folder-structure.png[]
+
+Nun müssen wir noch einen bind mount anlegen:
+
+[source, yaml]
+----
+services:
+  keycloak:
+    # ...
+    volumes:
+      - ./themes:/opt/keycloak/themes/
+    # ...
+----
+
+Nachdem man den Keycloak startet, kann man unter `<realm-name>` -> `Realm settings` -> `Themes` sein eigenes Theme auswählen.
+
+.Vorher
+[%collapsible]
+====
+image:keycloak-v2-theme.png[]
+====
+
+.Nachher
+[%collapsible]
+====
+image:keycloak-custom-theme.png[]
+====
+
+Mehr zu custom Themes link:https://www.keycloak.org/docs/latest/server_development/#_themes[hier^].
 
 == Keycloak mit dem quarkus-keycloak-admin-rest-client
 Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet. Der Rest-Client sendet Requests an die link:https://www.keycloak.org/docs-api/latest/rest-api/index.html[`Keycloak Admin REST API`^].
 
 === Projekterstellung
-TODO: restlichen dependencies hinzufügen
-
 .Projekterstellung mit Quarkus CLI
 [source, shell]
 ----
@@ -201,8 +297,6 @@ quarkus create app at.htl:security-keycloak-admin-client \
     --extension='keycloak-admin-rest-client,rest-jackson' \
     --no-code
 ----
-
-TODO: Version checken
 
 .Projekterstellung mit Maven CLI
 [source, shell]
@@ -257,37 +351,70 @@ touch docker-compose.yml
 [source, yaml]
 ----
 services:
-  keycloak: #<.>
+  keycloak:
     container_name: keycloak-demo #<.>
-    image: quay.io/keycloak/keycloak:26.0.7 #<.>
-    environment:
-      - KEYCLOAK_ADMIN=admin #<.>
-      - KEYCLOAK_ADMIN_PASSWORD=admin #<.>
+    build: #<.>
+      context: .
+      dockerfile: Dockerfile
+    environment: #<.>
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
 
-      - KC_HOSTNAME_STRICT=false #<.>
-      - KC_HTTP_ENABLED=true #<.>
-      - KC_HOSTNAME=localhost #<.>
-      - PROXY_ADDRESS_FORWARDING=true #<.>
-      - KC_HEALTH_ENABLED=true #<.>
-    command: ["start-dev"] #<.>
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME=localhost
+
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak-db/db
+      - KC_DB_USERNAME=app
+      - KC_DB_PASSWORD=app
+
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+    command: ["start-dev", "--import-realm"] #<.>
+    volumes:
+      - ./import:/opt/keycloak/data/import #<.>
+      - ./themes:/opt/keycloak/themes/ #<.>
     ports:
-      - "8000:8080" #<.>
+      - "8000:8080"
+    depends_on:
+      - keycloak-db
+
+  keycloak-db: #<.>
+    container_name: keycloak-db
+    image: postgres:17.2
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=app
+      - POSTGRES_DB=db
+    volumes:
+      - ./keycloak-db/data:/var/lib/postgresql/data
 ----
 .Erklärung
 [%collapsible]
 ====
-<.> Der Name des Services
 <.> Der Name des Containers
-<.> Es wird die aktuellste Version `26.0.7` von Keycloak verwendet
-<.> Umgebungsvariable für den Usernamen des Admins
-<.> Umgebungsvariable für das Passwort des Admins
-<.> TODO
-<.> TODO
-<.> TODO
-<.> TODO
-<.> TODO
-<.> TODO
-<.> Der *interne* Port auf der *rechten* Seite wird auf den *äußeren* Port auf der *linken* Seite gemappt TODO
+<.> Für den Bauvorgang wird ein `Dockerfile` verwendet
+<.> link:https://www.keycloak.org/server/all-config[Konfiguration in Keycloak^]
+<.> `start-dev` um Keycloak Modus starten und `--import-realm` um einen Realm zu importieren
+<.> Bind mount für eine Realm-JSON Datei
+<.> Bind mount für ein eigenes Theme
+<.> Service für eine Datenbank
+====
+
+[source, dockerfile]
+----
+FROM quay.io/keycloak/keycloak:26.0.2 AS builder <1>
+RUN /opt/keycloak/bin/kc.sh build
+
+FROM quay.io/keycloak/keycloak:26.0.2 <1>
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+----
+.Erklärung
+[%collapsible]
+====
+<1> Es wird die Version `26.0.2` verwendet, da die neuste Version (`26.0.7`) Änderungen enthält, welche die *keycloak-admin-rest-client* dependency in Quarkus noch nicht umgesetzt hat. (Stand: 2024-12-15)
 ====
 
 * Den Container mit folgendem Befehl starten
@@ -312,9 +439,6 @@ image::keycloak-admin-console.png[]
 ====
 
 === Realm erstellen
-
-IMPORTANT: TODO: Realm Beschreibung
-
 Um einen *Realm* zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button `Create realm` klicken.
 
 .Realm erstellen Button
@@ -334,9 +458,6 @@ image::keycloak-create-realm-window.png[]
 ====
 
 === Quarkus-Client erstellen
-
-IMPORTANT: TODO: Client Beschreibung
-
 Um einen *Client* zu erstellen, muss man im Clients Tab auf den `Create client` Button klicken.
 
 .Client erstellen
@@ -359,9 +480,11 @@ image::keycloak-create-client-general-settings.png[]
 
 *Capability config*
 
-* `Client Authentication` auf `On` (TODO)
-* `Authorization` auf `On` (TODO)
+* `Client Authentication` auf `On`
+* `Authorization` auf `On`
 * `Authentication flow` (TODO)
+** Standard flow
+** [line-through]#Implicit flow#: deprecated
 
 .Client erstellen - Capability config
 [%collapsible]
@@ -373,11 +496,8 @@ image::keycloak-create-client-capability-config.png[]
 
 TODO
 
-* Standard flow
-* [line-through]#Implicit flow#: deprecated
-
 === Probe
-Nachdem nun ein *Realm* und ein *Client* in Keycloak existieren, können wir den *keycloak-admin-client* ausprobieren.
+Nachdem nun ein *Realm* und ein *Client* in Keycloak existieren, können wir den *keycloak-admin-rest-client* ausprobieren.
 
 .application.properties
 [source, properties]
@@ -406,11 +526,11 @@ import org.keycloak.admin.client.Keycloak;
 @Path("/admin")
 public class RolesResource {
     @Inject
-    Keycloak keycloak;
+    Keycloak keycloak; //<.>
 
     @GET
     @Path("/roles")
-    public Response getRoles() {
+    public Response getRoles() { //<.>
         return Response.ok(
             keycloak
                 .realm("my-realm")
@@ -420,7 +540,8 @@ public class RolesResource {
     }
 }
 ----
-TODO: Erklärung
+<.> Ein Keycloak-Objekt wird injiziert.
+<.> Endpunkt um alle Rollen des Realms `my-realm` zu bekommen.
 
 ==== Response
 [source, json]
@@ -435,10 +556,10 @@ Der Keycloak-Server gibt eine *401 - Unauthorized* Response zurück. Um dies zu 
 ==== Authentifizierung
 Es gibt 2 Möglichkeiten zur Authentifizierung mit dem *keycloak-admin-client*.
 
-* password
-* client-credentials
+* Grant type: password
+* Grant type: client-credentials
 
-TODO: grant type erklären
+IMPORTANT: Ein *grant type* bezeichnet die Art und Weise wie ein Client sich mit Keycloak authentifiziert.
 
 ===== Grant type: password
 .application.properties
@@ -561,12 +682,12 @@ image:keycloak-client-roles.png[]]
 
 Jetzt werden die 3 default *Realm roles* als Response geliefert.
 
-==== Zusammenfassung
-TODO
+CAUTION: Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt muss man in den `application.properties` den Realm `master` angeben. In diesem gibt es zusätzliche Rollen, wie `Create realm` oder auch `admin` um die Realms zu verwalten.
 
 == Demo
 
 == Reverse Proxies
+Autor: *Lukas Sonnleitner*
 
 === Was ist ein Reverse Proxy?
 
@@ -958,6 +1079,9 @@ image:trust-me-bro.jpg[]
 * https://www.keycloak.org/
 * https://goauthentik.io/
 * https://jwt.io/
+* https://medium.com/@nishada/securing-a-javascript-app-using-keycloak-263fdbbc9d02
 * https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
 * https://traefik.io/glossary/reverse-proxy/ (a bissl marketing halluzinationen oba is ned so schlecht)
 * https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/
+* https://stytch.com/blog/jwt-claims/
+* https://www.keycloak.org/docs/latest/server_development
