@@ -184,7 +184,7 @@ IMPORTANT: *Single Sign-On* ist ein Authentifizierungsverfahren, bei dem Benutze
 ^.^|image:python-logo.png[width=40, height=40]
 |===
 
-=== Wichtigste Bestandteile in Keycloak
+=== Wichtige Bestandteile in Keycloak
 
 === Custom Theme
 
@@ -253,6 +253,8 @@ touch docker-compose.yml
 ----
 
 * Das `docker-compose.yml` mit folgendem Code befüllen
+
+TODO: 26.0.2 und warum
 
 [source, yaml]
 ----
@@ -563,6 +565,8 @@ Jetzt werden die 3 default *Realm roles* als Response geliefert.
 
 ==== Zusammenfassung
 TODO
+
+== Demo
 
 == Quellen
 * Keycloak - Identity and Access Management for Modern Applications (Second Edition)
