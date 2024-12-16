@@ -565,7 +565,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-15</span>
+<span id="revdate">2024-12-16</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -585,7 +585,6 @@ pre.rouge .gs {
 <li><a href="#_was_ist_keycloak">4.1. Was ist Keycloak?</a></li>
 <li><a href="#_alternativen">4.2. Alternativen</a></li>
 <li><a href="#_wichtige_bestandteile_in_keycloak">4.3. Wichtige Bestandteile in Keycloak</a></li>
-<li><a href="#_custom_theme">4.4. Custom Theme</a></li>
 </ul>
 </li>
 <li><a href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client">5. Keycloak mit dem quarkus-keycloak-admin-rest-client</a>
@@ -597,16 +596,17 @@ pre.rouge .gs {
 <li><a href="#_probe">5.5. Probe</a></li>
 </ul>
 </li>
-<li><a href="#_demo">6. Demo</a></li>
-<li><a href="#_reverse_proxies">7. Reverse Proxies</a>
+<li><a href="#_custom_theme">6. Custom Theme</a></li>
+<li><a href="#_demo">7. Demo</a></li>
+<li><a href="#_reverse_proxies">8. Reverse Proxies</a>
 <ul class="sectlevel2">
-<li><a href="#_was_ist_ein_reverse_proxy">7.1. Was ist ein Reverse Proxy?</a></li>
-<li><a href="#_warum_braucht_man_einen_reverse_proxy">7.2. Warum braucht man einen Reverse Proxy?</a></li>
-<li><a href="#_reverse_proxies_im_überblick">7.3. Reverse Proxies im Überblick</a></li>
-<li><a href="#_tls_warum_brauch_i_sowas">7.4. TLS? Warum brauch i sowas.</a></li>
+<li><a href="#_was_ist_ein_reverse_proxy">8.1. Was ist ein Reverse Proxy?</a></li>
+<li><a href="#_warum_braucht_man_einen_reverse_proxy">8.2. Warum braucht man einen Reverse Proxy?</a></li>
+<li><a href="#_reverse_proxies_im_überblick">8.3. Reverse Proxies im Überblick</a></li>
+<li><a href="#_tls_warum_brauch_i_sowas">8.4. TLS? Warum brauch i sowas.</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">8. Quellen</a></li>
+<li><a href="#_quellen">9. Quellen</a></li>
 </ul>
 </div>
 </div>
@@ -1039,85 +1039,6 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 <cite>session description</cite>
 </div>
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_custom_theme"><a class="anchor" href="#_custom_theme"></a>4.4. Custom Theme</h3>
-<div class="paragraph">
-<p>Keycloak bietet eine Möglichkeit <strong>custom Ttyles</strong> in Form von <strong>css</strong> zu verwenden. Dafür benötigt man eine Datei namens <code>theme.properties</code> und natürlich ein <code>styles.css</code>.</p>
-</div>
-<div class="listingblock">
-<div class="title">theme.properties</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="properties"><span class="py">parent</span><span class="p">=</span><span class="s">keycloak </span><i class="conum" data-value="1"></i><b>(1)</b>
-<span class="py">import</span><span class="p">=</span><span class="s">common/keycloak </span><i class="conum" data-value="2"></i><b>(2)</b>
-<span class="py">styles</span><span class="p">=</span><span class="s">css/login.css css/styles.css </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Das parent theme auf dem das custom Theme aufbaut</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Mit dem <code>import</code> können common Ressourcen importiert werden</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Alle hier angegeben Stylesheets werden für das custom Theme angewandt</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">styles.css</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
-    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
-<span class="p">}</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem <code>docker-compose.yml</code> anlegen:</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="images/custom-theme-folder-structure.png" alt="custom theme folder structure"></span></p>
-</div>
-<div class="paragraph">
-<p>Nun müssen wir noch einen bind mount anlegen:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
-  <span class="na">keycloak</span><span class="pi">:</span>
-    <span class="c1"># ...</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">./themes:/opt/keycloak/themes/</span>
-    <span class="c1"># ...</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Nachdem man den Keycloak startet, kann man unter <code>&lt;realm-name&gt;</code> &#8594; <code>Realm settings</code> &#8594; <code>Themes</code> sein eigenes Theme auswählen.</p>
-</div>
-<details>
-<summary class="title">Vorher</summary>
-<div class="content">
-<div class="paragraph">
-<p><span class="image"><img src="images/keycloak-v2-theme.png" alt="keycloak v2 theme"></span></p>
-</div>
-</div>
-</details>
-<details>
-<summary class="title">Nachher</summary>
-<div class="content">
-<div class="paragraph">
-<p><span class="image"><img src="images/keycloak-custom-theme.png" alt="keycloak custom theme"></span></p>
-</div>
-</div>
-</details>
-<div class="paragraph">
-<p>Mehr zu custom Themes <a href="https://www.keycloak.org/docs/latest/server_development/#_themes" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 </div>
 </div>
@@ -1784,19 +1705,100 @@ Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt mu
 </div>
 </div>
 <div class="sect1">
-<h2 id="_demo"><a class="anchor" href="#_demo"></a>6. Demo</h2>
+<h2 id="_custom_theme"><a class="anchor" href="#_custom_theme"></a>6. Custom Theme</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keycloak bietet eine Möglichkeit <strong>custom Themes</strong> in Form von <strong>css</strong> zu verwenden. Dafür benötigt man eine Datei namens <code>theme.properties</code> und natürlich ein <code>styles.css</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">theme.properties</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="py">parent</span><span class="p">=</span><span class="s">keycloak </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="py">import</span><span class="p">=</span><span class="s">common/keycloak </span><i class="conum" data-value="2"></i><b>(2)</b>
+<span class="py">styles</span><span class="p">=</span><span class="s">css/login.css css/styles.css </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Das parent theme auf dem das custom Theme aufbaut</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Mit dem <code>import</code> können common Ressourcen importiert werden</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Alle hier angegeben Stylesheets werden für das custom Theme angewandt</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">styles.css</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem <code>docker-compose.yml</code> anlegen:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom-theme-folder-structure.png" alt="custom theme folder structure"></span></p>
+</div>
+<div class="paragraph">
+<p>Nun müssen wir noch einen bind mount anlegen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">keycloak</span><span class="pi">:</span>
+    <span class="c1"># ...</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./themes:/opt/keycloak/themes/</span>
+    <span class="c1"># ...</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nachdem man den Keycloak startet, kann man unter <code>&lt;realm-name&gt;</code> &#8594; <code>Realm settings</code> &#8594; <code>Themes</code> sein eigenes Theme auswählen.</p>
+</div>
+<details>
+<summary class="title">Vorher</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-v2-theme.png" alt="keycloak v2 theme"></span></p>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Nachher</summary>
+<div class="content">
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-custom-theme.png" alt="keycloak custom theme"></span></p>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>Mehr zu custom Themes <a href="https://www.keycloak.org/docs/latest/server_development/#_themes" target="_blank" rel="noopener">hier</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_demo"><a class="anchor" href="#_demo"></a>7. Demo</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>7. Reverse Proxies</h2>
+<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>8. Reverse Proxies</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Autor: <strong>Lukas Sonnleitner</strong></p>
 </div>
 <div class="sect2">
-<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>7.1. Was ist ein Reverse Proxy?</h3>
+<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>8.1. Was ist ein Reverse Proxy?</h3>
 <div class="paragraph">
 <p>Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet.<br>
 Ein Reverse Proxy ist stellvertetend für die Server.<br>
@@ -1812,7 +1814,7 @@ Ein Proxy ist stellvertretend für die Clients.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>7.2. Warum braucht man einen Reverse Proxy?</h3>
+<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>8.2. Warum braucht man einen Reverse Proxy?</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1840,7 +1842,7 @@ Ein Proxy ist stellvertretend für die Clients.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>7.3. Reverse Proxies im Überblick</h3>
+<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>8.3. Reverse Proxies im Überblick</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -1902,7 +1904,7 @@ API</p></td>
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>7.3.1. Nginx Beispiel</h4>
+<h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>8.3.1. Nginx Beispiel</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2049,7 +2051,7 @@ API</p></td>
 </details>
 </div>
 <div class="sect3">
-<h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>7.3.2. Traefik Beispiel</h4>
+<h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>8.3.2. Traefik Beispiel</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2130,7 +2132,7 @@ API</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_caddy_beispiel"><a class="anchor" href="#_caddy_beispiel"></a>7.3.3. Caddy Beispiel</h4>
+<h4 id="_caddy_beispiel"><a class="anchor" href="#_caddy_beispiel"></a>8.3.3. Caddy Beispiel</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2196,13 +2198,13 @@ In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Autho
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tls_warum_brauch_i_sowas"><a class="anchor" href="#_tls_warum_brauch_i_sowas"></a>7.4. TLS? Warum brauch i sowas.</h3>
+<h3 id="_tls_warum_brauch_i_sowas"><a class="anchor" href="#_tls_warum_brauch_i_sowas"></a>8.4. TLS? Warum brauch i sowas.</h3>
 <div class="paragraph">
 <p>TLS oder auch *T*ransport *L*ayer *S*ecurity ist ein Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet.<br>
 <a href="https://tls13.xargs.org/#open-all">Wie funktioniert der genau?</a></p>
 </div>
 <div class="sect3">
-<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>7.4.1. Wie bekomme ich so ein Zertifikat?</h4>
+<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>8.4.1. Wie bekomme ich so ein Zertifikat?</h4>
 <div class="paragraph">
 <p>Ganz einfach. Selber machen.</p>
 </div>
@@ -2237,7 +2239,7 @@ DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>7.4.2. Suppa. Wie benutzt ich das jetzt?</h4>
+<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>8.4.2. Suppa. Wie benutzt ich das jetzt?</h4>
 <div class="listingblock">
 <div class="title">conf.d/reverse-proxy.conf</div>
 <div class="content">
@@ -2299,7 +2301,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>8. Quellen</h2>
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>9. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -2359,7 +2361,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-15 20:24:41 UTC
+Last updated 2024-12-16 22:55:22 UTC
 </div>
 </div>
 </body>
