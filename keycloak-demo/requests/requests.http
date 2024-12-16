@@ -2,6 +2,26 @@
 GET http://localhost:8080/admin/roles
 Content-Type: */*
 
+### Create realm role
+POST http://localhost:8080/admin/roles/new-role
+Content-Type: */*
+
+### Delete realm role
+DELETE http://localhost:8080/admin/roles/new-role
+Content-Type: */*
+
+### Get users
+GET http://localhost:8080/admin/users
+Content-Type: */*
+
+### Create user
+POST http://localhost:8080/admin/users/new-user
+Content-Type: */*
+
+### Delete user
+DELETE http://localhost:8080/admin/users/new-user
+Content-Type: */*
+
 ### Get realms
 GET http://localhost:8080/admin/realms
 Content-Type: */*

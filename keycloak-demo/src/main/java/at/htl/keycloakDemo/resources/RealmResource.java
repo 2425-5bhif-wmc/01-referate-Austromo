@@ -1,6 +1,6 @@
 package at.htl.keycloakDemo.resources;
 
-import io.quarkus.logging.Log;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -30,14 +30,15 @@ public class RealmResource {
         realmRepresentation.setRealm(realmName);
         realmRepresentation.setEnabled(true);
 
-
         keycloak.realms().create(realmRepresentation);
         return Response.ok().build();
     }
 
     @DELETE
     @Path("/{realmName}")
+    @RolesAllowed("custom-admin")
     public Response deleteRealm(@PathParam("realmName") String realmName) {
+        //Log.error(keycloak.realms().findAll().stream().map(RealmRepresentation::getRealm).filter(r -> r.equals(realmName)).findFirst().orElse(null));
         keycloak.realms().realm(realmName).remove();
         return Response.ok().build();
     }
@@ -54,13 +55,7 @@ public class RealmResource {
         clientRepresentation.setEnabled(true);
         clientRepresentation.setAlwaysDisplayInConsole(true);
 
-        try {
-            keycloak.realm(realmName).clients().create(clientRepresentation);
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Realm doesn't exist").build();
-        }
-
-        return Response.ok().build();
+        return keycloak.realm(realmName).clients().create(clientRepresentation);
     }
 
     @DELETE
@@ -68,13 +63,7 @@ public class RealmResource {
     public Response deleteClientInRealm(@PathParam("realmName") String realmName, @PathParam("clientName") String clientName) {
         if (realmName == null || clientName == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        } else if (keycloak.realm(realmName) == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Realm doesn't exist").build();
-        } else if (keycloak.realm(realmName).clients().get(clientName) == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Client doesn't exist").build();
         }
-
-        Log.error(keycloak.realm(realmName).clients().get(clientName));
 
         keycloak.realm(realmName).clients().get(clientName).remove();
         return Response.ok().build();
