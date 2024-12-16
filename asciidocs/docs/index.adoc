@@ -232,60 +232,6 @@ ____
 *Sessions* are sessions of users in this realm and the clients that they access within the session.
 ____
 
-=== Custom Theme
-Keycloak bietet eine Möglichkeit *custom Ttyles* in Form von *css* zu verwenden. Dafür benötigt man eine Datei namens `theme.properties` und natürlich ein `styles.css`.
-
-.theme.properties
-[source, properties]
-----
-parent=keycloak <.>
-import=common/keycloak <.>
-styles=css/login.css css/styles.css <.>
-----
-<.> Das parent theme auf dem das custom Theme aufbaut
-<.> Mit dem `import` können common Ressourcen importiert werden
-<.> Alle hier angegeben Stylesheets werden für das custom Theme angewandt
-
-.styles.css
-[source, css]
-----
-h1 {
-    color: red;
-}
-----
-
-Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem `docker-compose.yml` anlegen:
-
-image:custom-theme-folder-structure.png[]
-
-Nun müssen wir noch einen bind mount anlegen:
-
-[source, yaml]
-----
-services:
-  keycloak:
-    # ...
-    volumes:
-      - ./themes:/opt/keycloak/themes/
-    # ...
-----
-
-Nachdem man den Keycloak startet, kann man unter `<realm-name>` -> `Realm settings` -> `Themes` sein eigenes Theme auswählen.
-
-.Vorher
-[%collapsible]
-====
-image:keycloak-v2-theme.png[]
-====
-
-.Nachher
-[%collapsible]
-====
-image:keycloak-custom-theme.png[]
-====
-
-Mehr zu custom Themes link:https://www.keycloak.org/docs/latest/server_development/#_themes[hier^].
-
 == Keycloak mit dem quarkus-keycloak-admin-rest-client
 Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet. Der Rest-Client sendet Requests an die link:https://www.keycloak.org/docs-api/latest/rest-api/index.html[`Keycloak Admin REST API`^].
 
@@ -683,6 +629,60 @@ image:keycloak-client-roles.png[]]
 Jetzt werden die 3 default *Realm roles* als Response geliefert.
 
 CAUTION: Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt muss man in den `application.properties` den Realm `master` angeben. In diesem gibt es zusätzliche Rollen, wie `Create realm` oder auch `admin` um die Realms zu verwalten.
+
+== Custom Theme
+Keycloak bietet eine Möglichkeit *custom Themes* in Form von *css* zu verwenden. Dafür benötigt man eine Datei namens `theme.properties` und natürlich ein `styles.css`.
+
+.theme.properties
+[source, properties]
+----
+parent=keycloak <.>
+import=common/keycloak <.>
+styles=css/login.css css/styles.css <.>
+----
+<.> Das parent theme auf dem das custom Theme aufbaut
+<.> Mit dem `import` können common Ressourcen importiert werden
+<.> Alle hier angegeben Stylesheets werden für das custom Theme angewandt
+
+.styles.css
+[source, css]
+----
+h1 {
+    color: red;
+}
+----
+
+Um dieses Theme nun in Keycloak verwenden zu können müssen wir eine spezifische Ordnerstruktur neben unserem `docker-compose.yml` anlegen:
+
+image:custom-theme-folder-structure.png[]
+
+Nun müssen wir noch einen bind mount anlegen:
+
+[source, yaml]
+----
+services:
+  keycloak:
+    # ...
+    volumes:
+      - ./themes:/opt/keycloak/themes/
+    # ...
+----
+
+Nachdem man den Keycloak startet, kann man unter `<realm-name>` -> `Realm settings` -> `Themes` sein eigenes Theme auswählen.
+
+.Vorher
+[%collapsible]
+====
+image:keycloak-v2-theme.png[]
+====
+
+.Nachher
+[%collapsible]
+====
+image:keycloak-custom-theme.png[]
+====
+
+Mehr zu custom Themes link:https://www.keycloak.org/docs/latest/server_development/#_themes[hier^].
 
 == Demo
 
