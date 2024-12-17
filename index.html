@@ -565,7 +565,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-16</span>
+<span id="revdate">2024-12-17</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -1905,6 +1905,9 @@ API</p></td>
 </table>
 <div class="sect3">
 <h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>8.3.1. Nginx Beispiel</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/reverse-proxy-demo.svg" alt="reverse proxy demo"></span></p>
+</div>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2291,10 +2294,276 @@ Dafür braucht man eine Öffentliche Domain, welche auf den Server zeigt, auf de
 </div>
 <div class="paragraph">
 <p>Ein selbstsigniertes Zertifikat bedeutet, dass der Server selbst behauptet, seine Identität und Inhalte seien vertrauenswürdig.<br>
-Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine CA die validität versichern kann.</p>
+Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine CA die Validität versichern kann.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="images/trust-me-bro.jpg" alt="trust me bro"></span></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_was_ist_eine_certifcate_authority"><a class="anchor" href="#_was_ist_eine_certifcate_authority"></a>8.4.3. Was ist eine Certifcate Authority</h4>
+<div class="paragraph">
+<p>Eine Certificate Authority (Zertifikat Authorität), ist ein Unternehmen oder eine Organisation, die die Validität von Websiten, E-Mail-Adressen etc mithilfe von Zertifikaten sicherstellt, welche an kryptografische Schlüssel gebunden sind.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>DigiCert $26 p.M. <a href="https://www.digicert.com">🤑</a></p>
+</li>
+<li>
+<p>Sectigo $67 p.a. <a href="https://www.sectigo.com/ssl-certificates-tls/compare">🤑</a></p>
+</li>
+<li>
+<p>Let’s Encrypt <a href="https://letsencrypt.org/">🦁</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Warum ein Zertifikat kaufen, wenn man es auch kostenlos bekommen kann?</p>
+</div>
+<div class="paragraph">
+<p>TODO: Certificate Validation</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_certbot"><a class="anchor" href="#_certbot"></a>8.4.4. Certbot</h4>
+<div class="paragraph">
+<p>Certbot ist ein cli-tool, welches Zertifikate von Lets Encrypt holt.<br>
+Für die bequemlichkeit benutzen wir Certbot mit docker compose.</p>
+</div>
+<div class="paragraph">
+<p>TODO: ACME</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Voraussetzungen</div>
+<div class="ulist">
+<ul>
+<li>
+<p>eine <strong>Domain</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>optional: eine statische IP Adresse</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Port <strong>80</strong> und <strong>443</strong> offen</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In diesem Beispiel ist <strong>DOMAIN</strong> ein platzhalter für die wirkliche Domain.</p>
+</div>
+<div class="listingblock">
+<div class="title">docker-compose.yml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">nginx</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:latest</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="pi">-</span> <span class="s">443:443</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./conf.d:/etc/nginx/conf.d:ro</span>
+      <span class="pi">-</span> <span class="s">./nginx.conf:/etc/nginx/nginx.conf:ro</span>
+      <span class="pi">-</span> <span class="s">./certbot/www:/var/www/certbot:ro</span>
+      <span class="pi">-</span> <span class="s">./certbot/conf:/etc/letsencrypt:ro</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+
+  <span class="na">certbot</span><span class="pi">:</span>
+    <span class="na">profiles</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">certbot</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">cerbot</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">certbot/certbot</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./certbot/www:/var/www/certbot:rw</span>
+      <span class="pi">-</span> <span class="s">./certbot/conf:/etc/letsencrypt:rw</span>
+
+  <span class="na">nginx-echo</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nodstuff/gecho:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Ich benutze hier Profiles damit bei dem <code>docker compose up</code> command der Certbot Container nicht mit gestartet wird.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">conf.d/reverse-proxy.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="s">server {</span>
+    <span class="s">listen 80;</span>
+
+    <span class="s">server_name _;</span>
+
+    <span class="s">location /.well-known/acme-challenge/ {</span>
+        <span class="s">root /var/www/certbot;</span>
+    <span class="s">}</span>
+<span class="err">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">nginx.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><span class="s">user www-data;</span>
+<span class="s">worker_processes auto;</span>
+<span class="s">pid /run/nginx.pid;</span>
+
+<span class="s">include /etc/nginx/modules-enabled/*.conf;</span>
+
+<span class="s">events {</span>
+    <span class="s">worker_connections 768;</span>
+    <span class="s"># multi_accept on;</span>
+<span class="err">}</span>
+
+<span class="s">http {</span>
+
+    <span class="s">##</span>
+    <span class="s"># Basic Settings</span>
+    <span class="s">##</span>
+
+    <span class="s">sendfile on;</span>
+    <span class="s">tcp_nopush on;</span>
+    <span class="s">types_hash_max_size 2048;</span>
+
+    <span class="s">include /etc/nginx/mime.types;</span>
+    <span class="s">default_type application/octet-stream;</span>
+
+    <span class="s">##</span>
+    <span class="s"># SSL Settings</span>
+    <span class="s">##</span>
+
+    <span class="s">ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span> <span class="c1"># Dropping SSLv3, ref: POODLE</span>
+    <span class="s">ssl_prefer_server_ciphers on;</span>
+
+    <span class="s">##</span>
+    <span class="s"># Logging Settings</span>
+    <span class="s">##</span>
+
+    <span class="s">access_log /var/log/nginx/access.log;</span>
+    <span class="s">error_log /var/log/nginx/error.log;</span>
+
+    <span class="s">##</span>
+    <span class="s"># Gzip Settings</span>
+    <span class="s">##</span>
+
+    <span class="s">gzip on;</span>
+
+    <span class="s">##</span>
+    <span class="s"># Cache Settings</span>
+    <span class="s">##</span>
+
+    <span class="s">proxy_cache_path /var/cache/nginx keys_zone=api-cache:10m;</span>
+
+    <span class="s">##</span>
+    <span class="s"># Virtual Host Configs</span>
+    <span class="s">##</span>
+
+    <span class="s">include /etc/nginx/conf.d/*.conf;</span>
+<span class="err">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mit <code>docker compose up -d</code> werden die services gestartet.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">DOMAINS</span><span class="o">=</span>DOMAIN,SUB.DOMAIN... docker compose run <span class="nt">--rm</span> certbot certonly <span class="se">\</span>
+	<span class="nt">--webroot</span> <span class="nt">--webroot-path</span> /var/www/certbot <span class="se">\</span>
+	<span class="nt">--dry-run</span> <span class="se">\</span>
+	<span class="nt">-d</span> <span class="nv">$DOMAINS</span> <span class="se">\</span>
+	<span class="nt">--register-unsafely-without-email</span> <span class="nt">--agree-tos</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dieser Command startet den certbot service und testet ob die Austellung eines Zertifikates möglich ist.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">DOMAINS</span><span class="o">=</span>DOMAIN,SUB.DOMAIN... docker compose run <span class="nt">--rm</span> certbot certonly <span class="se">\</span>
+	<span class="nt">--webroot</span> <span class="nt">--webroot-path</span> /var/www/certbot <span class="se">\</span>
+	<span class="nt">-d</span> <span class="nv">$DOMAINS</span> <span class="se">\</span>
+	<span class="nt">--register-unsafely-without-email</span> <span class="nt">--agree-tos</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/certbot-get-certificate.png" alt="certbot get certificate"></span></p>
+</div>
+<div class="paragraph">
+<p>Die Zertifikate findet man unter <code>/etc/letsencrypt/live/DOMAIN/</code><br>
+Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</p>
+</div>
+<div class="listingblock">
+<div class="title">conf.d/reverse-proxy.conf</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="conf"><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+
+    <span class="n">server_name</span> <span class="err">_</span>;
+
+    <span class="n">location</span> /.<span class="n">well</span>-<span class="n">known</span>/<span class="n">acme</span>-<span class="n">challenge</span>/ {
+        <span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">certbot</span>;
+    }
+
+    <span class="n">return</span> <span class="m">301</span> <span class="n">https</span>://$<span class="n">host</span>$<span class="n">request_uri</span>;
+}
+
+<span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span>;
+
+    <span class="n">server_name</span> <span class="n">DOMAIN</span>;
+
+    <span class="n">ssl_certificate</span> /<span class="n">etc</span>/<span class="n">letsencrypt</span>/<span class="n">live</span>/<span class="n">DOMAIN</span>/<span class="n">fullchain</span>.<span class="n">pem</span>;
+    <span class="n">ssl_certificate_key</span> /<span class="n">etc</span>/<span class="n">letsencrypt</span>/<span class="n">live</span>/<span class="n">DOMAIN</span>/<span class="n">privkey</span>.<span class="n">pem</span>;
+
+    <span class="n">location</span> /<span class="n">some</span>-<span class="n">path</span>/ {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>/;  <span class="c"># the trailing / is important...
+</span>    }
+}
+
+<span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span>;
+
+    <span class="n">server_name</span> <span class="n">echo</span>.<span class="n">DOMAIN</span>;
+
+    <span class="n">ssl_certificate</span> /<span class="n">etc</span>/<span class="n">letsencrypt</span>/<span class="n">live</span>/<span class="n">DOMAIN</span>/<span class="n">fullchain</span>.<span class="n">pem</span>;
+    <span class="n">ssl_certificate_key</span> /<span class="n">etc</span>/<span class="n">letsencrypt</span>/<span class="n">live</span>/<span class="n">DOMAIN</span>/<span class="n">privkey</span>.<span class="n">pem</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">http_host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">nginx</span>-<span class="n">echo</span>:<span class="m">8080</span>;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Starten sie den nginx Container neu und bewundern sie ihr neues Zertifikat ohne Warnung.</p>
 </div>
 </div>
 </div>
@@ -2353,6 +2622,9 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 <li>
 <p><a href="https://www.keycloak.org/docs/latest/server_development" class="bare">https://www.keycloak.org/docs/latest/server_development</a></p>
 </li>
+<li>
+<p><a href="https://www.ssldragon.com/de/blog/wie-werde-zertifizierungs-autoritaet/" class="bare">https://www.ssldragon.com/de/blog/wie-werde-zertifizierungs-autoritaet/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -2361,7 +2633,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-16 22:55:22 UTC
+Last updated 2024-12-17 12:41:44 UTC
 </div>
 </div>
 </body>
