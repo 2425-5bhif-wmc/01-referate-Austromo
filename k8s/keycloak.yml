@@ -16,7 +16,6 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.0.2
-          #args: ["start", "--optimized", "--import-realm"]
           command: [
             "/bin/bash",
             "-c",
@@ -27,17 +26,7 @@ spec:
                 name: keycloak-config
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - mountPath: /opt/keycloak/data/import
-              name: import-data
-            - mountPath: /opt/keycloak/themes
-              name: themes
-      volumes:
-        - name: import-data
-          persistentVolumeClaim:
-            claimName: keycloak-data
-        - name: themes
-          emptyDir: {} # Replace with PVC if themes need persistence
+            - containerPort: 9000
 ---
 apiVersion: v1
 kind: Service
