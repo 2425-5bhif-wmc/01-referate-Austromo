@@ -1,7 +1,7 @@
 import Keycloak from "keycloak-js";
 
-const keycloakBaseUrl = "http://localhost:8000";
-const backendBaseUrl = "http://localhost:8080";
+const keycloakBaseUrl = process.env.KEYCLOAK_URL;
+const backendBaseUrl = process.env.BACKEND_URL;
 const headerId = "header";
 const getRealmsBtnId = "getRealmsBtn";
 const createRealmBtnId = "createRealmBtn";

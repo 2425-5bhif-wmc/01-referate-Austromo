@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:23-alpine AS build
 
 # Set working directory
 WORKDIR /kc-demo-frontend
@@ -11,10 +11,10 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npx webpack
+RUN npx webpack --node-env production
 
 # Use an Nginx image to serve the kc-demo-frontend in production
-FROM nginx:alpine
+FROM nginx:1.27-alpine
 COPY --from=build /kc-demo-frontend/dist /usr/share/nginx/html
 
 # Expose port 80 for HTTP traffic

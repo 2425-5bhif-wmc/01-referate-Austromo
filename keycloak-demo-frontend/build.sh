@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME=ghcr.io/austromo/kc-demo-frontend PLATFORM=linux/amd64
+IMAGE_NAME=ghcr.io/austromo/kc-demo-frontend
+PLATFORM=linux/amd64
 
 docker login ghcr.io
 
