@@ -1286,6 +1286,12 @@ server {
 
 Starten sie den nginx Container neu und bewundern sie ihr neues Zertifikat ohne Warnung.
 
+==== Traefik TLS
+
+==== Nginx Ingress Controller
+
+==== Traefik Ingress Controller
+
 == Quellen
 * Keycloak - Identity and Access Management for Modern Applications (Second Edition)
 * https://quarkus.io/guides/security-keycloak-admin-client
