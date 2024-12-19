@@ -26,6 +26,10 @@ Content-Type: */*
 GET http://localhost:8080/admin/realms
 Content-Type: */*
 
+### Create configured realm
+POST http://localhost:8080/admin/realms/configured/delete-me
+Content-Type: */*
+
 ### Create realm
 POST http://localhost:8080/admin/realms/new-realm
 Content-Type: */*

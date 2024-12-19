@@ -8,10 +8,50 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 
+import java.util.List;
+import java.util.UUID;
+
 @Path("/admin/realms")
 public class RealmResource {
     @Inject
     Keycloak keycloak;
+
+    @POST
+    @Path("/configured/{realmName}")
+    public Response createConfiguredRealm(@PathParam("realmName") String realmName) {
+        if (realmName == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        keycloak.realms().findAll().stream()
+                .filter(r -> r.getRealm().equals(realmName))
+                .findFirst().ifPresent(oldRealm -> keycloak.realms().realm(realmName).remove());
+
+        var realmRepresentation = new RealmRepresentation();
+        realmRepresentation.setId(UUID.randomUUID().toString());
+        realmRepresentation.setRealm(realmName);
+        realmRepresentation.setLoginTheme("custom");
+        realmRepresentation.setEnabled(true);
+
+        var quarkusClient = new ClientRepresentation();
+        quarkusClient.setId("quarkus-client");
+        quarkusClient.setName("quarkus-client");
+        quarkusClient.setDescription("[generated] A client for a Quarkus application");
+        quarkusClient.setEnabled(true);
+        quarkusClient.setAlwaysDisplayInConsole(true);
+        quarkusClient.setServiceAccountsEnabled(true);
+
+        var jsClient = new ClientRepresentation();
+        jsClient.setId("js-client");
+        jsClient.setName("js-client");
+        jsClient.setDescription("[generated] A client for a Javascript application");
+        jsClient.setEnabled(true);
+        jsClient.setAlwaysDisplayInConsole(true);
+
+        realmRepresentation.setClients(List.of(quarkusClient, jsClient));
+        keycloak.realms().create(realmRepresentation);
+        return Response.ok().build();
+    }
 
     @GET
     public Response getAllRealms() {
@@ -26,10 +66,9 @@ public class RealmResource {
         }
 
         var realmRepresentation = new RealmRepresentation();
-        realmRepresentation.setId(realmName);
+        realmRepresentation.setId(UUID.randomUUID().toString());
         realmRepresentation.setRealm(realmName);
         realmRepresentation.setEnabled(true);
-
         keycloak.realms().create(realmRepresentation);
         return Response.ok().build();
     }
@@ -38,7 +77,6 @@ public class RealmResource {
     @Path("/{realmName}")
     @RolesAllowed("custom-admin")
     public Response deleteRealm(@PathParam("realmName") String realmName) {
-        //Log.error(keycloak.realms().findAll().stream().map(RealmRepresentation::getRealm).filter(r -> r.equals(realmName)).findFirst().orElse(null));
         keycloak.realms().realm(realmName).remove();
         return Response.ok().build();
     }
