@@ -1,22 +1,31 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: echo
   labels:
     name: echo
 spec:
-  containers:
-    - name: echo
-      image: nodstuff/gecho:latest
-      ports:
-        - containerPort: 8080
+  replicas: 1
+  selector:
+    matchLabels:
+      name: echo
+  template:
+    metadata:
+      name: echo
+      labels:
+        name: echo
+    spec:
+      containers:
+        - name: echo
+          image: nodstuff/gecho:latest
+          ports:
+            - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: echo-service
 spec:
-  type: NodePort
   selector:
     name: echo
   ports:
@@ -36,6 +45,26 @@ spec:
         paths:
           - path: /
             pathType: Prefix
+            backend:
+              service:
+                name: echo-service
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress-rewrite
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /some-path(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: echo-service

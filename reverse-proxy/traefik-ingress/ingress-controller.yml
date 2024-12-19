@@ -4,26 +4,28 @@ metadata:
   name: traefik
 
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: traefik-ingress-controller
-  namespace: traefik
-
----
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-role
+  namespace: traefik
+
 rules:
   - apiGroups:
       - ""
     resources:
       - services
-      - endpoints
       - secrets
+      - nodes
     verbs:
       - get
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
       - list
       - watch
   - apiGroups:
@@ -44,53 +46,51 @@ rules:
     verbs:
       - update
   - apiGroups:
-      - ""
+      - traefik.io
     resources:
-      - configmaps
-    verbs:
-      - get
-  - apiGroups:
-      - ""
-    resources:
-      - nodes
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - ""
-    resources:
-      - pods
+      - middlewares
+      - middlewaretcps
+      - ingressroutes
+      - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
+      - serverstransports
+      - serverstransporttcps
     verbs:
       - get
       - list
       - watch
-  - apiGroups:
-      - ""
-    resources:
-      - nodes
-    verbs:
-      - get
-
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-account
+  namespace: traefik
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-role-binding
+
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-ingress-controller
+  name: traefik-role
 subjects:
   - kind: ServiceAccount
-    name: traefik-ingress-controller
+    name: traefik-account
     namespace: traefik
-
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: traefik
+  name: traefik-deployment
   namespace: traefik
+  labels:
+    app: traefik
+
 spec:
   replicas: 1
   selector:
@@ -101,45 +101,43 @@ spec:
       labels:
         app: traefik
     spec:
-      serviceAccountName: traefik-ingress-controller
+      serviceAccountName: traefik-account
       containers:
         - name: traefik
-          image: traefik:v2.10
+          image: traefik:v3.2
           args:
-            - "--api.insecure=true" # Exposes the Traefik dashboard
-            - "--accesslog"
-            - "--entrypoints.web.address=:80"
-            - "--providers.kubernetescrd"
-            - "--providers.kubernetesingress"
+            - --api.insecure
+            - --providers.kubernetesingress
           ports:
             - name: web
               containerPort: 80
-            - name: admin
+            - name: dashboard
               containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: traefik
+  name: traefik-dashboard-service
   namespace: traefik
+
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: 80
-      protocol: TCP
-      name: web
     - port: 8080
-      targetPort: 8080
-      protocol: TCP
-      name: admin
+      targetPort: dashboard
   selector:
     app: traefik
-
 ---
-apiVersion: networking.k8s.io/v1
-kind: IngressClass
+apiVersion: v1
+kind: Service
 metadata:
-  name: traefik
+  name: traefik-web-service
+  namespace: traefik
+
 spec:
-  controller: traefik.io/ingress-controller
+  type: LoadBalancer
+  ports:
+    - targetPort: web
+      port: 80
+  selector:
+    app: traefik
