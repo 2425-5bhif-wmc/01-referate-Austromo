@@ -1,4 +1,4 @@
-= Security: Userverwaltung
+= Security
 Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner
 1.0, {docdate}
 ifndef::sourcedir[:sourcedir: ../src/main/java]
@@ -10,7 +10,7 @@ ifndef::backend[:backend: html5]
 :source-highlighter: rouge
 :docinfo: shared
 
-*Security* ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von *Benutzeridentitäten* und *Zugriffsrechten* und andererseits der *Netzwerksicherheit* mit Schwerpunkt auf *Reverse Proxies*.
+*Security* ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von *Benutzeridentitäten* und *Zugriffsrechten* und andererseits *Reverse Proxies*.
 
 == Authentifizierung und Autorisierung
 Autor: *Moritz V. Gruber*
@@ -323,6 +323,7 @@ services:
       - ./themes:/opt/keycloak/themes/ #<.>
     ports:
       - "8000:8080"
+      - "9000:9000"
     depends_on:
       - keycloak-db
 
@@ -343,7 +344,7 @@ services:
 <.> Der Name des Containers
 <.> Für den Bauvorgang wird ein `Dockerfile` verwendet
 <.> link:https://www.keycloak.org/server/all-config[Konfiguration in Keycloak^]
-<.> `start-dev` um Keycloak Modus starten und `--import-realm` um einen Realm zu importieren
+<.> `start-dev` um Keycloak im Dev-Modus zu starten und `--import-realm` um einen Realm zu importieren
 <.> Bind mount für eine Realm-JSON Datei
 <.> Bind mount für ein eigenes Theme
 <.> Service für eine Datenbank
@@ -426,11 +427,17 @@ image::keycloak-create-client-general-settings.png[]
 
 *Capability config*
 
-* `Client Authentication` auf `On`
-* `Authorization` auf `On`
-* `Authentication flow` (TODO)
-** Standard flow
-** [line-through]#Implicit flow#: deprecated
+* [*] `Client Authentication`
+* [*] `Authorization`
+* `Authentication flow`
+** [*] Standard flow
+** [ ] Direct access grants
+** [ ] Implicit flow
+** [*] Service accounts roles
+** [ ] OAuth 2.0 Device Authorization Grant
+** [ ] OIDC CIBA Grant
+
+Mehr Informationen link:https://www.keycloak.org/securing-apps/oidc-layers#_supported_grant_types[hier^].
 
 .Client erstellen - Capability config
 [%collapsible]
@@ -440,7 +447,7 @@ image::keycloak-create-client-capability-config.png[]
 
 *Login settings*
 
-TODO
+leer lassen
 
 === Probe
 Nachdem nun ein *Realm* und ein *Client* in Keycloak existieren, können wir den *keycloak-admin-rest-client* ausprobieren.
@@ -520,7 +527,7 @@ quarkus.keycloak.admin-client.grant-type=password <2>
 quarkus.keycloak.admin-client.username=alice <3>
 quarkus.keycloak.admin-client.password=alice <3>
 ----
-<.> Für die `password` Variante muss die *client-id* auf `admin-cli` geändert werden. Dieser Admin-Client ist ein default client, auf welchem die *Client authentication* und *Authorization* ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht. TODO: überprüfen
+<.> Für die `password` Variante muss die *client-id* auf `admin-cli` geändert werden. Dieser Admin-Client ist ein default client, auf welchem die *Client authentication* und *Authorization* ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht.
 <.> Setzt den *grant-type* auf `password`.
 <.> Username und Passwort des erstellten Users.
 
