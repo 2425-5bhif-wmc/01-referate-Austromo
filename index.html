@@ -598,15 +598,17 @@ pre.rouge .gs {
 </li>
 <li><a href="#_custom_theme">6. Custom Theme</a></li>
 <li><a href="#_demo">7. Demo</a></li>
-<li><a href="#_reverse_proxies">8. Reverse Proxies</a>
+<li><a href="#_keycloak_authentication_flows">8. Keycloak Authentication Flows</a></li>
+<li><a href="#_client_erstellung">9. Client erstellung</a></li>
+<li><a href="#_reverse_proxies">10. Reverse Proxies</a>
 <ul class="sectlevel2">
-<li><a href="#_was_ist_ein_reverse_proxy">8.1. Was ist ein Reverse Proxy?</a></li>
-<li><a href="#_warum_braucht_man_einen_reverse_proxy">8.2. Warum braucht man einen Reverse Proxy?</a></li>
-<li><a href="#_reverse_proxies_im_überblick">8.3. Reverse Proxies im Überblick</a></li>
-<li><a href="#_tls_warum_brauch_i_sowas">8.4. TLS? Warum brauch i sowas.</a></li>
+<li><a href="#_was_ist_ein_reverse_proxy">10.1. Was ist ein Reverse Proxy?</a></li>
+<li><a href="#_warum_braucht_man_einen_reverse_proxy">10.2. Warum braucht man einen Reverse Proxy?</a></li>
+<li><a href="#_reverse_proxies_im_überblick">10.3. Reverse Proxies im Überblick</a></li>
+<li><a href="#_tls_warum_brauch_i_sowas">10.4. TLS? Warum brauch i sowas.</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">9. Quellen</a></li>
+<li><a href="#_quellen">11. Quellen</a></li>
 </ul>
 </div>
 </div>
@@ -1808,13 +1810,168 @@ Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt mu
 </div>
 </div>
 <div class="sect1">
-<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>8. Reverse Proxies</h2>
+<h2 id="_keycloak_authentication_flows"><a class="anchor" href="#_keycloak_authentication_flows"></a>8. Keycloak Authentication Flows</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Autor: <strong>Tobias J. Aichinger</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_client_erstellung"><a class="anchor" href="#_client_erstellung"></a>9. Client erstellung</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="images/authentication-flow.png" alt="authentication flow">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Was ist ein Flow und was ein Grant?</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Leicht gesagt handelt es sich bei beiden, um eine Methode um einen Zugriffstoken zu erhalten</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Standard flow (Authorization Code flow)</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/standard-flow.png" alt="standard flow">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>Implicit flow</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NICHT VERWENDEN</strong>, weil der Browser direkt den access token bekommt und ihn bei einem redirect zu unserem backend den access token einfach in der URL setzt</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>OAuth 2.0 Device Authorization Grant</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Wird für die Autorisierung für Geräte ohne Eingabemedien wie smart TVs verwendet</p>
+</li>
+<li>
+<p>Dies geschieht durch eine URL, die vom Gerät angezeigt wird und dann am smartphone oder tablet geöffnet werden muss (hierzu wird keine Kommunikation zwischen den beiden geräten benötigt)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/deviceflow.png" alt="deviceflow">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>OIDC CIBA (Client Initiated Backchannel Authentication) Grant</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Erfolgt durch ein externes autorisierungs Device des Benutzers</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/oidc-ciba-grant.png" alt="oidc ciba grant">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>Direct access grants</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NICHT VERWENDEN</strong>, da es Anwendungen möglich ist, Nutzerdaten zu sehen und es nicht wirklich Autorisierung ist, sondern Nachahmung</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Service accounts roles</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Um einen access token ohne Nutzer zu erhalten, also nur für den Client</p>
+</li>
+<li>
+<p>Eine mögliche Anwendung könnte eine Wetter-API sein</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/service-client-grant.png" alt="service client grant">
+</div>
+</div>
+</div>
+</details>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecated.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>10. Reverse Proxies</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Autor: <strong>Lukas Sonnleitner</strong></p>
 </div>
 <div class="sect2">
-<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>8.1. Was ist ein Reverse Proxy?</h3>
+<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>10.1. Was ist ein Reverse Proxy?</h3>
 <div class="paragraph">
 <p>Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet.<br>
 Ein Reverse Proxy ist stellvertetend für die Server.<br>
@@ -1830,7 +1987,7 @@ Ein Proxy ist stellvertretend für die Clients.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>8.2. Warum braucht man einen Reverse Proxy?</h3>
+<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>10.2. Warum braucht man einen Reverse Proxy?</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1858,7 +2015,7 @@ Ein Proxy ist stellvertretend für die Clients.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>8.3. Reverse Proxies im Überblick</h3>
+<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>10.3. Reverse Proxies im Überblick</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -1920,7 +2077,7 @@ API</p></td>
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>8.3.1. Nginx Beispiel</h4>
+<h4 id="_nginx_beispiel"><a class="anchor" href="#_nginx_beispiel"></a>10.3.1. Nginx Beispiel</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/reverse-proxy-demo.svg" alt="reverse proxy demo"></span></p>
 </div>
@@ -2070,7 +2227,7 @@ API</p></td>
 </details>
 </div>
 <div class="sect3">
-<h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>8.3.2. Traefik Beispiel</h4>
+<h4 id="_traefik_beispiel"><a class="anchor" href="#_traefik_beispiel"></a>10.3.2. Traefik Beispiel</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2151,7 +2308,7 @@ API</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_caddy_beispiel"><a class="anchor" href="#_caddy_beispiel"></a>8.3.3. Caddy Beispiel</h4>
+<h4 id="_caddy_beispiel"><a class="anchor" href="#_caddy_beispiel"></a>10.3.3. Caddy Beispiel</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2217,13 +2374,13 @@ In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Autho
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tls_warum_brauch_i_sowas"><a class="anchor" href="#_tls_warum_brauch_i_sowas"></a>8.4. TLS? Warum brauch i sowas.</h3>
+<h3 id="_tls_warum_brauch_i_sowas"><a class="anchor" href="#_tls_warum_brauch_i_sowas"></a>10.4. TLS? Warum brauch i sowas.</h3>
 <div class="paragraph">
 <p>TLS oder auch *T*ransport *L*ayer *S*ecurity ist ein Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet.<br>
 <a href="https://tls13.xargs.org/#open-all">Wie funktioniert der genau?</a></p>
 </div>
 <div class="sect3">
-<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>8.4.1. Wie bekomme ich so ein Zertifikat?</h4>
+<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>10.4.1. Wie bekomme ich so ein Zertifikat?</h4>
 <div class="paragraph">
 <p>Ganz einfach. Selber machen.</p>
 </div>
@@ -2258,7 +2415,7 @@ DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>8.4.2. Suppa. Wie benutzt ich das jetzt?</h4>
+<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>10.4.2. Suppa. Wie benutzt ich das jetzt?</h4>
 <div class="listingblock">
 <div class="title">conf.d/reverse-proxy.conf</div>
 <div class="content">
@@ -2317,7 +2474,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_was_ist_eine_certifcate_authority"><a class="anchor" href="#_was_ist_eine_certifcate_authority"></a>8.4.3. Was ist eine Certifcate Authority</h4>
+<h4 id="_was_ist_eine_certifcate_authority"><a class="anchor" href="#_was_ist_eine_certifcate_authority"></a>10.4.3. Was ist eine Certifcate Authority</h4>
 <div class="paragraph">
 <p>Eine Certificate Authority (Zertifikat Authorität), ist ein Unternehmen oder eine Organisation, die die Validität von Websiten, E-Mail-Adressen etc mithilfe von Zertifikaten sicherstellt, welche an kryptografische Schlüssel gebunden sind.</p>
 </div>
@@ -2342,7 +2499,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certbot"><a class="anchor" href="#_certbot"></a>8.4.4. Certbot</h4>
+<h4 id="_certbot"><a class="anchor" href="#_certbot"></a>10.4.4. Certbot</h4>
 <div class="paragraph">
 <p>Certbot ist ein cli-tool, welches Zertifikate von Lets Encrypt holt.<br>
 Für die bequemlichkeit benutzen wir Certbot mit docker compose.</p>
@@ -2583,22 +2740,22 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
 </div>
 </div>
 <div class="sect3">
-<h4 id="_traefik_tls"><a class="anchor" href="#_traefik_tls"></a>8.4.5. Traefik TLS</h4>
+<h4 id="_traefik_tls"><a class="anchor" href="#_traefik_tls"></a>10.4.5. Traefik TLS</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_nginx_ingress_controller"><a class="anchor" href="#_nginx_ingress_controller"></a>8.4.6. Nginx Ingress Controller</h4>
+<h4 id="_nginx_ingress_controller"><a class="anchor" href="#_nginx_ingress_controller"></a>10.4.6. Nginx Ingress Controller</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_traefik_ingress_controller"><a class="anchor" href="#_traefik_ingress_controller"></a>8.4.7. Traefik Ingress Controller</h4>
+<h4 id="_traefik_ingress_controller"><a class="anchor" href="#_traefik_ingress_controller"></a>10.4.7. Traefik Ingress Controller</h4>
 
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>9. Quellen</h2>
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>11. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -2661,7 +2818,7 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-19 19:26:17 UTC
+Last updated 2024-12-19 19:49:33 UTC
 </div>
 </div>
 </body>
