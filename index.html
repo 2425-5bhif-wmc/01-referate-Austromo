@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Security: Userverwaltung</title>
+<title>Security</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -561,11 +561,11 @@ pre.rouge .gs {
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Security: Userverwaltung</h1>
+<h1>Security</h1>
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-18</span>
+<span id="revdate">2024-12-19</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -614,7 +614,7 @@ pre.rouge .gs {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Security</strong> ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von <strong>Benutzeridentitäten</strong> und <strong>Zugriffsrechten</strong> und andererseits der <strong>Netzwerksicherheit</strong> mit Schwerpunkt auf <strong>Reverse Proxies</strong>.</p>
+<p><strong>Security</strong> ist in der IT ein Begriff, der unzählige Bereiche abdeckt. Diese Dokumentation widmet sich einerseits der Verwaltung und Sicherung von <strong>Benutzeridentitäten</strong> und <strong>Zugriffsrechten</strong> und andererseits <strong>Reverse Proxies</strong>.</p>
 </div>
 </div>
 </div>
@@ -1154,6 +1154,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
       <span class="pi">-</span> <span class="s">./themes:/opt/keycloak/themes/</span> <i class="conum" data-value="6"></i><b>(6)</b>
     <span class="na">ports</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8080"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">9000:9000"</span>
     <span class="na">depends_on</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">keycloak-db</span>
 
@@ -1188,7 +1189,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td><code>start-dev</code> um Keycloak Modus starten und <code>--import-realm</code> um einen Realm zu importieren</td>
+<td><code>start-dev</code> um Keycloak im Dev-Modus zu starten und <code>--import-realm</code> um einen Realm zu importieren</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -1351,28 +1352,43 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 <div class="paragraph">
 <p><strong>Capability config</strong></p>
 </div>
-<div class="ulist">
-<ul>
+<div class="ulist checklist">
+<ul class="checklist">
 <li>
-<p><code>Client Authentication</code> auf <code>On</code></p>
+<p><i class="fa fa-check-square-o"></i> <code>Client Authentication</code></p>
 </li>
 <li>
-<p><code>Authorization</code> auf <code>On</code></p>
+<p><i class="fa fa-check-square-o"></i> <code>Authorization</code></p>
 </li>
 <li>
-<p><code>Authentication flow</code> (TODO)</p>
-<div class="ulist">
-<ul>
+<p><code>Authentication flow</code></p>
+<div class="ulist checklist">
+<ul class="checklist">
 <li>
-<p>Standard flow</p>
+<p><i class="fa fa-check-square-o"></i> Standard flow</p>
 </li>
 <li>
-<p><span class="line-through">Implicit flow</span>: deprecated</p>
+<p><i class="fa fa-square-o"></i> Direct access grants</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> Implicit flow</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> Service accounts roles</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> OAuth 2.0 Device Authorization Grant</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> OIDC CIBA Grant</p>
 </li>
 </ul>
 </div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Mehr Informationen <a href="https://www.keycloak.org/securing-apps/oidc-layers#_supported_grant_types" target="_blank" rel="noopener">hier</a>.</p>
 </div>
 <details>
 <summary class="title">Client erstellen - Capability config</summary>
@@ -1388,7 +1404,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 <p><strong>Login settings</strong></p>
 </div>
 <div class="paragraph">
-<p>TODO</p>
+<p>leer lassen</p>
 </div>
 </div>
 <div class="sect2">
@@ -1525,7 +1541,7 @@ Ein <strong>grant type</strong> bezeichnet die Art und Weise wie ein Client sich
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Für die <code>password</code> Variante muss die <strong>client-id</strong> auf <code>admin-cli</code> geändert werden. Dieser Admin-Client ist ein default client, auf welchem die <strong>Client authentication</strong> und <strong>Authorization</strong> ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht. TODO: überprüfen</td>
+<td>Für die <code>password</code> Variante muss die <strong>client-id</strong> auf <code>admin-cli</code> geändert werden. Dieser Admin-Client ist ein default client, auf welchem die <strong>Client authentication</strong> und <strong>Authorization</strong> ausgeschaltet sind. Allerdings brauchen wir diese bei dieser Variante nicht.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -2645,7 +2661,7 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-18 20:58:49 UTC
+Last updated 2024-12-19 19:26:17 UTC
 </div>
 </div>
 </body>
