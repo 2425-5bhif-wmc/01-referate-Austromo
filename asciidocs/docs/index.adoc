@@ -711,7 +711,7 @@ image::standard-flow.png[]
 ====
 
 * Implicit flow
-** *NICHT VERWENDEN*, weil der Browser direkt den access token bekommt und ihn bei einem redirect zu unserem backend den access token einfach in der URL setzt
+** *NICHT VERWENDEN*, weil der Browser direkt den access token bekommt und ihn bei einem redirect zu unserem backend einfach in der URL setzt
 
 * OAuth 2.0 Device Authorization Grant
 ** Wird für die Autorisierung für Geräte ohne Eingabemedien wie smart TVs verwendet
