@@ -3111,7 +3111,7 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
       <span class="pi">-</span> <span class="s">TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:443</span>
       <span class="pi">-</span> <span class="s">TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_TO=websecure</span> <i class="conum" data-value="1"></i><b>(1)</b>
       <span class="pi">-</span> <span class="s">TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_SCHEME=https</span>
-      <span class="pi">-</span> <span class="s">TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_PERMANENT=true</span>
+      <span class="pi">-</span> <span class="s">TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_PERMANENT=true</span> <i class="conum" data-value="3"></i><b>(3)</b>
     <span class="na">volumes</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock</span>
       <span class="pi">-</span> <span class="s">./tls.toml:/providers/tls.toml</span> <i class="conum" data-value="3"></i><b>(3)</b>
@@ -3152,12 +3152,28 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
       <span class="c1"># not needed because of traefik automatic service discovery magic</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&lt;1&gt;</p>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Definiert die Einstiegspunkte (web für HTTP und websecure für HTTPS), die Traefik nutzt.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Erzwingt TLS (HTTPS) für den jeweiligen Router.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Leitet alle http anfragen zu https dauerhaft um.</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_nginx_ingress_controller"><a class="anchor" href="#_nginx_ingress_controller"></a>9.7.2. Nginx Ingress Controller</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/kubernetes-ingress-controller.svg" alt="kubernetes ingress controller"></span></p>
+</div>
 <div class="sect4">
 <h5 id="_minikube"><a class="anchor" href="#_minikube"></a>Minikube</h5>
 <div class="listingblock">
@@ -4434,7 +4450,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-20 04:04:11 UTC
+Last updated 2024-12-20 06:35:43 UTC
 </div>
 </div>
 </body>
