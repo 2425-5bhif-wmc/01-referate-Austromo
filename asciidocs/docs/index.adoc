@@ -773,7 +773,7 @@ Hier wird gezeigt wie ein Authentifikator für Keycloak entwickelt werden kann.
 Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefügt, bei dem eine Quiz-Frage richtig beantwortet, werden muss um sich Einloggen zu können.
 
 .Anmeldeinformation Tabelle von Keycloak
-[code, txt]
+[source, txt]
 ----
 -----------------------------
 | ID                        |
@@ -797,7 +797,7 @@ Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefü
 Für uns sind hier die Felder secret- und credential_data interessant, da wir unsere Frage mit Antwort irgendwo Speichern müssen. Die Anwort wird in secret_data gespeichert, da diese Daten nicht von Keycloak übertragen werden können.
 
 .credential_data
-[code, json]
+[source, json]
 ----
 {
   "question":"aQuestion"
@@ -805,7 +805,7 @@ Für uns sind hier die Felder secret- und credential_data interessant, da wir un
 ----
 
 .secret_data
-[code, json]
+[source, json]
 ----
 {
   "answer":"anAnswer"
@@ -815,7 +815,7 @@ Für uns sind hier die Felder secret- und credential_data interessant, da wir un
 Um jetzt unseren Authentifikator zu entwickeln, müssen die "Service Provider Interfaces" von Keycloak implementiert werde, da wir auch credentials benötigen müssen wir auch dafür die entsprechenden Interfaces implementieren.
 
 .Durchlassen von Nutzern die das Quiz bereits beantwortet haben
-[code, java]
+[source, java]
 ----
 @Override
 public void authenticate(AuthenticationFlowContext context) {
@@ -842,7 +842,7 @@ protected boolean hasCookie(AuthenticationFlowContext context) {
 ----
 
 .Validierung der Antwort
-[code, java]
+[source, java]
 ----
 @Override
 public void action(AuthenticationFlowContext context) {
@@ -860,7 +860,7 @@ public void action(AuthenticationFlowContext context) {
 ----
 
 .Beispiel für die Syntax einer .ftl Datei
-[code, ftl]
+[source, ftl]
 ----
 <form id="kc-totp-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
     <div class="${properties.kcFormGroupClass!}">
@@ -885,14 +885,14 @@ public void action(AuthenticationFlowContext context) {
 ** org.keycloak.examples.authenticator.SecretQuestionAuthenticatorFactory
 
 * Es alles innerhalb eines einzigen jar file sein, weswegen wir jat.type=uber-jar verwenden
-[code, toml]
+[source, properties]
 ----
-quarkus.package.jar.type=uber-jar
+quarkus.package.jar.type = uber-jar
 ----
 
 * Mit Docker kann das ganze auf diese weiße gelöst werden
 
-[code, Dockerfile]
+[source, Dockerfile]
 ----
 FROM quay.io/keycloak/keycloak:26.0.2 AS builder
 COPY keycloak-quickstarts/extension/authenticator/target/authenticator-example.jar \
@@ -919,7 +919,9 @@ image::binding-the-new-browser-flow.png[]
 
 Nachdem der Subflow hinzugefügt wurde müssen noch die Requirements angepasst werden.
 
-IMPORTANT: Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
+IMPORTANT: Bei jedem Step der auf Required gesetzt wird muss auch unter dem "Required actions"-Tab geschaut werden, ob diese Action auch enabled ist.
+
+Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
 
 [%collapsible]
 ====
