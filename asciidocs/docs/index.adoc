@@ -1249,6 +1249,7 @@ In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Autho
 TLS (Transport Layer Security) ist ein Verschlüsselungsprotokoll, das die Sicherheit der Kommunikation im Internet gewährleistet. +
 link:https://tls13.xargs.org/#open-all[Wie funktioniert der genau?]
 
+.TLS Handshake
 image:tls-handshake.svg[]
 
 ==== Wie bekomme ich so ein Zertifikat?
@@ -1264,7 +1265,7 @@ openssl dhparam -out dhparam.pem 4096 <4>
 
 ----
 <1> Generiert einen 4096 byte langen private key
-<2> Generiert eine Certifacet Signing Request (Zertifikt Unterschreibungs Anfrage) +
+<2> Generiert eine Certificate Signing Request (Zertifikat Unterschreibungs Anfrage) +
 DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.
 <3> Generiert das tatsächliche Zertifikat welches für *365* Tage gültig ist.
 <4> Generiert eine 4096 byte lange Diffi-Hellman Parameter für den sicheren Schlüsselaustausch
@@ -1334,7 +1335,7 @@ Warum ein Zertifikat kaufen, wenn man es auch kostenlos bekommen kann?
 
 === Certbot
 
-Certbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuernCertbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuern. +
+Certbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuern. +
 Für die bequemlichkeit benutzen wir Certbot mit docker compose.
 
 [IMPORTANT]
@@ -1348,8 +1349,6 @@ Für die bequemlichkeit benutzen wir Certbot mit docker compose.
 In diesem Beispiel ist *DOMAIN* ein platzhalter für die wirkliche Domain.
 
 .docker-compose.yml
-[%collapsible]
-====
 [source, yaml]
 ----
 services:
@@ -1380,7 +1379,6 @@ services:
     restart: unless-stopped
 ----
 <1> Ich benutze hier Profiles damit bei dem `docker compose up` command der Certbot Container nicht mit gestartet wird.
-====
 
 .ACME
 [%collapsible]
