@@ -2044,7 +2044,7 @@ Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefü
 <div class="listingblock">
 <div class="title">Anmeldeinformation Tabelle von Keycloak</div>
 <div class="content">
-<pre>-----------------------------
+<pre class="rouge highlight"><code data-lang="txt">-----------------------------
 | ID                        |
 -----------------------------
 | user_ID                   |
@@ -2060,7 +2060,7 @@ Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefü
 | credential_data           |
 -----------------------------
 | priority                  |
------------------------------</pre>
+-----------------------------</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2069,17 +2069,17 @@ Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefü
 <div class="listingblock">
 <div class="title">credential_data</div>
 <div class="content">
-<pre>{
-  "question":"aQuestion"
-}</pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"question"</span><span class="p">:</span><span class="s2">"aQuestion"</span><span class="w">
+</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">secret_data</div>
 <div class="content">
-<pre>{
-  "answer":"anAnswer"
-}</pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"answer"</span><span class="p">:</span><span class="s2">"anAnswer"</span><span class="w">
+</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2088,62 +2088,62 @@ Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefü
 <div class="listingblock">
 <div class="title">Durchlassen von Nutzern die das Quiz bereits beantwortet haben</div>
 <div class="content">
-<pre>@Override
-public void authenticate(AuthenticationFlowContext context) {
-    if (hasCookie(context)) {
-        context.success();
-        return;
-    }
-    Response challenge = context.form().createForm("secret-question.ftl");
-    context.challenge(challenge);
-}
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">authenticate</span><span class="o">(</span><span class="nc">AuthenticationFlowContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">hasCookie</span><span class="o">(</span><span class="n">context</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">success</span><span class="o">();</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nc">Response</span> <span class="n">challenge</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">form</span><span class="o">().</span><span class="na">createForm</span><span class="o">(</span><span class="s">"secret-question.ftl"</span><span class="o">);</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">challenge</span><span class="o">(</span><span class="n">challenge</span><span class="o">);</span>
+<span class="o">}</span>
 
-protected boolean hasCookie(AuthenticationFlowContext context) {
-    Cookie cookie = context
-        .getHttpRequest()
-        .getHttpHeaders()
-        .getCookies()
-        .get("SECRET_QUESTION_ANSWERED");
-    boolean result = cookie != null;
-    if (result) {
-        System.out.println("Bypassing secret question because cookie is set");
-    }
-    return result;
-}</pre>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">hasCookie</span><span class="o">(</span><span class="nc">AuthenticationFlowContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="o">.</span><span class="na">getHttpRequest</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">getHttpHeaders</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">getCookies</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"SECRET_QUESTION_ANSWERED"</span><span class="o">);</span>
+    <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">cookie</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Bypassing secret question because cookie is set"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Validierung der Antwort</div>
 <div class="content">
-<pre>@Override
-public void action(AuthenticationFlowContext context) {
-    boolean validated = validateAnswer(context);
-    if (!validated) {
-        Response challenge =  context.form()
-                .setError("badSecret")
-                .createForm("secret-question.ftl");
-        context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS, challenge);
-        return;
-    }
-    setCookie(context);
-    context.success();
-}</pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">action</span><span class="o">(</span><span class="nc">AuthenticationFlowContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="n">validated</span> <span class="o">=</span> <span class="n">validateAnswer</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">validated</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Response</span> <span class="n">challenge</span> <span class="o">=</span>  <span class="n">context</span><span class="o">.</span><span class="na">form</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"badSecret"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">createForm</span><span class="o">(</span><span class="s">"secret-question.ftl"</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">failureChallenge</span><span class="o">(</span><span class="nc">AuthenticationFlowError</span><span class="o">.</span><span class="na">INVALID_CREDENTIALS</span><span class="o">,</span> <span class="n">challenge</span><span class="o">);</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">setCookie</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">success</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Beispiel für die Syntax einer .ftl Datei</div>
 <div class="content">
-<pre>&lt;form id="kc-totp-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post"&gt;
-    &lt;div class="${properties.kcFormGroupClass!}"&gt;
-        &lt;div class="${properties.kcLabelWrapperClass!}"&gt;
-            &lt;label for="totp" class="${properties.kcLabelClass!}"&gt;${msg("loginSecretQuestion")}&lt;/label&gt;
-        &lt;/div&gt;
+<pre class="rouge highlight"><code data-lang="ftl"><span class="err">&lt;</span><span class="no">form</span><span class="w"> </span>id="kc-totp-login-form" class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcFormClass</span><span class="err">!</span><span class="p">}</span>" action="$<span class="p">{</span><span class="no">url</span><span class="na">.loginAction</span><span class="p">}</span>" method="post"&gt;<span class="w">
+    </span>&lt;div class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcFormGroupClass</span><span class="err">!</span><span class="p">}</span>"&gt;<span class="w">
+        </span>&lt;div class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcLabelWrapperClass</span><span class="err">!</span><span class="p">}</span>"&gt;<span class="w">
+            </span>&lt;label for="totp" class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcLabelClass</span><span class="err">!</span><span class="p">}</span>"&gt;$<span class="p">{</span><span class="no">msg</span><span class="p">(</span><span class="s2">"loginSecretQuestion"</span><span class="p">)}</span>&lt;/label&gt;<span class="w">
+        </span>&lt;/div&gt;<span class="w">
 
-        &lt;div class="${properties.kcInputWrapperClass!}"&gt;
-            &lt;input id="totp" name="secret_answer" type="text" class="${properties.kcInputClass!}" /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/form&gt;</pre>
+        </span>&lt;div class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcInputWrapperClass</span><span class="err">!</span><span class="p">}</span>"&gt;<span class="w">
+            </span>&lt;input id="totp" name="secret_answer" type="text" class="$<span class="p">{</span><span class="no">properties</span><span class="na">.kcInputClass</span><span class="err">!</span><span class="p">}</span>" /&gt;<span class="w">
+        </span>&lt;/div&gt;<span class="w">
+    </span>&lt;/div&gt;<span class="w">
+</span><span class="err">&lt;/</span><span class="no">form</span><span class="err">&gt;</span></code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -2185,7 +2185,7 @@ public void action(AuthenticationFlowContext context) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>quarkus.package.jar.type=uber-jar</pre>
+<pre>quarkus.package.jar.type = uber-jar</pre>
 </div>
 </div>
 <div class="ulist">
@@ -2197,15 +2197,15 @@ public void action(AuthenticationFlowContext context) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>FROM quay.io/keycloak/keycloak:26.0.2 AS builder
-COPY keycloak-quickstarts/extension/authenticator/target/authenticator-example.jar \
+<pre class="rouge highlight"><code data-lang="Dockerfile"><span class="k">FROM</span><span class="w"> </span><span class="s">quay.io/keycloak/keycloak:26.0.2</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+<span class="k">COPY</span><span class="s"> keycloak-quickstarts/extension/authenticator/target/authenticator-example.jar \</span>
     /opt/keycloak/providers/ \ <i class="conum" data-value="1"></i><b>(1)</b>
-RUN /opt/keycloak/bin/kc.sh build
+<span class="k">RUN </span>/opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:26.0.2
-COPY --from=builder /opt/keycloak/ /opt/keycloak/
+<span class="k">FROM</span><span class="s"> quay.io/keycloak/keycloak:26.0.2</span>
+<span class="k">COPY</span><span class="s"> --from=builder /opt/keycloak/ /opt/keycloak/</span>
 
-# default entrypoint</pre>
+<span class="c"># default entrypoint</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2250,10 +2250,13 @@ Um den Authentifikator nun verwenden zu können muss zuerst ein builtin-flow dup
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
+Bei jedem Step der auf Required gesetzt wird muss auch unter dem "Required actions"-Tab geschaut werden, ob diese Action auch enabled ist.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.</p>
 </div>
 <details>
 <summary class="title">Details</summary>
@@ -4431,7 +4434,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-20 03:53:16 UTC
+Last updated 2024-12-20 04:04:11 UTC
 </div>
 </div>
 </body>
