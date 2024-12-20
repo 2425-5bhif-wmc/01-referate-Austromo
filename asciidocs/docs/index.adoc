@@ -696,7 +696,7 @@ Mehr zu custom Themes link:https://www.keycloak.org/docs/latest/server_developme
 == Keycloak Authentication Flows
 Autor: *Tobias J. Aichinger*
 
-=== Client erstellung
+=== Client Erstellung
 
 image::authentication-flow.png[]
 
@@ -743,7 +743,7 @@ image::service-client-grant.png[]
 
 NOTE: Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecated.
 
-=== Flow konfigurierung
+=== Flow Konfigurierung
 
 Diese Flows beschreiben nun welche Schritte für die Authentifizierung in verschiedenen Umgebung verwendet werden. Unten sind die Flows welche von Keycloak bereits implementiert wurden und einfach verwendet werden können.
 
