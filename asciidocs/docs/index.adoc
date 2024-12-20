@@ -730,7 +730,8 @@ image::deviceflow.png[]
 image::oidc-ciba-grant.png[]
 ====
 * Direct access grants
-** *NICHT VERWENDEN*, da es Anwendungen möglich ist, Nutzerdaten zu sehen und es nicht wirklich Authentifizierung ist, sondern Nachahmung
+** *NICHT VERWENDEN* 
+** Da der Nutzer sich mit seinen Benutzernamen und Passwort bei der Applikation anmeldet, werden diese Daten mit anderen Applikation außer Keycloak ausgetauscht. Dadurch wird eine größere Angriffsfläche geboten.
 
 * Service accounts roles
 ** Um einen access token ohne Nutzer zu erhalten, also nur für den Client
