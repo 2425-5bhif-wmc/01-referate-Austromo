@@ -599,7 +599,11 @@ pre.rouge .gs {
 <li><a href="#_custom_theme">6. Custom Theme</a></li>
 <li><a href="#_demo">7. Demo</a></li>
 <li><a href="#_keycloak_authentication_flows">8. Keycloak Authentication Flows</a></li>
-<li><a href="#_client_erstellung">9. Client erstellung</a></li>
+<li><a href="#_client_erstellung">9. Client erstellung</a>
+<ul class="sectlevel2">
+<li><a href="#_flow_konfigurierung">9.1. Flow konfigurierung</a></li>
+</ul>
+</li>
 <li><a href="#_reverse_proxies">10. Reverse Proxies</a>
 <ul class="sectlevel2">
 <li><a href="#_was_ist_ein_reverse_proxy">10.1. Was ist ein Reverse Proxy?</a></li>
@@ -1964,6 +1968,76 @@ Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecat
 </td>
 </tr>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_flow_konfigurierung"><a class="anchor" href="#_flow_konfigurierung"></a>9.1. Flow konfigurierung</h3>
+<div class="paragraph">
+<p>Diese Flows beschreiben nun welche Schritte für die Authentifizierung in verschiedenen Umgebung verwendet werden. Unten sind die Flows welche von Keycloak bereits implementiert wurden und einfach verwendet werden können.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/built-in-flows.png" alt="built in flows">
+</div>
+</div>
+<div class="paragraph">
+<p>Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn ein Flow dann Editieren oder Ansehen will, kann auf den Namen gedrückt werden, um diese Ansicht zu öffnen:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/browser-flow-1.png" alt="browser flow 1">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/browser-flow-2.png" alt="browser flow 2">
+</div>
+</div>
+<div class="paragraph">
+<p>Hier kann man den Aufbau von Flows gut sehen den:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Steps</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Sind hierarchisch aufgebaut</p>
+</li>
+<li>
+<p>Können weiter Untergeordnete schritte haben</p>
+</li>
+<li>
+<p>Beliebig verschiebbar</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Requirements</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Required: muss erfolgreich Ausgeführt werden</p>
+</li>
+<li>
+<p>Optional: wenn es der User konfiguriert hat, sonst wird es ignoriert</p>
+</li>
+<li>
+<p>Disabled: wird nicht ausgeführt</p>
+</li>
+<li>
+<p>Alternative: es muss mindestendes ein Authentifizierungstyp auf dieser Ebene erfolgreich sein</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_custom_authenticator"><a class="anchor" href="#_custom_authenticator"></a>9.1.1. Custom Authenticator</h4>
+
+</div>
 </div>
 </div>
 </div>
@@ -4125,7 +4199,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-20 00:00:38 UTC
+Last updated 2024-12-20 02:25:11 UTC
 </div>
 </div>
 </body>
