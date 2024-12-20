@@ -723,7 +723,7 @@ image::deviceflow.png[]
 ====
 
 * OIDC CIBA (Client Initiated Backchannel Authentication) Grant
-** Erfolgt durch ein externes autorisierungs Device des Benutzers
+** Erfolgt durch ein externes authentifizierungs Device des Benutzers
 
 [%collapsible]
 ====
