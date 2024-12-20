@@ -768,25 +768,28 @@ Autor: *Lukas Sonnleitner*
 
 === Was ist ein Reverse Proxy?
 
-Ein Reverse Proxy ist ein Server, der die Anfragen von Clients zu einem oder mehreren Servern weiterleitet. +
-Ein Reverse Proxy ist stellvertetend für die Server. +
-Ein Proxy ist stellvertretend für die Clients.
+Ein Reverse Proxy ist ein Server, der die Anfragen von Clients (z. B. Browsern) entgegennimmt und diese an einen oder mehrere Upstream-Server weiterleitet. Er fungiert als eine Art "Schutzschild" für Server, indem er:
+
+* Anonymität für die Server wahrt, da die Clients keine direkte Verbindung zu den Back-End-Servern herstellen.
+* Sicherheit erhöht, indem er als erste Verteidigungslinie gegen potenzielle Angriffe dient.
 
 .Reverse Proxy
 image:reverse-proxy.svg[]
+
+Zum Vergleich: Ein "normaler" Proxy-Server arbeitet stellvertretend für die Clients, während ein Reverse Proxy im Auftrag der Server agiert.
 
 .Proxy
 image:proxy.svg[]
 
 === Warum braucht man einen Reverse Proxy?
 
-* Rate Limiting
-* Routing
-* Authentication
-* Request Validierung
-* Loadbalancing
-* Caching
-* Compression
+* *Rate* Limiting: Begrenzung der Anzahl von Anfragen pro Zeitspanne, um Missbrauch zu verhindern.
+* *Routing*: Weiterleitung von Anfragen an spezifische Server oder Dienste basierend auf Regeln.
+* *Authentication*: Überprüfung von Benutzeranfragen vor der Weiterleitung.
+* *Request-Validierung*: Sicherstellen, dass Anfragen gültig und sicher sind.
+* *Loadbalancing*: Gleichmäßige Verteilung von Anfragen auf mehrere Server.
+* *Caching*: Zwischenspeichern von Antworten, um die Leistung zu steigern.
+* *Kompression*: Reduzieren der Datenmenge durch Komprimierung von Antworten.
 
 === Reverse Proxies im Überblick
 
@@ -834,9 +837,11 @@ API
 ^.^|image:rust-logo.png[width=40, height=40]
 |===
 
-==== Nginx Beispiel
+=== Beispiele
 
 image:reverse-proxy-demo.svg[]
+
+==== Nginx http
 
 .docker-compose.yml
 [%collapsible]
@@ -965,7 +970,7 @@ http {
 ----
 ====
 
-==== Traefik Beispiel
+==== Traefik http
 
 .docker-compose.yml
 [source, yaml]
@@ -1027,7 +1032,7 @@ prefixes = ["/some-path"]
 
 Mit dieser statischen Konfiguration würde der provider statt *docker* -> *file* sein.
 
-==== Caddy Beispiel
+==== Caddy (http / https)
 
 .docker-compose.yml
 [source, yaml]
@@ -1074,10 +1079,12 @@ localhost { <1>
 Caddy ist der einzige der 3 welcher automatisch TLS Zertifikate erstellt.
 In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Authority ausgestellt.
 
-=== TLS? Warum brauch i sowas.
+=== TLS?
 
-TLS oder auch **T**ransport **L**ayer **S**ecurity ist ein Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet. +
+TLS (Transport Layer Security) ist ein Verschlüsselungsprotokoll, das die Sicherheit der Kommunikation im Internet gewährleistet. +
 link:https://tls13.xargs.org/#open-all[Wie funktioniert der genau?]
+
+image:tls-handshake.svg[]
 
 ==== Wie bekomme ich so ein Zertifikat?
 
@@ -1138,7 +1145,7 @@ server {
 }
 ----
 
-So schwer war des jetzt ned. Wenn man im Browser jetzt *https*://echo.localhost aufruft wird man von dieser wunderschönen Warnung begrüßt.
+So schwer war des jetzt ned. Wenn man im Browser jetzt **https**://echo.localhost aufruft wird man von dieser wunderschönen Warnung begrüßt.
 
 image:self-signed-warning.png[]
 
@@ -1150,7 +1157,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 
 image:trust-me-bro.jpg[]
 
-==== Was ist eine Certifcate Authority
+=== Was ist eine Certifcate Authority
 
 Eine Certificate Authority (Zertifikat Authorität), ist ein Unternehmen oder eine Organisation, die die Validität von Websiten, E-Mail-Adressen etc mithilfe von Zertifikaten sicherstellt, welche an kryptografische Schlüssel gebunden sind.
 
@@ -1160,11 +1167,9 @@ Eine Certificate Authority (Zertifikat Authorität), ist ein Unternehmen oder ei
 
 Warum ein Zertifikat kaufen, wenn man es auch kostenlos bekommen kann?
 
-TODO: Certificate Validation
+=== Certbot
 
-==== Certbot
-
-Certbot ist ein cli-tool, welches Zertifikate von Lets Encrypt holt. +
+Certbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuernCertbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuern. +
 Für die bequemlichkeit benutzen wir Certbot mit docker compose.
 
 [IMPORTANT]
@@ -1217,6 +1222,12 @@ services:
 ====
 image:acme-challenge.svg[]
 ====
+
+* HTTP-01 Challenge +
+Certbot erstellt eine spezielle Datei auf dem Webserver, die von Let’s Encrypt überprüft wird. Diese Methode ist besonders einfach einzurichten und erfordert lediglich einen funktionierenden Reverse Proxy.
+
+* DNS-01 Challenge +
+Hier wird ein spezieller DNS-Eintrag erstellt, den Let’s Encrypt validiert. Diese Methode ist ideal für Wildcard-Zertifikate (*.domain.tld) oder wenn der Server nicht öffentlich erreichbar ist.
 
 .conf.d/reverse-proxy.conf
 [source, yaml]
@@ -2602,3 +2613,5 @@ minikube tunnel
 * https://stytch.com/blog/jwt-claims/
 * https://www.keycloak.org/docs/latest/server_development
 * https://www.ssldragon.com/de/blog/wie-werde-zertifizierungs-autoritaet/
+* https://www.researchgate.net/figure/TLS-handshake-protocol_fig1_298065605
+* https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/
