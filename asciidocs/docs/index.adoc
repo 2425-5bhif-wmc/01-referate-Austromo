@@ -908,7 +908,7 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 <.> Einfach das jar zu den Keycloak providern kopieren
 
 Anschließend kann wieder in der Keycloak Admin console weiter gearbeitet werden.
-Um den Authentifikator nun verwenden zu können muss zuerst ein builtin-flow dupliziert werden, da wir ihn dann wieder im Browser verwenden macht es Sinn dafür den Browser-Flow zu verwenden.
+Um den Authentifikator nun verwenden zu können, muss zuerst ein builtin-flow dupliziert werden, da wir ihn dann wieder im Browser verwenden macht es Sinn dafür den Browser-Flow zu verwenden.
 
 [%collapsible]
 ====
