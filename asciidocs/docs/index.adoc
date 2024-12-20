@@ -749,7 +749,7 @@ Diese Flows beschreiben nun welche Schritte für die Authentifizierung in versch
 
 image::built-in-flows.png[]
 
-Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn ein Flow dann Editieren oder Ansehen will, kann auf den Namen gedrückt werden, um diese Ansicht zu öffnen:
+Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn man einen Flow dann Editieren oder Ansehen will, kann auf den Namen drücken, um dessen Ansicht zu öffnen:
 
 image::browser-flow-1.png[]
 image::browser-flow-2.png[]
@@ -812,7 +812,7 @@ Für uns sind hier die Felder secret- und credential_data interessant, da wir un
 }
 ----
 
-Um jetzt unseren Authentifikator zu entwickeln, müssen die "Service Provider Interfaces" von Keycloak implementiert werde, da wir auch credentials benötigen müssen wir auch dafür die entsprechenden Interfaces implementieren.
+Um jetzt unseren Authentifikator zu entwickeln, müssen die "Service Provider Interfaces" von Keycloak implementiert werden, da wir auch credentials benötigen müssen wir auch die dafür entsprechenden Interfaces implementieren.
 
 .Durchlassen von Nutzern die das Quiz bereits beantwortet haben
 [source, java]
@@ -884,7 +884,7 @@ public void action(AuthenticationFlowContext context) {
 * Als Erstes müssen Dateien unter resources/META-INF/services erstellt werden die, die Namen der Factory-Klassen enthalten, wie zum Beispiel:
 ** org.keycloak.examples.authenticator.SecretQuestionAuthenticatorFactory
 
-* Es alles innerhalb eines einzigen jar file sein, weswegen wir jat.type=uber-jar verwenden
+* Es soll alles innerhalb eines einzigen jar file sein, weswegen wir jar.type=uber-jar verwenden
 [source, properties]
 ----
 quarkus.package.jar.type = uber-jar
@@ -917,11 +917,9 @@ image::add-flow-step.png[]
 image::binding-the-new-browser-flow.png[]
 ====
 
-Nachdem der Subflow hinzugefügt wurde müssen noch die Requirements angepasst werden.
+Nachdem der Subflow hinzugefügt wurde, müssen noch die Requirements angepasst werden.
 
 IMPORTANT: Bei jedem Step der auf Required gesetzt wird muss auch unter dem "Required actions"-Tab geschaut werden, ob diese Action auch enabled ist.
-
-Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
 
 [%collapsible]
 ====
