@@ -714,7 +714,7 @@ image::standard-flow.png[]
 ** *NICHT VERWENDEN*, weil der Browser direkt den access token bekommt und ihn bei einem redirect zu unserem backend einfach in der URL setzt
 
 * OAuth 2.0 Device Authorization Grant
-** Wird für die Autorisierung für Geräte ohne Eingabemedien wie smart TVs verwendet
+** Wird für die Authentifizierung für Geräte ohne Eingabemedien wie smart TVs verwendet
 ** Dies geschieht durch eine URL, die vom Gerät angezeigt wird und dann am smartphone oder tablet geöffnet werden muss (hierzu wird keine Kommunikation zwischen den beiden geräten benötigt)
 
 [%collapsible]
@@ -730,7 +730,7 @@ image::deviceflow.png[]
 image::oidc-ciba-grant.png[]
 ====
 * Direct access grants
-** *NICHT VERWENDEN*, da es Anwendungen möglich ist, Nutzerdaten zu sehen und es nicht wirklich Autorisierung ist, sondern Nachahmung
+** *NICHT VERWENDEN*, da es Anwendungen möglich ist, Nutzerdaten zu sehen und es nicht wirklich Authentifizierung ist, sondern Nachahmung
 
 * Service accounts roles
 ** Um einen access token ohne Nutzer zu erhalten, also nur für den Client
