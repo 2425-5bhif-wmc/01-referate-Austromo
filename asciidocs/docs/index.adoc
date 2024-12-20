@@ -749,7 +749,7 @@ Diese Flows beschreiben nun welche Schritte für die Authentifizierung in versch
 
 image::built-in-flows.png[]
 
-Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn man einen Flow dann Editieren oder Ansehen will, kann auf den Namen drücken, um dessen Ansicht zu öffnen:
+Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn man einen Flow dann Editieren oder Ansehen will, kann man auf den Namen drücken, um dessen Ansicht zu öffnen:
 
 image::browser-flow-1.png[]
 image::browser-flow-2.png[]
