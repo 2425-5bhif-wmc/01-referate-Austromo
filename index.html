@@ -598,24 +598,26 @@ pre.rouge .gs {
 </li>
 <li><a href="#_custom_theme">6. Custom Theme</a></li>
 <li><a href="#_demo">7. Demo</a></li>
-<li><a href="#_keycloak_authentication_flows">8. Keycloak Authentication Flows</a></li>
-<li><a href="#_client_erstellung">9. Client erstellung</a>
+<li><a href="#_keycloak_authentication_flows">8. Keycloak Authentication Flows</a>
 <ul class="sectlevel2">
-<li><a href="#_flow_konfigurierung">9.1. Flow konfigurierung</a></li>
+<li><a href="#_client_erstellung">8.1. Client erstellung</a></li>
+<li><a href="#_flow_konfigurierung">8.2. Flow konfigurierung</a></li>
+<li><a href="#_benutzerdefinierter_authentifikator">8.3. Benutzerdefinierter Authentifikator</a></li>
+<li><a href="#_hinzufügen_des_authentifikators_zu_einem_flow">8.4. Hinzufügen des Authentifikators zu einem Flow</a></li>
 </ul>
 </li>
-<li><a href="#_reverse_proxies">10. Reverse Proxies</a>
+<li><a href="#_reverse_proxies">9. Reverse Proxies</a>
 <ul class="sectlevel2">
-<li><a href="#_was_ist_ein_reverse_proxy">10.1. Was ist ein Reverse Proxy?</a></li>
-<li><a href="#_warum_braucht_man_einen_reverse_proxy">10.2. Warum braucht man einen Reverse Proxy?</a></li>
-<li><a href="#_reverse_proxies_im_überblick">10.3. Reverse Proxies im Überblick</a></li>
-<li><a href="#_beispiele">10.4. Beispiele</a></li>
-<li><a href="#_tls">10.5. TLS?</a></li>
-<li><a href="#_was_ist_eine_certifcate_authority">10.6. Was ist eine Certifcate Authority</a></li>
-<li><a href="#_certbot">10.7. Certbot</a></li>
+<li><a href="#_was_ist_ein_reverse_proxy">9.1. Was ist ein Reverse Proxy?</a></li>
+<li><a href="#_warum_braucht_man_einen_reverse_proxy">9.2. Warum braucht man einen Reverse Proxy?</a></li>
+<li><a href="#_reverse_proxies_im_überblick">9.3. Reverse Proxies im Überblick</a></li>
+<li><a href="#_beispiele">9.4. Beispiele</a></li>
+<li><a href="#_tls">9.5. TLS?</a></li>
+<li><a href="#_was_ist_eine_certifcate_authority">9.6. Was ist eine Certifcate Authority</a></li>
+<li><a href="#_certbot">9.7. Certbot</a></li>
 </ul>
 </li>
-<li><a href="#_quellen">11. Quellen</a></li>
+<li><a href="#_quellen">10. Quellen</a></li>
 </ul>
 </div>
 </div>
@@ -1822,11 +1824,8 @@ Falls man Zugriffsrechte, für zum Beispiel das Kreieren von Realms benötigt mu
 <div class="paragraph">
 <p>Autor: <strong>Tobias J. Aichinger</strong></p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_client_erstellung"><a class="anchor" href="#_client_erstellung"></a>9. Client erstellung</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_client_erstellung"><a class="anchor" href="#_client_erstellung"></a>8.1. Client erstellung</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/authentication-flow.png" alt="authentication flow">
@@ -1969,8 +1968,9 @@ Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecat
 </tr>
 </table>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_flow_konfigurierung"><a class="anchor" href="#_flow_konfigurierung"></a>9.1. Flow konfigurierung</h3>
+<h3 id="_flow_konfigurierung"><a class="anchor" href="#_flow_konfigurierung"></a>8.2. Flow konfigurierung</h3>
 <div class="paragraph">
 <p>Diese Flows beschreiben nun welche Schritte für die Authentifizierung in verschiedenen Umgebung verwendet werden. Unten sind die Flows welche von Keycloak bereits implementiert wurden und einfach verwendet werden können.</p>
 </div>
@@ -2034,21 +2034,253 @@ Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecat
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_custom_authenticator"><a class="anchor" href="#_custom_authenticator"></a>9.1.1. Custom Authenticator</h4>
+</div>
+<div class="sect2">
+<h3 id="_benutzerdefinierter_authentifikator"><a class="anchor" href="#_benutzerdefinierter_authentifikator"></a>8.3. Benutzerdefinierter Authentifikator</h3>
+<div class="paragraph">
+<p>Hier wird gezeigt wie ein Authentifikator für Keycloak entwickelt werden kann.
+Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefügt, bei dem eine Quiz-Frage richtig beantwortet, werden muss um sich Einloggen zu können.</p>
+</div>
+<div class="listingblock">
+<div class="title">Anmeldeinformation Tabelle von Keycloak</div>
+<div class="content">
+<pre>-----------------------------
+| ID                        |
+-----------------------------
+| user_ID                   |
+-----------------------------
+| credential_type           |
+-----------------------------
+| created_date              |
+-----------------------------
+| user_label                |
+-----------------------------
+| secret_data               |
+-----------------------------
+| credential_data           |
+-----------------------------
+| priority                  |
+-----------------------------</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Für uns sind hier die Felder secret- und credential_data interessant, da wir unsere Frage mit Antwort irgendwo Speichern müssen. Die Anwort wird in secret_data gespeichert, da diese Daten nicht von Keycloak übertragen werden können.</p>
+</div>
+<div class="listingblock">
+<div class="title">credential_data</div>
+<div class="content">
+<pre>{
+  "question":"aQuestion"
+}</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">secret_data</div>
+<div class="content">
+<pre>{
+  "answer":"anAnswer"
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Um jetzt unseren Authentifikator zu entwickeln, müssen die "Service Provider Interfaces" von Keycloak implementiert werde, da wir auch credentials benötigen müssen wir auch dafür die entsprechenden Interfaces implementieren.</p>
+</div>
+<div class="listingblock">
+<div class="title">Durchlassen von Nutzern die das Quiz bereits beantwortet haben</div>
+<div class="content">
+<pre>@Override
+public void authenticate(AuthenticationFlowContext context) {
+    if (hasCookie(context)) {
+        context.success();
+        return;
+    }
+    Response challenge = context.form().createForm("secret-question.ftl");
+    context.challenge(challenge);
+}
 
+protected boolean hasCookie(AuthenticationFlowContext context) {
+    Cookie cookie = context
+        .getHttpRequest()
+        .getHttpHeaders()
+        .getCookies()
+        .get("SECRET_QUESTION_ANSWERED");
+    boolean result = cookie != null;
+    if (result) {
+        System.out.println("Bypassing secret question because cookie is set");
+    }
+    return result;
+}</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Validierung der Antwort</div>
+<div class="content">
+<pre>@Override
+public void action(AuthenticationFlowContext context) {
+    boolean validated = validateAnswer(context);
+    if (!validated) {
+        Response challenge =  context.form()
+                .setError("badSecret")
+                .createForm("secret-question.ftl");
+        context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS, challenge);
+        return;
+    }
+    setCookie(context);
+    context.success();
+}</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Beispiel für die Syntax einer .ftl Datei</div>
+<div class="content">
+<pre>&lt;form id="kc-totp-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post"&gt;
+    &lt;div class="${properties.kcFormGroupClass!}"&gt;
+        &lt;div class="${properties.kcLabelWrapperClass!}"&gt;
+            &lt;label for="totp" class="${properties.kcLabelClass!}"&gt;${msg("loginSecretQuestion")}&lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class="${properties.kcInputWrapperClass!}"&gt;
+            &lt;input id="totp" name="secret_answer" type="text" class="${properties.kcInputClass!}" /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/form&gt;</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>${} wird für verschiedenste attribute und template funktionen verwendet</p>
+<div class="ulist">
+<ul>
+<li>
+<p>properties.* wird aus der theme.properties datei gelesen</p>
+</li>
+<li>
+<p>msg("someValue") steht für Werte aus den anderen .properties files</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hinzufügen_des_authentifikators_zu_einem_flow"><a class="anchor" href="#_hinzufügen_des_authentifikators_zu_einem_flow"></a>8.4. Hinzufügen des Authentifikators zu einem Flow</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Als Erstes müssen Dateien unter resources/META-INF/services erstellt werden die, die Namen der Factory-Klassen enthalten, wie zum Beispiel:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>org.keycloak.examples.authenticator.SecretQuestionAuthenticatorFactory</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Es alles innerhalb eines einzigen jar file sein, weswegen wir jat.type=uber-jar verwenden</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>quarkus.package.jar.type=uber-jar</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Mit Docker kann das ganze auf diese weiße gelöst werden</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>FROM quay.io/keycloak/keycloak:26.0.2 AS builder
+COPY keycloak-quickstarts/extension/authenticator/target/authenticator-example.jar \
+    /opt/keycloak/providers/ \ <i class="conum" data-value="1"></i><b>(1)</b>
+RUN /opt/keycloak/bin/kc.sh build
+
+FROM quay.io/keycloak/keycloak:26.0.2
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+
+# default entrypoint</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Einfach das jar zu den Keycloak providern kopieren</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Anschließend kann wieder in der Keycloak Admin console weiter gearbeitet werden.
+Um den Authentifikator nun verwenden zu können muss zuerst ein builtin-flow dupliziert werden, da wir ihn dann wieder im Browser verwenden macht es Sinn dafür den Browser-Flow zu verwenden.</p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/duplicate-flow.png" alt="duplicate flow">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-flow-step.png" alt="add flow step">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/binding-the-new-browser-flow.png" alt="binding the new browser flow">
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>Nachdem der Subflow hinzugefügt wurde müssen noch die Requirements angepasst werden.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
+</td>
+</tr>
+</table>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/required-actions.png" alt="required actions">
+</div>
+</div>
+</div>
+</details>
+<div class="imageblock">
+<div class="content">
+<img src="images/secret-question-flow.png" alt="secret question flow">
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>10. Reverse Proxies</h2>
+<h2 id="_reverse_proxies"><a class="anchor" href="#_reverse_proxies"></a>9. Reverse Proxies</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Autor: <strong>Lukas Sonnleitner</strong></p>
 </div>
 <div class="sect2">
-<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>10.1. Was ist ein Reverse Proxy?</h3>
+<h3 id="_was_ist_ein_reverse_proxy"><a class="anchor" href="#_was_ist_ein_reverse_proxy"></a>9.1. Was ist ein Reverse Proxy?</h3>
 <div class="paragraph">
 <p>Ein Reverse Proxy ist ein Server, der die Anfragen von Clients (z. B. Browsern) entgegennimmt und diese an einen oder mehrere Upstream-Server weiterleitet. Er fungiert als eine Art "Schutzschild" für Server, indem er:</p>
 </div>
@@ -2075,7 +2307,7 @@ Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecat
 </div>
 </div>
 <div class="sect2">
-<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>10.2. Warum braucht man einen Reverse Proxy?</h3>
+<h3 id="_warum_braucht_man_einen_reverse_proxy"><a class="anchor" href="#_warum_braucht_man_einen_reverse_proxy"></a>9.2. Warum braucht man einen Reverse Proxy?</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2103,7 +2335,7 @@ Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecat
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>10.3. Reverse Proxies im Überblick</h3>
+<h3 id="_reverse_proxies_im_überblick"><a class="anchor" href="#_reverse_proxies_im_überblick"></a>9.3. Reverse Proxies im Überblick</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -2166,12 +2398,12 @@ API</p></td>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_beispiele"><a class="anchor" href="#_beispiele"></a>10.4. Beispiele</h3>
+<h3 id="_beispiele"><a class="anchor" href="#_beispiele"></a>9.4. Beispiele</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/reverse-proxy-demo.svg" alt="reverse proxy demo"></span></p>
 </div>
 <div class="sect3">
-<h4 id="_nginx_http"><a class="anchor" href="#_nginx_http"></a>10.4.1. Nginx http</h4>
+<h4 id="_nginx_http"><a class="anchor" href="#_nginx_http"></a>9.4.1. Nginx http</h4>
 <details>
 <summary class="title">docker-compose.yml</summary>
 <div class="content">
@@ -2322,7 +2554,7 @@ API</p></td>
 </details>
 </div>
 <div class="sect3">
-<h4 id="_traefik_http"><a class="anchor" href="#_traefik_http"></a>10.4.2. Traefik http</h4>
+<h4 id="_traefik_http"><a class="anchor" href="#_traefik_http"></a>9.4.2. Traefik http</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2403,7 +2635,7 @@ API</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_caddy_http_https"><a class="anchor" href="#_caddy_http_https"></a>10.4.3. Caddy (http / https)</h4>
+<h4 id="_caddy_http_https"><a class="anchor" href="#_caddy_http_https"></a>9.4.3. Caddy (http / https)</h4>
 <div class="listingblock">
 <div class="title">docker-compose.yml</div>
 <div class="content">
@@ -2469,7 +2701,7 @@ In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Autho
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tls"><a class="anchor" href="#_tls"></a>10.5. TLS?</h3>
+<h3 id="_tls"><a class="anchor" href="#_tls"></a>9.5. TLS?</h3>
 <div class="paragraph">
 <p>TLS (Transport Layer Security) ist ein Verschlüsselungsprotokoll, das die Sicherheit der Kommunikation im Internet gewährleistet.<br>
 <a href="https://tls13.xargs.org/#open-all">Wie funktioniert der genau?</a></p>
@@ -2478,7 +2710,7 @@ In dieser Demo sind diese selber signiert also nicht von einer Cerfificate Autho
 <p><span class="image"><img src="images/tls-handshake.svg" alt="tls handshake"></span></p>
 </div>
 <div class="sect3">
-<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>10.5.1. Wie bekomme ich so ein Zertifikat?</h4>
+<h4 id="_wie_bekomme_ich_so_ein_zertifikat"><a class="anchor" href="#_wie_bekomme_ich_so_ein_zertifikat"></a>9.5.1. Wie bekomme ich so ein Zertifikat?</h4>
 <div class="paragraph">
 <p>Ganz einfach. Selber machen.</p>
 </div>
@@ -2513,7 +2745,7 @@ DOMAIN_NAME sollte mit der tatsächlichen Domain ausgetauscht werden.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>10.5.2. Suppa. Wie benutzt ich das jetzt?</h4>
+<h4 id="_suppa_wie_benutzt_ich_das_jetzt"><a class="anchor" href="#_suppa_wie_benutzt_ich_das_jetzt"></a>9.5.2. Suppa. Wie benutzt ich das jetzt?</h4>
 <div class="listingblock">
 <div class="title">conf.d/reverse-proxy.conf</div>
 <div class="content">
@@ -2573,7 +2805,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_was_ist_eine_certifcate_authority"><a class="anchor" href="#_was_ist_eine_certifcate_authority"></a>10.6. Was ist eine Certifcate Authority</h3>
+<h3 id="_was_ist_eine_certifcate_authority"><a class="anchor" href="#_was_ist_eine_certifcate_authority"></a>9.6. Was ist eine Certifcate Authority</h3>
 <div class="paragraph">
 <p>Eine Certificate Authority (Zertifikat Authorität), ist ein Unternehmen oder eine Organisation, die die Validität von Websiten, E-Mail-Adressen etc mithilfe von Zertifikaten sicherstellt, welche an kryptografische Schlüssel gebunden sind.</p>
 </div>
@@ -2595,7 +2827,7 @@ Es ist geeignet für Development Zwecke oder in internen Netzwerken, wenn keine 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_certbot"><a class="anchor" href="#_certbot"></a>10.7. Certbot</h3>
+<h3 id="_certbot"><a class="anchor" href="#_certbot"></a>9.7. Certbot</h3>
 <div class="paragraph">
 <p>Certbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuernCertbot ist ein Open-Source-Tool, das von der Electronic Frontier Foundation (EFF) entwickelt wurde. Es dient dazu, kostenlose TLS-Zertifikate von Let’s Encrypt zu generieren und automatisch zu erneuern.<br>
 Für die bequemlichkeit benutzen wir Certbot mit docker compose.</p>
@@ -2860,7 +3092,7 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
 <p>Starten sie den nginx Container neu und bewundern sie ihr neues Zertifikat ohne Warnung.</p>
 </div>
 <div class="sect3">
-<h4 id="_traefik_tls"><a class="anchor" href="#_traefik_tls"></a>10.7.1. Traefik TLS</h4>
+<h4 id="_traefik_tls"><a class="anchor" href="#_traefik_tls"></a>9.7.1. Traefik TLS</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
@@ -2922,7 +3154,7 @@ Ergänzen wir also die <code>reverse-proxy.conf</code> um https hinzuzufügen.</
 </div>
 </div>
 <div class="sect3">
-<h4 id="_nginx_ingress_controller"><a class="anchor" href="#_nginx_ingress_controller"></a>10.7.2. Nginx Ingress Controller</h4>
+<h4 id="_nginx_ingress_controller"><a class="anchor" href="#_nginx_ingress_controller"></a>9.7.2. Nginx Ingress Controller</h4>
 <div class="sect4">
 <h5 id="_minikube"><a class="anchor" href="#_minikube"></a>Minikube</h5>
 <div class="listingblock">
@@ -3866,7 +4098,7 @@ z.B. echo.STUDENT_ID.cloud.htl-leonding.ac.at</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_traefik_ingress_controller"><a class="anchor" href="#_traefik_ingress_controller"></a>10.7.3. Traefik Ingress Controller</h4>
+<h4 id="_traefik_ingress_controller"><a class="anchor" href="#_traefik_ingress_controller"></a>9.7.3. Traefik Ingress Controller</h4>
 <div class="sect4">
 <h5 id="_minikube_2"><a class="anchor" href="#_minikube_2"></a>Minikube</h5>
 <div class="listingblock">
@@ -4130,7 +4362,7 @@ spec:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>11. Quellen</h2>
+<h2 id="_quellen"><a class="anchor" href="#_quellen"></a>10. Quellen</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -4199,7 +4431,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-20 02:25:11 UTC
+Last updated 2024-12-20 03:53:16 UTC
 </div>
 </div>
 </body>
