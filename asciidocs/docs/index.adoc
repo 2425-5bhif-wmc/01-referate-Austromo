@@ -696,7 +696,7 @@ Mehr zu custom Themes link:https://www.keycloak.org/docs/latest/server_developme
 == Keycloak Authentication Flows
 Autor: *Tobias J. Aichinger*
 
-== Client erstellung
+=== Client erstellung
 
 image::authentication-flow.png[]
 
@@ -767,29 +767,166 @@ Hier kann man den Aufbau von Flows gut sehen den:
 ** Disabled: wird nicht ausgeführt
 ** Alternative: es muss mindestendes ein Authentifizierungstyp auf dieser Ebene erfolgreich sein
 
-==== Custom Authenticator
+=== Benutzerdefinierter Authentifikator
 
+Hier wird gezeigt wie ein Authentifikator für Keycloak entwickelt werden kann.
+Genauer gesagt wird ein weiterer Autorisierungschritt im Browser-Flow hinzugefügt, bei dem eine Quiz-Frage richtig beantwortet, werden muss um sich Einloggen zu können.
 
+.Anmeldeinformation Tabelle von Keycloak
+[code, txt]
+----
+-----------------------------
+| ID                        |
+-----------------------------
+| user_ID                   |
+-----------------------------
+| credential_type           |
+-----------------------------
+| created_date              |
+-----------------------------
+| user_label                |
+-----------------------------
+| secret_data               |
+-----------------------------
+| credential_data           |
+-----------------------------
+| priority                  |
+-----------------------------
+----
 
+Für uns sind hier die Felder secret- und credential_data interessant, da wir unsere Frage mit Antwort irgendwo Speichern müssen. Die Anwort wird in secret_data gespeichert, da diese Daten nicht von Keycloak übertragen werden können.
 
+.credential_data
+[code, json]
+----
+{
+  "question":"aQuestion"
+}
+----
 
+.secret_data
+[code, json]
+----
+{
+  "answer":"anAnswer"
+}
+----
 
+Um jetzt unseren Authentifikator zu entwickeln, müssen die "Service Provider Interfaces" von Keycloak implementiert werde, da wir auch credentials benötigen müssen wir auch dafür die entsprechenden Interfaces implementieren.
 
+.Durchlassen von Nutzern die das Quiz bereits beantwortet haben
+[code, java]
+----
+@Override
+public void authenticate(AuthenticationFlowContext context) {
+    if (hasCookie(context)) {
+        context.success();
+        return;
+    }
+    Response challenge = context.form().createForm("secret-question.ftl");
+    context.challenge(challenge);
+}
 
+protected boolean hasCookie(AuthenticationFlowContext context) {
+    Cookie cookie = context
+        .getHttpRequest()
+        .getHttpHeaders()
+        .getCookies()
+        .get("SECRET_QUESTION_ANSWERED");
+    boolean result = cookie != null;
+    if (result) {
+        System.out.println("Bypassing secret question because cookie is set");
+    }
+    return result;
+}
+----
 
+.Validierung der Antwort
+[code, java]
+----
+@Override
+public void action(AuthenticationFlowContext context) {
+    boolean validated = validateAnswer(context);
+    if (!validated) {
+        Response challenge =  context.form()
+                .setError("badSecret")
+                .createForm("secret-question.ftl");
+        context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS, challenge);
+        return;
+    }
+    setCookie(context);
+    context.success();
+}
+----
 
+.Beispiel für die Syntax einer .ftl Datei
+[code, ftl]
+----
+<form id="kc-totp-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
+    <div class="${properties.kcFormGroupClass!}">
+        <div class="${properties.kcLabelWrapperClass!}">
+            <label for="totp" class="${properties.kcLabelClass!}">${msg("loginSecretQuestion")}</label>
+        </div>
 
+        <div class="${properties.kcInputWrapperClass!}">
+            <input id="totp" name="secret_answer" type="text" class="${properties.kcInputClass!}" />
+        </div>
+    </div>
+</form>
+----
 
+* ${} wird für verschiedenste attribute und template funktionen verwendet
+** properties.* wird aus der theme.properties datei gelesen
+** msg("someValue") steht für Werte aus den anderen .properties files
 
+=== Hinzufügen des Authentifikators zu einem Flow
 
+* Als Erstes müssen Dateien unter resources/META-INF/services erstellt werden die, die Namen der Factory-Klassen enthalten, wie zum Beispiel:
+** org.keycloak.examples.authenticator.SecretQuestionAuthenticatorFactory
 
+* Es alles innerhalb eines einzigen jar file sein, weswegen wir jat.type=uber-jar verwenden
+[code, toml]
+----
+quarkus.package.jar.type=uber-jar
+----
 
+* Mit Docker kann das ganze auf diese weiße gelöst werden
 
+[code, Dockerfile]
+----
+FROM quay.io/keycloak/keycloak:26.0.2 AS builder
+COPY keycloak-quickstarts/extension/authenticator/target/authenticator-example.jar \
+    /opt/keycloak/providers/ \ <.>
+RUN /opt/keycloak/bin/kc.sh build
 
+FROM quay.io/keycloak/keycloak:26.0.2
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
+# default entrypoint
+----
 
+<.> Einfach das jar zu den Keycloak providern kopieren
 
+Anschließend kann wieder in der Keycloak Admin console weiter gearbeitet werden.
+Um den Authentifikator nun verwenden zu können muss zuerst ein builtin-flow dupliziert werden, da wir ihn dann wieder im Browser verwenden macht es Sinn dafür den Browser-Flow zu verwenden.
 
+[%collapsible]
+====
+image::duplicate-flow.png[]
+image::add-flow-step.png[]
+image::binding-the-new-browser-flow.png[]
+====
+
+Nachdem der Subflow hinzugefügt wurde müssen noch die Requirements angepasst werden.
+
+IMPORTANT: Es muss sichergestellt werden das, wenn ein neuer Subflow als Required gesetzt wird muss dieser auch unter dem Required actions tab auf on gesetzt werden.
+
+[%collapsible]
+====
+image::required-actions.png[]
+====
+
+image::secret-question-flow.png[]
 
 == Reverse Proxies
 Autor: *Lukas Sonnleitner*
