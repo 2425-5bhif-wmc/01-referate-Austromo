@@ -1571,7 +1571,7 @@ services:
       - TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:443
       - TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_TO=websecure <1>
       - TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_SCHEME=https
-      - TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_PERMANENT=true
+      - TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_PERMANENT=true <3>
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./tls.toml:/providers/tls.toml <3>
@@ -1611,9 +1611,13 @@ services:
       # - traefik.http.services.echo.loadbalancer.server.port=8080
       # not needed because of traefik automatic service discovery magic
 ----
-<1>
+<1> Definiert die Einstiegspunkte (web für HTTP und websecure für HTTPS), die Traefik nutzt.
+<2> Erzwingt TLS (HTTPS) für den jeweiligen Router.
+<3> Leitet alle http anfragen zu https dauerhaft um.
 
 ==== Nginx Ingress Controller
+
+image:kubernetes-ingress-controller.svg[]
 
 ===== Minikube
 
