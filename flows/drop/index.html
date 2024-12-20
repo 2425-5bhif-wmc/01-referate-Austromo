@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script defer="true" type="text/javascript" src="./dist/bundle.js"></script>
+    <title>Drop</title>
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="loginContainer">
+        <h2>Login with Keycloak</h2>
+        <button class="btn" id="loginBtn">Login</button>
+        <button class="btn" id="logoutBtn" style="display:none;">Logout</button>
+        <div id="message"></div>
+    </div>
+<!--
+    <style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Body and background */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f8ff;
+        text-align: center;
+        margin: 0;
+    }
+
+    /* Container for buttons */
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Styling the buttons */
+    .btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        margin: 10px;
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+
+    /* Styling the result message */
+    #message {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+    </style>
+</head>
+<body>
+    <div id="content" class="container">
+        <button class="btn" id="readyButton">Ready to answer?</button>
+        <button class="btn" id="secretButton">Get secret</button>
+
+        <p id="message"></p>
+    </div>
+    --!>
+</body>
+</html>

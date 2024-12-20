@@ -24,8 +24,8 @@ services:
       - ./import:/opt/keycloak/data/import
       - ./themes:/opt/keycloak/themes/
     ports:
-      - "8001:8080"
-      - "9001:9000"
+      - "8000:8080"
+      - "9000:9000"
     depends_on:
       - keycloak-db
 

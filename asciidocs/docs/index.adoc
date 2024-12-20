@@ -743,6 +743,34 @@ image::service-client-grant.png[]
 
 NOTE: Alle Flows die nicht verwendet werden sollten sind in OAuth 2.1 bereits deprecated.
 
+=== Flow konfigurierung
+
+Diese Flows beschreiben nun welche Schritte für die Authentifizierung in verschiedenen Umgebung verwendet werden. Unten sind die Flows welche von Keycloak bereits implementiert wurden und einfach verwendet werden können.
+
+image::built-in-flows.png[]
+
+Der "Create flow" button tut, was er sagt und erstellt einen Leeren Flow dies wird von Keycloak nicht empfohlen, da man eher bestehende Flows Duplizieren soll. Wenn ein Flow dann Editieren oder Ansehen will, kann auf den Namen gedrückt werden, um diese Ansicht zu öffnen:
+
+image::browser-flow-1.png[]
+image::browser-flow-2.png[]
+
+Hier kann man den Aufbau von Flows gut sehen den:
+
+* Steps
+** Sind hierarchisch aufgebaut
+** Können weiter Untergeordnete schritte haben
+** Beliebig verschiebbar
+
+* Requirements
+** Required: muss erfolgreich Ausgeführt werden
+** Optional: wenn es der User konfiguriert hat, sonst wird es ignoriert
+** Disabled: wird nicht ausgeführt
+** Alternative: es muss mindestendes ein Authentifizierungstyp auf dieser Ebene erfolgreich sein
+
+==== Custom Authenticator
+
+
+
 
 
 
