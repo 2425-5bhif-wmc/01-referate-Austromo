@@ -20,6 +20,10 @@ Authentifizierung durch Eingabe von Username und Passwort → *Wer bin ich?*
 Durch Rollen ist man autorisiert, auf Ressourcen zuzugreifen → *Was darf ich?*
 
 == Rollen
+.Autorisierung ohne Rollen
+image:no-roles.png[]
+
+.Autorisierung mit Rollen
 image:roles.png[]
 
 == Standards
@@ -88,8 +92,6 @@ image:jwt-logo.svg[width=200]
 
 ==== Definition
 *JSON Web Token* ist ein offener Standard, der eine kompakte Möglichkeit zur sicheren Übertragung von Informationen zwischen Parteien als JSON-Objekt definiert. Diese Information wird digital *signiert* und ist somit vertrauenswürdig.
-
-
 
 ==== Struktur
 Ein JWT setzt sich aus 3 Teilen zusammen, welche jeweils durch einen `.` getrennt werden: `xxxxx.yyyyy.zzzzz`
@@ -170,6 +172,12 @@ IMPORTANT: *Single Sign-On* ist ein Authentifizierungsverfahren, bei dem Benutze
 ^.^|link:https://www.authelia.com/[Authelia^]
 ^.^|link:https://goauthentik.io/[authentik^]
 
+^.^|*Unternehmen*
+^.^|image:redhat-logo.png[width=80, height=80]
+^.^|image:okta-logo.png[width=80, height=80]
+^.^|404
+^.^|image:authentik-logo.png[width=80, height=80]
+
 ^.^|*Open Source*
 ^.^|🟢
 ^.^|🔴
@@ -233,7 +241,12 @@ ____
 ____
 
 == Keycloak mit dem quarkus-keycloak-admin-rest-client
-Für die Kommunikation zwischen der *Quarkus-Applikation* und *Keycloak* wird die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency verwendet. Der Rest-Client sendet Requests an die link:https://www.keycloak.org/docs-api/latest/rest-api/index.html[`Keycloak Admin REST API`^].
+=== Problem
+Die Konfiguration von Keycloak wird hauptsächlich mithilfe dessen GUI durchgeführt. Dies kann nervig und langsam sein.
+
+=== Lösung
+*Keycloak* bietet eine link:https://www.keycloak.org/docs-api/latest/rest-api/index.html[REST API^] an, um Konfigurationen vorzunehmen. Die link:https://quarkus.io/guides/security-keycloak-admin-client[quarkus-keycloak-admin-rest-client^] dependency bietet Methoden, um  jene REST API in einer *Quarkus-Applikation* verwenden zu können.
+
 
 === Projekterstellung
 .Projekterstellung mit Quarkus CLI
@@ -380,10 +393,11 @@ image::keycloak-admin-login.png[]
 ====
 
 .Admin-Konsole
-[%collapsible]
-====
 image::keycloak-admin-console.png[]
-====
+
+=== Quarkus-Applikation mit Keycloak authentifizieren
+image:keycloak-quarkus-connection.png[]
+Damit die Quarkus-App im Keycloak Änderungen vornehmen kann, muss sie mit diesem authentifiziert werden. Dafür müssen ein Realm ([red]*rot*) und ein Client ([green]*grün*) in diesem Realm erstellt werden. Dies wird in den folgenden 2 Abschnitten erklärt.
 
 === Realm erstellen
 Um einen *Realm* zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button `Create realm` klicken.
@@ -510,7 +524,7 @@ Der Keycloak-Server gibt eine *401 - Unauthorized* Response zurück. Um dies zu 
 Es gibt 2 Möglichkeiten zur Authentifizierung mit dem *keycloak-admin-client*.
 
 * Grant type: password
-* Grant type: client-credentials
+* Grant type: client-credentials (*empfohlen*)
 
 IMPORTANT: Ein *grant type* bezeichnet die Art und Weise wie ein Client sich mit Keycloak authentifiziert.
 
