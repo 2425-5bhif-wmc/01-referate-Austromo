@@ -565,7 +565,7 @@ pre.rouge .gs {
 <div class="details">
 <span id="author" class="author">Tobias J. Aichinger, Moritz V. Gruber, Lukas Sonnleitner</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-12-20</span>
+<span id="revdate">2024-12-24</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -589,11 +589,14 @@ pre.rouge .gs {
 </li>
 <li><a href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client">5. Keycloak mit dem quarkus-keycloak-admin-rest-client</a>
 <ul class="sectlevel2">
-<li><a href="#_projekterstellung">5.1. Projekterstellung</a></li>
-<li><a href="#_keycloak_container_starten">5.2. Keycloak Container starten</a></li>
-<li><a href="#_realm_erstellen">5.3. Realm erstellen</a></li>
-<li><a href="#_quarkus_client_erstellen">5.4. Quarkus-Client erstellen</a></li>
-<li><a href="#_probe">5.5. Probe</a></li>
+<li><a href="#_problem">5.1. Problem</a></li>
+<li><a href="#_lösung">5.2. Lösung</a></li>
+<li><a href="#_projekterstellung">5.3. Projekterstellung</a></li>
+<li><a href="#_keycloak_container_starten">5.4. Keycloak Container starten</a></li>
+<li><a href="#_quarkus_applikation_mit_keycloak_authentifizieren">5.5. Quarkus-Applikation mit Keycloak authentifizieren</a></li>
+<li><a href="#_realm_erstellen">5.6. Realm erstellen</a></li>
+<li><a href="#_quarkus_client_erstellen">5.7. Quarkus-Client erstellen</a></li>
+<li><a href="#_probe">5.8. Probe</a></li>
 </ul>
 </li>
 <li><a href="#_custom_theme">6. Custom Theme</a></li>
@@ -647,6 +650,11 @@ pre.rouge .gs {
 <h2 id="_rollen"><a class="anchor" href="#_rollen"></a>2. Rollen</h2>
 <div class="sectionbody">
 <div class="paragraph">
+<div class="title">Autorisierung ohne Rollen</div>
+<p><span class="image"><img src="images/no-roles.png" alt="no roles"></span></p>
+</div>
+<div class="paragraph">
+<div class="title">Autorisierung mit Rollen</div>
 <p><span class="image"><img src="images/roles.png" alt="roles"></span></p>
 </div>
 </div>
@@ -935,6 +943,13 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Unternehmen</strong></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/redhat-logo.png" alt="redhat logo" width="80" height="80"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/okta-logo.png" alt="okta logo" width="80" height="80"></span></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">404</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><img src="images/authentik-logo.png" alt="authentik logo" width="80" height="80"></span></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Open Source</strong></p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">🟢</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">🔴</p></td>
@@ -1057,11 +1072,20 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 <div class="sect1">
 <h2 id="_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"><a class="anchor" href="#_keycloak_mit_dem_quarkus_keycloak_admin_rest_client"></a>5. Keycloak mit dem quarkus-keycloak-admin-rest-client</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_problem"><a class="anchor" href="#_problem"></a>5.1. Problem</h3>
 <div class="paragraph">
-<p>Für die Kommunikation zwischen der <strong>Quarkus-Applikation</strong> und <strong>Keycloak</strong> wird die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency verwendet. Der Rest-Client sendet Requests an die <a href="https://www.keycloak.org/docs-api/latest/rest-api/index.html" target="_blank" rel="noopener"><code>Keycloak Admin REST API</code></a>.</p>
+<p>Die Konfiguration von Keycloak wird hauptsächlich mithilfe dessen GUI durchgeführt. Dies kann nervig und langsam sein.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>5.1. Projekterstellung</h3>
+<h3 id="_lösung"><a class="anchor" href="#_lösung"></a>5.2. Lösung</h3>
+<div class="paragraph">
+<p><strong>Keycloak</strong> bietet eine <a href="https://www.keycloak.org/docs-api/latest/rest-api/index.html" target="_blank" rel="noopener">REST API</a> an, um Konfigurationen vorzunehmen. Die <a href="https://quarkus.io/guides/security-keycloak-admin-client" target="_blank" rel="noopener">quarkus-keycloak-admin-rest-client</a> dependency bietet Methoden, um  jene REST API in einer <strong>Quarkus-Applikation</strong> verwenden zu können.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_projekterstellung"><a class="anchor" href="#_projekterstellung"></a>5.3. Projekterstellung</h3>
 <div class="listingblock">
 <div class="title">Projekterstellung mit Quarkus CLI</div>
 <div class="content">
@@ -1103,7 +1127,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </div>
 </div>
 <div class="sect2">
-<h3 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>5.2. Keycloak Container starten</h3>
+<h3 id="_keycloak_container_starten"><a class="anchor" href="#_keycloak_container_starten"></a>5.4. Keycloak Container starten</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1269,19 +1293,22 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </div>
 </div>
 </details>
-<details>
-<summary class="title">Admin-Konsole</summary>
-<div class="content">
 <div class="imageblock">
 <div class="content">
 <img src="images/keycloak-admin-console.png" alt="keycloak admin console">
 </div>
+<div class="title">Figure 1. Admin-Konsole</div>
 </div>
-</div>
-</details>
 </div>
 <div class="sect2">
-<h3 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>5.3. Realm erstellen</h3>
+<h3 id="_quarkus_applikation_mit_keycloak_authentifizieren"><a class="anchor" href="#_quarkus_applikation_mit_keycloak_authentifizieren"></a>5.5. Quarkus-Applikation mit Keycloak authentifizieren</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/keycloak-quarkus-connection.png" alt="keycloak quarkus connection"></span>
+Damit die Quarkus-App im Keycloak Änderungen vornehmen kann, muss sie mit diesem authentifiziert werden. Dafür müssen ein Realm (<strong class="red">rot</strong>) und ein Client (<strong class="green">grün</strong>) in diesem Realm erstellt werden. Dies wird in den folgenden 2 Abschnitten erklärt.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_realm_erstellen"><a class="anchor" href="#_realm_erstellen"></a>5.6. Realm erstellen</h3>
 <div class="paragraph">
 <p>Um einen <strong>Realm</strong> zu erstellen, muss man im linken oberen Eck auf das Dropdown und anschließend auf den Button <code>Create realm</code> klicken.</p>
 </div>
@@ -1320,7 +1347,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </details>
 </div>
 <div class="sect2">
-<h3 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>5.4. Quarkus-Client erstellen</h3>
+<h3 id="_quarkus_client_erstellen"><a class="anchor" href="#_quarkus_client_erstellen"></a>5.7. Quarkus-Client erstellen</h3>
 <div class="paragraph">
 <p>Um einen <strong>Client</strong> zu erstellen, muss man im Clients Tab auf den <code>Create client</code> Button klicken.</p>
 </div>
@@ -1419,7 +1446,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </div>
 </div>
 <div class="sect2">
-<h3 id="_probe"><a class="anchor" href="#_probe"></a>5.5. Probe</h3>
+<h3 id="_probe"><a class="anchor" href="#_probe"></a>5.8. Probe</h3>
 <div class="paragraph">
 <p>Nachdem nun ein <strong>Realm</strong> und ein <strong>Client</strong> in Keycloak existieren, können wir den <strong>keycloak-admin-rest-client</strong> ausprobieren.</p>
 </div>
@@ -1494,7 +1521,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response"><a class="anchor" href="#_response"></a>5.5.1. Response</h4>
+<h4 id="_response"><a class="anchor" href="#_response"></a>5.8.1. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
@@ -1507,7 +1534,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 </div>
 </div>
 <div class="sect3">
-<h4 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>5.5.2. Authentifizierung</h4>
+<h4 id="_authentifizierung"><a class="anchor" href="#_authentifizierung"></a>5.8.2. Authentifizierung</h4>
 <div class="paragraph">
 <p>Es gibt 2 Möglichkeiten zur Authentifizierung mit dem <strong>keycloak-admin-client</strong>.</p>
 </div>
@@ -1517,7 +1544,7 @@ Die Authentifizierung von Benutzern wird bei OAuth 2.0 <strong>nicht</strong> ab
 <p>Grant type: password</p>
 </li>
 <li>
-<p>Grant type: client-credentials</p>
+<p>Grant type: client-credentials (<strong>empfohlen</strong>)</p>
 </li>
 </ul>
 </div>
@@ -1628,7 +1655,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_2"><a class="anchor" href="#_response_2"></a>5.5.3. Response</h4>
+<h4 id="_response_2"><a class="anchor" href="#_response_2"></a>5.8.3. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
@@ -1641,7 +1668,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="sect3">
-<h4 id="_autorisierung"><a class="anchor" href="#_autorisierung"></a>5.5.4. Autorisierung</h4>
+<h4 id="_autorisierung"><a class="anchor" href="#_autorisierung"></a>5.8.4. Autorisierung</h4>
 <div class="sect4">
 <h5 id="_grant_type_password_2"><a class="anchor" href="#_grant_type_password_2"></a>Grant type: password</h5>
 <div class="paragraph">
@@ -1672,7 +1699,7 @@ Obwohl nur <strong>Username</strong> ein Pflichtfeld ist, müssen auch <strong>E
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_3"><a class="anchor" href="#_response_3"></a>5.5.5. Response</h4>
+<h4 id="_response_3"><a class="anchor" href="#_response_3"></a>5.8.5. Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="json"><span class="p">[</span><span class="w">
@@ -4447,7 +4474,7 @@ spec:
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-12-20 09:00:17 UTC
+Last updated 2024-12-24 00:15:58 UTC
 </div>
 </div>
 </body>
